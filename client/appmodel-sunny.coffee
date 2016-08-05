@@ -23,7 +23,7 @@ layout_template = tc.renderable () ->
 appmodel = new BaseAppModel
   hasUser: true
   brand:
-    name: 'Sunny'
+    name: 'Infidel'
     url: '/'
   layout_template: layout_template
   container: 'container-fluid'
