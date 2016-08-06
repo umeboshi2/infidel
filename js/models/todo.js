@@ -1,0 +1,1 @@
+module.exports=function(e,t){return e.define("todo",{description:{type:t.TEXT},completed:{type:t.BOOLEAN}})};

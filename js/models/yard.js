@@ -1,0 +1,1 @@
+module.exports=function(e,t){return e.define("yard",{client_id:{type:t.INTEGER,references:{model:"client",key:"id"}},name:{type:t.STRING,unique:!0},description:{type:t.TEXT},jobdetails:{type:t.TEXT}})};
