@@ -9,7 +9,15 @@ AppModel.set 'applets',
       name: 'Clients'
       url: '/sunny'
     }
+    {
+      appname: 'bumblr'
+      name: 'Bumblr'
+      url: '#bumblr'
+    }
   ]
+brand = AppModel.get 'brand'
+brand.url = '#'
+AppModel.set brand: brand
   
 MainChannel = Backbone.Radio.channel 'global'
 MessageChannel = Backbone.Radio.channel 'messages'
@@ -23,6 +31,8 @@ MainChannel.reply 'main:app:appmodel', ->
 ######################
 # require applets
 require '../applets/frontdoor/main'
+require '../applets/userprofile/main'
+require '../applets/bumblr/main'
 
 app = new Marionette.Application()
 

@@ -15,6 +15,11 @@ AppModel.set 'applets',
       name: 'DB Docs'
       url: '#dbdocs'
     }
+    {
+      appname: 'todos'
+      name: 'To Dos'
+      url: '#todos'
+    }
   ]
 
 
@@ -29,8 +34,10 @@ MainChannel.reply 'main:app:appmodel', ->
 ######################
 # require applets
 require '../applets/frontdoor/main'
+require '../applets/userprofile/main'
 require '../applets/sunny/main'
 require '../applets/dbdocs/main'
+require '../applets/todos/main'
 
 app = new Marionette.Application()
 

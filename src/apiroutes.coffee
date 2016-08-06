@@ -33,6 +33,11 @@ setup = (app) ->
     model: sql.models.document
     endpoints: [documentPath, "#{documentPath}/:name"]
 
+  todoPath = "#{APIPATH}/todos"
+  todoResource = epilogue.resource
+    model: sql.models.todo
+    endpoints: [todoPath, "#{todoPath}/:name"]
+
 
 module.exports =
   setup: setup
