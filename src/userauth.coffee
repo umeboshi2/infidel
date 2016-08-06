@@ -40,7 +40,7 @@ auth = (req, res, next) ->
   if req.isAuthenticated()
     next()
   else
-    res.redirect '/'
+    res.redirect '/#frontdoor/login'
     
 setup = (app) ->
   app.use passport.initialize()

@@ -24,6 +24,8 @@ HOST = process.env.NODE_IP or os.hostname()
 app = express()
 auth = UserAuth.auth
 
+#app.use express.favicon()
+
 Middleware.setup app
 UserAuth.setup app
 ApiRoutes.setup app

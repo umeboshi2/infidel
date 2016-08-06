@@ -1,6 +1,7 @@
 fs = require 'fs'
 path = require 'path'
 Sequelize = require 'sequelize'
+
 env = process.env.NODE_ENV or 'development'
 config = require('../config')[env]
 
@@ -10,9 +11,9 @@ db = {}
 # import models
 sequelize.import './user'
 sequelize.import './document'
+sequelize.import './todo'
 sequelize.import './client'
 sequelize.import './yard'
-
 #fs.readdirSync(__dirname).filter((file) ->
 #  file.indexOf('.') != 0 and file != 'index.js'
 #).forEach (file) ->
