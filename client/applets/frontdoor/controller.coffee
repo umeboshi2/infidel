@@ -17,7 +17,7 @@ class Controller extends MainController
         model: doc
       @_show_content view
     # name the chunk
-    , 'frontdoor-view-resource'
+    , 'frontdoor-main-view'
     
     
   view_page: (name) ->
@@ -28,13 +28,30 @@ class Controller extends MainController
     response.fail =>
       MessageChannel.request 'danger', 'Failed to get document'
       
-    
-  frontdoor: ->
+
+  frontdoor_needuser: ->
     user = MainChannel.request 'current-user'
-    if not user.has 'name'
-      view = new Backbone.Marionette.ItemView
-        template: login_form
-      @_show_content view
+    if user.has 'name'
+      @frontdoor_hasuser user
+    else
+      @show_login()
+      
+  show_login: ->
+    view = new Backbone.Marionette.ItemView
+      template: login_form
+    @_show_content view
+    
+  frontdoor_hasuser: (user) ->
+    @default_view()
+
+  default_view: ->
+    @view_page 'intro'
+      
+  frontdoor: ->
+    appmodel = MainChannel.request 'main:app:appmodel'
+    if appmodel.get 'needUser'
+      console.log 'needUser is true'
+      @frontdoor_needuser()
     else
       @view_page 'intro'
 

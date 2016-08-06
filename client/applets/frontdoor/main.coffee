@@ -12,6 +12,7 @@ class Router extends BootStrapAppRouter
     'frontdoor': 'frontdoor'
     'frontdoor/view': 'frontdoor'
     'frontdoor/view/:name': 'view_page'
+    'frontdoor/login': 'show_login'
     #FIXME
     'pages/:name': 'view_page'
     
