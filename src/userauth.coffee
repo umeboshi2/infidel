@@ -1,6 +1,6 @@
 passport = require 'passport'
 Strategy = require('passport-local').Strategy
-bcrypt = require 'bcrypt'
+bcrypt = require 'bcryptjs'
 
 db = require './models'
 sql = db.sequelize
