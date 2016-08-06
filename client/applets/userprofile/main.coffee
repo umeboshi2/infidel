@@ -9,8 +9,9 @@ MainChannel = Backbone.Radio.channel 'global'
 class Router extends BootStrapAppRouter
   appRoutes:
     'profile': 'show_profile'
+    'profile/editconfig': 'edit_config'
     
-MainChannel.reply 'applet:userprofiles:route', () ->
+MainChannel.reply 'applet:userprofile:route', () ->
   controller = new Controller MainChannel
   router = new Router
     controller: controller
