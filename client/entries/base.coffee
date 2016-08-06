@@ -6,15 +6,12 @@ require 'radio-shim'
 require 'bootstrap'
 
 Views = require 'agate/src/views'
-AppModel = require './appmodel'
+initialize_page = require 'agate/src/app-initpage'
 
 require 'agate/src/users'
 require 'agate/src/clipboard'
 require 'agate/src/messages'
-require './static-documents'
-
-prepare_app = require 'agate/src/app-prepare'
-initialize_page = require 'agate/src/app-initpage'
+require '../static-documents'
 
 MainChannel = Backbone.Radio.channel 'global'
 MessageChannel = Backbone.Radio.channel 'messages'
@@ -29,11 +26,6 @@ if __DEV__
 
 ######################
 # start app setup
-
-# use a signal to request appmodel
-MainChannel.reply 'main:app:appmodel', ->
-  AppModel
-
 
 MainChannel.reply 'mainpage:init', (appmodel) ->
   # get the app object
@@ -62,35 +54,16 @@ MainChannel.on 'appregion:navbar:displayed', ->
   usermenu = MainChannel.request 'main:app:get-region', 'usermenu'
   usermenu.show view
     
-# require applets
-# Applets need to be loaded to provide
-# urls for the app routers
-# 
-# FIXME - how to get this to work?
-#for applet in AppModel.get 'applets'
-#  require "#{applet.appname}/main"
+start_with_user = (app, url='/api/dev/current-user') ->
+  # fetch the authenticated user before starting the app
+  user = MainChannel.request 'create-current-user-object', url
+  response = user.fetch()
+  response.done =>
+    app.start()
+  response.fail =>
+    MessageChannel.request 'danger', 'Get current user failed!'
 
-
-require './frontdoor/main'
-
-app = new Marionette.Application()
-
-prepare_app app, AppModel
-
-if __DEV__
-  # DEBUG attach app to window
-  window.App = app
-
-
-# Start the Application
-# make sure current user is fetched from server before starting app
-user = MainChannel.request 'create-current-user-object', '/api/dev/current-user'
-response = user.fetch()
-response.done =>
-  app.start()
-response.fail =>
-  MessageChannel.request 'danger', 'Get user failed'  
-
-module.exports = app
+module.exports =
+  start_with_user: start_with_user
 
 
