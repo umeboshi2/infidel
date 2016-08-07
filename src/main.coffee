@@ -55,6 +55,14 @@ else
 
 app.get '/', pages.make_page 'index'
 app.get '/sunny', auth, pages.make_page 'sunny'
+
+admin_auth = (req, res, next) ->
+  if req.isAuthenticated() and req.user.name == 'admin'
+    next()
+  else
+    res.sendStatus(403)
+    
+app.get '/admin', auth, admin_auth, pages.make_page 'admin'
       
 
 
