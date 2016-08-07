@@ -30,7 +30,7 @@ class Controller extends MainController
         collection: ResourceChannel.request 'app-documents'
       @_show_content view
     # name the chunk
-    , 'listpages'
+    , 'dbdocs-views'
 
   edit_page: (name) ->
     #console.log "CONTROLLER: edit_page", name
@@ -39,7 +39,7 @@ class Controller extends MainController
       @_show_content new EditPageView
         model: ResourceChannel.request 'get-document', name
     # name the chunk
-    , 'edit-page'
+    , 'dbdocs-views'
       
   new_page: () ->
     #console.log "CONTROLLER: make new page (nameless)"
@@ -47,7 +47,7 @@ class Controller extends MainController
       { NewPageView } = require './views/editor'
       @_show_content new NewPageView
     # name the chunk
-    , 'new-page'
+    , 'dbdocs-views'
       
       
 module.exports = Controller
