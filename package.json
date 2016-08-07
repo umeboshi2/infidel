@@ -21,9 +21,11 @@
     "express-session": "^1.14.0",
     "js-beautify": "^1.6.3",
     "morgan": "^1.7.0",
+    "node-gyp": "^3.4.0",
     "passport": "^0.3.2",
     "passport-local": "^1.0.0",
     "sequelize": "^3.23.6",
+    "sqlite3": "^3.1.4",
     "teacup": "^2.0.0"
   },
   "devDependencies": {
