@@ -18,7 +18,7 @@ class Controller extends MainController
         model: user
       @_show_content view
     # name the chunk
-    , 'userprofile-view-profile'
+    , 'userprofile-views'
 
   edit_config: ->
     console.log 'edit_config called.'
@@ -31,7 +31,20 @@ class Controller extends MainController
         model: user
       @_show_content view
     # name the chunk
-    , 'userprofile-edit-config'
+    , 'userprofile-views'
+      
+  change_password: ->
+    console.log 'change_password called.'
+    require.ensure [], () =>
+      ViewClass = require './chpassview'
+      # current-user is always there when app is
+      # running
+      user = MainChannel.request 'current-user'
+      view = new ViewClass
+        model: user
+      @_show_content view
+    # name the chunk
+    , 'userprofile-views'
       
       
 module.exports = Controller

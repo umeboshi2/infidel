@@ -11,6 +11,7 @@ user_profile_template = tc.renderable (model) ->
     tc.span "Config: #{model.config}"
     tc.br()
     tc.a href:"#profile/editconfig", 'Edit Config'
+    tc.a href:"#profile/chpassword", 'Edit Config'
     
 class UserMainView extends Backbone.Marionette.ItemView
   template: user_profile_template
