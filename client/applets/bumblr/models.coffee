@@ -25,7 +25,7 @@ class BaseLocalStorageModel extends Backbone.Model
 ########################################
 # Models
 ########################################
-baseURL = 'http://api.tumblr.com/v2'
+baseURL = '//api.tumblr.com/v2'
 
 class BumblrSettings extends BaseLocalStorageModel
   id: 'bumblr_settings'

@@ -1,7 +1,8 @@
 {
-  "edit-page.js": "1.edit-page-e81a05d063a59ccb5be8.js",
-  "frontdoor-main-view.js": "0.frontdoor-main-view-784170daddc533b95681.js",
-  "index.js": "index-444a6d2174993d2ea5ed.js",
-  "sunny.js": "sunny-4acf5cae4fcf3f3f054b.js",
-  "vendor.js": "vendor-10e3b0293a8af44fc291.js"
+  "admin.js": "admin-a07bdd86e340e608729b.js",
+  "dbdocs-views.js": "1.dbdocs-views-20fba4cc45c9d3f74980.js",
+  "frontdoor-main-view.js": "0.frontdoor-main-view-4e26fd2519a314a79193.js",
+  "index.js": "index-957a54cba29c1fe99942.js",
+  "sunny.js": "sunny-01f13090aaacbff32ea5.js",
+  "vendor.js": "vendor-da5eb0d35964a8c5e8ae.js"
 }

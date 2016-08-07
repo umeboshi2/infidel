@@ -12,7 +12,7 @@ Models = require './models'
 MainChannel = Backbone.Radio.channel 'global'
 BumblrChannel = Backbone.Radio.channel 'bumblr'
 
-baseURL = 'http://api.tumblr.com/v2'
+baseURL = '//api.tumblr.com/v2'
   
 class PhotoPostCollection extends Backbone.Collection
   url: () ->
