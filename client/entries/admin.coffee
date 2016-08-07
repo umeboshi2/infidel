@@ -3,33 +3,32 @@ Marionette = require 'backbone.marionette'
 prepare_app = require 'agate/src/app-prepare'
 
 AppModel = require './base-appmodel'
+console.log "APPMODEL", AppModel
 AppModel.set 'applets',
   [
+    {
+      name: 'User Admin'
+      url: '#useradmin'
+    }
     {
       appname: 'bumblr'
       name: 'Bumblr'
       url: '#bumblr'
     }
     {
-      appname: 'sunny'
-      name: 'Clients'
-      url: '#sunny'
-    }
-    {
-      appname: 'dbdocs'
-      name: 'DB Docs'
-      url: '#dbdocs'
-    }
-    {
-      appname: 'todos'
-      name: 'To Dos'
-      url: '#todos'
+      appname: 'phaserdemo'
+      name: 'Phaser'
+      url: '#phaserdemo'
     }
   ]
-
-
+brand = AppModel.get 'brand'
+brand.name = 'Admin Page'
+brand.url = '/'
+AppModel.set brand: brand
+  
 MainChannel = Backbone.Radio.channel 'global'
 MessageChannel = Backbone.Radio.channel 'messages'
+DocChannel = Backbone.Radio.channel 'static-documents'
 
 
 # use a signal to request appmodel
@@ -41,10 +40,6 @@ MainChannel.reply 'main:app:appmodel', ->
 require '../applets/frontdoor/main'
 require '../applets/userprofile/main'
 require '../applets/bumblr/main'
-require '../applets/sunny/main'
-require '../applets/dbdocs/main'
-require '../applets/todos/main'
-
 
 app = new Marionette.Application()
 
@@ -54,9 +49,9 @@ if __DEV__
   # DEBUG attach app to window
   window.App = app
 
-
-# Start the Application
+# start the app
 start_with_user app
+
 
 module.exports = app
 
