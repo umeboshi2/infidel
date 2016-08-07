@@ -37,7 +37,6 @@ class BlogInfo extends BaseTumblrModel
   url: () ->
     "#{@baseURL}/blog/#{@id}/info?api_key=#{@api_key}&callback=?"
     
-#bumblr_settings = new BumblrSettings id:'bumblr'
 consumer_key = '4mhV8B1YQK6PUA2NW8eZZXVHjU55TPJ3UZnZGrbSoCnqJaxDyH'
 bumblr_settings = new BumblrSettings consumer_key:consumer_key
 BumblrChannel.reply 'get_app_settings', ->

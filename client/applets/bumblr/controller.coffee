@@ -4,9 +4,11 @@ Backbone = require 'backbone'
 Util = require 'agate/src/apputil'
 { MainController } = require 'agate/src/controllers'
 
-Views = require './views'
 Models = require './models'
 Collections = require './collections'
+
+MiscViews = require './views/misc'
+SideBarView = require './views/sidebar'
 
 
 BumblrChannel = Backbone.Radio.channel 'bumblr'
@@ -24,25 +26,9 @@ side_bar_data = new Backbone.Model
     ]
 
 class Controller extends MainController
-  sidebarclass: Views.BaseSideBarView
+  sidebarclass: SideBarView
   sidebar_model: side_bar_data
   
-  _make_sidebar: ->
-    @init_page()
-    sidebar = @_get_region 'sidebar'
-    sidebar.empty()
-    #console.log '@sidebarclass', @sidebarclass, Views
-    view = new @sidebarclass
-      model: @sidebar_model
-    window.SBview = view
-    sidebar.show view
-    
-
-  init_page: ->
-    console.log 'init_page', @App
-    view = new Views.BlogModal
-    #@App.modal.show view
-    
   set_header: (title) ->
     header = $ '#header'
     header.text title
@@ -60,14 +46,14 @@ class Controller extends MainController
     @list_blogs()
     
   show_mainview: () ->
-    @make_sidebar()
-    view = new Views.MainBumblrView
+    @_make_sidebar()
+    view = new MiscViews.MainBumblrView
     @_show_content view
     Util.scroll_top_fast()
     
   show_dashboard: () ->
-    @make_sidebar()
-    view = new Views.BumblrDashboardView
+    @_make_sidebar()
+    view = new MiscViews.BumblrDashboardView
     @_show_content view
     Util.scroll_top_fast()
       
@@ -78,12 +64,12 @@ class Controller extends MainController
       console.log "sidebar created"
       blogs = BumblrChannel.request 'get_local_blogs'
       console.log 'blogs', blogs
-      { SimpleBlogListView } = require './views'
+      SimpleBlogListView = require './views/bloglist'
       view = new SimpleBlogListView
         collection: blogs
       @_show_content view
     # name the chunk
-    , 'bumblr-list-blogs'
+    , 'bumblr-views'
     
   view_blog: (blog_id) ->
     #console.log 'view blog called for ' + blog_id
@@ -91,7 +77,7 @@ class Controller extends MainController
     require.ensure [], () =>
       host = blog_id + '.tumblr.com'
       collection = BumblrChannel.request 'make_blog_post_collection', host
-      { BlogPostListView } = require './views'
+      BlogPostListView = require './views/postlist'
       response = collection.fetch()
       response.done =>
         view = new BlogPostListView
@@ -99,21 +85,31 @@ class Controller extends MainController
         @_show_content view
         Util.scroll_top_fast()
     # name the chunk
-    , 'bumblr-view-blog'
+    , 'bumblr-views'
     
   add_new_blog: () ->
     #console.log 'add_new_blog called'
     @_make_sidebar()
-    view = new Views.NewBlogFormView
-    @_show_content view
-    Util.scroll_top_fast()
+    require.ensure [], () =>
+      NewBlogFormView = require './views/newblog'
+      view = new NewBlogFormView
+      @_show_content view
+      Util.scroll_top_fast()
+    # name the chunk
+    , 'bumblr-views'
+    
           
   settings_page: () ->
     #console.log 'Settings page.....'
-    settings = BumblrChannel.request 'get_app_settings'
-    view = new Views.ConsumerKeyFormView model:settings
-    @_show_content view
-    Util.scroll_top_fast()
+    @_make_sidebar()
+    require.ensure [], () =>
+      ConsumerKeyFormView = require './views/settingsform'
+      settings = BumblrChannel.request 'get_app_settings'
+      view = new ConsumerKeyFormView model:settings
+      @_show_content view
+      Util.scroll_top_fast()
+    # name the chunk
+    , 'bumblr-views'
     
 module.exports = Controller
 
