@@ -10,7 +10,6 @@ DocChannel = Backbone.Radio.channel 'static-documents'
 
 class Controller extends MainController
   _view_resource: (doc) ->
-    @_make_editbar()
     require.ensure [], () =>
       { FrontDoorMainView } = require './views'
       view = new FrontDoorMainView
