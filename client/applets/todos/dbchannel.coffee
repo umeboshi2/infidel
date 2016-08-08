@@ -1,42 +1,25 @@
-$ = require 'jquery'
-_ = require 'underscore'
 Backbone = require 'backbone'
-Marionette = require 'backbone.marionette'
 
 { BaseCollection } = require 'agate/src/collections'
-{ create_model
-  get_model } = require 'agate/src/apputil'
+{ make_dbchannel } = require 'agate/src/basecrudchannel'
 
-MainChannel = Backbone.Radio.channel 'global'
-MessageChannel = Backbone.Radio.channel 'messages'
 TodoChannel = Backbone.Radio.channel 'todos'
 
-
+url = '/api/dev/todos'
 class Todo extends Backbone.Model
-  urlRoot: '/api/dev/todos'
+  urlRoot: url
 
 class TodoCollection extends Backbone.Collection
-  url: '/api/dev/todos'
+  url: url
   model: Todo
 
 
 todo_collection = new TodoCollection()
-TodoChannel.reply 'todo-collection', ->
-  todo_collection
+
+make_dbchannel TodoChannel, 'todo', Todo, todo_collection
 
 if __DEV__
   window.todo_collection = todo_collection
 
-TodoChannel.reply 'new-todo', ->
-  new Todo
-
-TodoChannel.reply 'add-todo', (options) ->
-  create_model todo_collection, options
-
-TodoChannel.reply 'get-todo', (id) ->
-  get_model todo_collection, id
-
-
-    
 module.exports =
   TodoCollection: TodoCollection
