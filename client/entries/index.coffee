@@ -14,6 +14,11 @@ AppModel.set 'applets',
       name: 'Bumblr'
       url: '#bumblr'
     }
+    {
+      appname: 'rezrov'
+      name: 'Rezrov'
+      url: '#rezrov'
+    }
   ]
 brand = AppModel.get 'brand'
 brand.url = '#'
@@ -33,6 +38,7 @@ MainChannel.reply 'main:app:appmodel', ->
 require '../applets/frontdoor/main'
 require '../applets/userprofile/main'
 require '../applets/bumblr/main'
+require '../applets/rezrov/main'
 
 app = new Marionette.Application()
 
