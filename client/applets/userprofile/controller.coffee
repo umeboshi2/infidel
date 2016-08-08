@@ -1,14 +1,36 @@
 Util = require 'agate/src/apputil'
 
 { MainController } = require 'agate/src/controllers'
+SidebarView = require 'agate/src/sidebarview'
 
 
 MainChannel = Backbone.Radio.channel 'global'
 MessageChannel = Backbone.Radio.channel 'messages'
 
+
+side_bar_data = new Backbone.Model
+  entries: [
+    {
+      name: 'Profile'
+      url: '#profile'
+    }
+    {
+      name: 'Settings'
+      url: '#profile/editconfig'
+    }
+    {
+      name: 'Change Password'
+      url: '#profile/chpassword'
+    }
+    ]
+
+
 class Controller extends MainController
+  sidebarclass: SidebarView
+  sidebar_model: side_bar_data
+  
   show_profile: ->
-    console.log 'show_profile called.'
+    @_make_sidebar()
     require.ensure [], () =>
       ViewClass = require './mainview'
       # current-user is always there when app is
@@ -21,7 +43,7 @@ class Controller extends MainController
     , 'userprofile-views'
 
   edit_config: ->
-    console.log 'edit_config called.'
+    @_make_sidebar()
     require.ensure [], () =>
       ViewClass = require './configview'
       # current-user is always there when app is
@@ -34,7 +56,7 @@ class Controller extends MainController
     , 'userprofile-views'
       
   change_password: ->
-    console.log 'change_password called.'
+    @_make_sidebar()
     require.ensure [], () =>
       ViewClass = require './chpassview'
       # current-user is always there when app is

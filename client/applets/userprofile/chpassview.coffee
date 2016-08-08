@@ -63,6 +63,8 @@ class ChangePasswordView extends BootstrapFormView
       model.set 'password', password
     @model = model
     
+  onSuccess: (model) ->
+    navigate_to_url '#profile'
 
 
 module.exports = ChangePasswordView

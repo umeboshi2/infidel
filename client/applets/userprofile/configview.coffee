@@ -49,6 +49,9 @@ class UserConfigView extends BootstrapFormView
     if changed_config
       @model.set 'config', config
 
+  onSuccess: (model) ->
+    navigate_to_url '#profile'
+    
 
 module.exports = UserConfigView
 

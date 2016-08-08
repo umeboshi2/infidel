@@ -1,20 +1,39 @@
 Backbone = require 'backbone'
 Marionette = require 'backbone.marionette'
 tc = require 'teacup'
+{ navigate_to_url } = require 'agate/src/apputil'
 
 MainChannel = Backbone.Radio.channel 'global'
 
 user_profile_template = tc.renderable (model) ->
   tc.div ->
-    tc.span "User Name: #{model.name}"
+    tc.h2 "User Name: #{model.name}"
     tc.br()
-    tc.span "Config: #{model.config}"
+    tc.h2 "Config:"
+    tc.table ->
+      for prop of model.config
+        tc.tr ->
+          tc.td ->
+            tc.h3 prop
+          tc.td ->
+            tc.span model.config[prop]
     tc.br()
-    tc.a href:"#profile/editconfig", 'Edit Config'
-    tc.a href:"#profile/chpassword", 'Edit Config'
+    tc.div '.button-group', ->
+      tc.button '#edit-userconfig', 'Edit Config'
+      tc.button '#change-password', 'Change Password'
+
     
 class UserMainView extends Backbone.Marionette.ItemView
   template: user_profile_template
+  ui:
+    edit: '#edit-userconfig'
+    chpass: '#change-password'
+  
+  events: ->
+    'click @ui.edit': -> navigate_to_url '#profile/editconfig'
+    'click @ui.chpass': -> navigate_to_url '#profile/chpassword'
+
+    
   
 
 
