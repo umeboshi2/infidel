@@ -4,10 +4,6 @@ marked = require 'marked'
 
 { modal_close_button } = require 'agate/src/templates/buttons'
   
-{ form_group_input_div } = require 'agate/src/templates/forms'
-
-
-
 { capitalize } = require 'agate/src/apputil'
 
 # Main Templates must use teacup.
