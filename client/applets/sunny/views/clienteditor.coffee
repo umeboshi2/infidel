@@ -51,9 +51,6 @@ class NewClientView extends BaseClientEditor
     SunnyChannel.request 'new-client'
 
   saveModel: ->
-    callbacks =
-      success: => @trigger 'save:form:success', @model
-      error: => @trigger 'save:form:failure', @model
     clients = SunnyChannel.request 'client-collection'
     clients.add @model
     super

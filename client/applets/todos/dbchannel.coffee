@@ -16,7 +16,7 @@ class TodoCollection extends Backbone.Collection
 
 todo_collection = new TodoCollection()
 
-make_dbchannel TodoChannel, 'todo', Todo, todo_collection
+make_dbchannel TodoChannel, 'todo', Todo, TodoCollection
 
 if __DEV__
   window.todo_collection = todo_collection

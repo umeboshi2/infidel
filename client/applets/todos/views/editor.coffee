@@ -66,9 +66,6 @@ class NewView extends BaseEditor
     TodoChannel.request 'new-todo'
 
   saveModel: ->
-    callbacks =
-      success: => @trigger 'save:form:success', @model
-      error: => @trigger 'save:form:failure', @model
     collection = TodoChannel.request 'todo-collection'
     collection.add @model
     super
@@ -81,6 +78,6 @@ class EditView extends BaseEditor
     
 module.exports =
   NewView: NewView
-  EditClientView: EditView
+  EditView: EditView
   
 

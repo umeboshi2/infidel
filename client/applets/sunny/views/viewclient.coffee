@@ -4,9 +4,10 @@ tc = require 'teacup'
 
 { navigate_to_url } = require 'agate/src/apputil'
 
-Templates = require '../templates'
-Views = require './base'
-
+client_yard_teplate = tc.renderable (model) ->
+  tc.div '.row.listview-list-entry', ->
+    tc.span model.name
+    
 client_view_template = tc.renderable (model) ->
   tc.div '.row.listview-list-entry', ->
     tc.span "Name: #{model.name}"
@@ -21,18 +22,24 @@ client_view_template = tc.renderable (model) ->
     tc.div '.listview-header', ->
       tc.span 'Yards'
       tc.button '#add-yard-btn.btn.btn-default.btn-xs.pull-right', 'Add Yard'
-    
-class ClientMainView extends Backbone.Marionette.ItemView
+  tc.div '.row', ->
+    tc.div "#client-yards"
+
+
+class ClientYardView extends Backbone.Marionette.ItemView
+  template: client_yard_teplate
+  
+class ClientMainView extends Backbone.Marionette.CompositeView
+  childView: ClientYardView
   template: client_view_template
   ui:
     addyard: '#add-yard-btn'
+    yards: '#client-yards'
   events: ->
     'click @ui.addyard': 'add_yard'
 
   add_yard: ->
     navigate_to_url "#sunny/clients/addyard/#{@model.id}"
-    
-    
     
 module.exports = ClientMainView
 

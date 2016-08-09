@@ -14,36 +14,19 @@ class ClientCollection extends Backbone.Collection
   url: url
   
 
-sunny_clients = new ClientCollection()
-
-make_dbchannel SunnyChannel, 'client', Client, sunny_clients  
-
-if __DEV__
-  window.sunny_clients = sunny_clients
-
+make_dbchannel SunnyChannel, 'client', Client, ClientCollection
+  
+url = '/api/dev/sunny/yards'
 class Yard extends Backbone.Model
-  urlRoot: '/api/dev/sunny/yards'
+  urlRoot: url
 
 class YardCollection extends Backbone.Collection
   model: Yard
-  url: '/api/dev/sunny/yards'
+  url: url
   
-
-sunny_yards = new YardCollection()
-
-make_dbchannel SunnyChannel, 'yard', Client, sunny_clients  
-
-class ClientYardCollection extends Backbone.Collection
-  model: Yard
-  url: ->
-    "/api/dev/sunny/yards?client_id=#{@client_id}"
-  
-if __DEV__
-  window.sunny_yards = sunny_yards
-
+make_dbchannel SunnyChannel, 'yard', Yard, YardCollection
 
 module.exports =
   ClientCollection: ClientCollection
   YardCollection: YardCollection
-  ClientYardCollection: ClientYardCollection
 

@@ -21,15 +21,7 @@ class DocumentCollection extends BaseCollection
   url: apipath
   model: Document
 
-app_documents = new DocumentCollection()
-ResourceChannel.reply 'app-documents', ->
-  console.warn "DEPRECATED -> use document-collection request"
-  app_documents
-  
-make_dbchannel ResourceChannel, 'document', Document, app_documents 
-
-if __DEV__
-  window.app_documents = app_documents
+make_dbchannel ResourceChannel, 'document', Document, DocumentCollection
 
 module.exports =
   DocumentCollection: DocumentCollection
