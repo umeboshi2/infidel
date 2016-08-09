@@ -39,7 +39,9 @@ sequelize.models.user.findOrCreate
 .then (user, created) ->
   return
   
-
+#sequelize.models.todo.sync
+#  force: true
+  
 db.sequelize = sequelize
 db.Sequelize = Sequelize
 module.exports = db
