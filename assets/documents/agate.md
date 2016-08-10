@@ -25,6 +25,8 @@ initial requirements are performed, such as importing the bootstrap
 javascript , as well as the modules that define handlers for the application 
 and message radio channels.
 
+#### App Model
+
 After that an Appmodel should be defined, based on the BaseAppModel in agate.  
 The appmodel contains basic structure of your application:
 
@@ -83,6 +85,13 @@ The appmodel contains basic structure of your application:
   are "content, sidebar, messages, and modal."
 
 - **routes:**  This is not being used.
+
+
+#### Prepare the App
+
+The "prepare_app" function takes a Marionette.Application object and 
+an App Model as paramaters, and uses the app model to prepare the 
+application to display views and handle events.
 
 
 
