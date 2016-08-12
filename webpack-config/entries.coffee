@@ -12,7 +12,8 @@ pages = [
 
 entries =
   vendor: vendor
-
+  agate: require './agate'
+  
 for page in pages
   entries[page] = client_entry page
 

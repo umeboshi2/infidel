@@ -8,7 +8,9 @@ UseMiddleware = false or process.env.__DEV__ is 'true'
 
 make_page_html = (name, theme) ->
   if UseMiddleware
-    manifest = {'vendor.js':'vendor.js'}
+    manifest =
+      'vendor.js': 'vendor.js'
+      'agate.js': 'agate.js'
     filename = "#{name}.js"
     manifest[filename] = filename
   else

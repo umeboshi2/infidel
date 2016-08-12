@@ -26,6 +26,10 @@ base_page = tc.renderable (appfile, manifest, theme) ->
       tc.script
         type: 'text/javascript'
         charset: 'utf-8'
+        src: "build/#{manifest['agate.js']}"
+      tc.script
+        type: 'text/javascript'
+        charset: 'utf-8'
         src: "build/#{manifest[appfile]}"
               
 

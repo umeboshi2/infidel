@@ -44,19 +44,19 @@ StatsPluginFilename =
   dev: 'stats-dev.json'
   production: 'stats.json'
 
-VendorFilename =
-  dev: 'vendor.js'
-  production: 'vendor-[chunkhash].js'
-  
-    
+MultiFilename =
+  dev: '[name].js'
+  production: '[name]-[chunkhash].js'
+
 common_plugins = [
   new webpack.DefinePlugin DefinePluginOpts[BuildEnvironment]
-  # FIXME: we probably want vendor.js for multipage sites
+  # FIXME common chunk names in reverse order
+  # https://github.com/webpack/webpack/issues/1016#issuecomment-182093533
   new webpack.optimize.CommonsChunkPlugin
-    name: 'vendor'
-    filename: VendorFilename[BuildEnvironment]
+    names: ['agate', 'vendor']
+    filename: MultiFilename[BuildEnvironment]
   new webpack.optimize.OccurenceOrderPlugin true
-  new webpack.optimize.AggressiveMergingPlugin()
+  #new webpack.optimize.AggressiveMergingPlugin()
   new StatsPlugin StatsPluginFilename[BuildEnvironment], chunkModules: true
   new ManifestPlugin()
   # This is to ignore moment locales with fullcalendar
