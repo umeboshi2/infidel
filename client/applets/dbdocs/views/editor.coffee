@@ -9,16 +9,29 @@ BootstrapFormView = require 'agate/src/bootstrap_formview'
   make_field_input_ui } = require 'agate/src/apputil'
 HasAceEditor = require 'agate/src/acebehavior'
 
-AppTemplates = require '../templates'
+tc = require 'teacup'
+{ make_field_input
+  make_field_select } = require 'agate/src/templates/forms'
 
 MainChannel = Backbone.Radio.channel 'global'
 MessageChannel = Backbone.Radio.channel 'messages'
 ResourceChannel = Backbone.Radio.channel 'resources'
 
+EditForm = tc.renderable (model) ->
+  tc.div '.listview-header', 'Document'
+  for field in ['name', 'title', 'description']
+    make_field_input(field)(model)
+  make_field_select(field, ['html', 'markdown'])(model)
+  tc.div '#ace-editor', style:'position:relative;width:100%;height:40em;'
+  tc.input '.btn.btn-default', type:'submit', value:"Submit"
+  tc.div '.spinner.fa.fa-spinner.fa-spin'
+  
+
 class BasePageEditor extends BootstrapFormView
   editorMode: 'html'
   editorContainer: 'ace-editor'
   fieldList: ['name', 'title', 'description']
+  template: EditForm
   ui: ->
     uiobject = make_field_input_ui @fieldList
     _.extend uiobject, {'editor': '#ace-editor'}
@@ -45,8 +58,6 @@ class BasePageEditor extends BootstrapFormView
     
     
 class NewPageView extends BasePageEditor
-  template: AppTemplates.NewPageForm
-
   createModel: ->
     ResourceChannel.request 'new-document'
     
@@ -56,8 +67,6 @@ class NewPageView extends BasePageEditor
     super
 
 class EditPageView extends BasePageEditor
-  template: AppTemplates.NewPageForm
-
   # the model should be assigned in the controller
   createModel: ->
     #console.log "createModel called on EditPageView", @model

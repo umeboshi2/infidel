@@ -1,5 +1,5 @@
 Templates = require 'agate/src/templates/basecrud'
-Views = require './base'
+Views = require 'agate/src/basecrudviews'
 
 class ItemView extends Views.BaseItemView
   template: Templates.base_item_template 'todo', 'todos'
