@@ -5,6 +5,9 @@ module.exports = (sequelize, DataTypes) ->
     name:
       type: DataTypes.STRING
       unique: true
+    email:
+      type: DataTypes.STRING
+      unique: true
     password:
       type: DataTypes.STRING
       set: (value) ->
@@ -20,5 +23,3 @@ module.exports = (sequelize, DataTypes) ->
       set: (value) ->
         @setDataValue 'config', JSON.stringify(value)
 
-    set_password: (password) ->
-      
