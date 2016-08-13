@@ -56,7 +56,7 @@ common_plugins = [
     names: ['agate', 'vendor']
     filename: MultiFilename[BuildEnvironment]
   new webpack.optimize.OccurenceOrderPlugin true
-  #new webpack.optimize.AggressiveMergingPlugin()
+  new webpack.optimize.AggressiveMergingPlugin()
   new StatsPlugin StatsPluginFilename[BuildEnvironment], chunkModules: true
   new ManifestPlugin()
   # This is to ignore moment locales with fullcalendar
