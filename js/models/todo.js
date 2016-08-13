@@ -1,1 +1,0 @@
-module.exports=function(e,t){return e.define("todo",{name:{type:t.STRING},description:{type:t.TEXT},completed:{type:t.BOOLEAN}})};

@@ -1,1 +1,0 @@
-module.exports=function(e,n){return e.define("client",{name:{type:n.STRING,unique:!0},fullname:{type:n.TEXT},description:{type:n.TEXT}})};

@@ -1,1 +1,0 @@
-"use strict";module.exports=function(e,o){var s;return s=e.define("Task",{title:o.STRING},{classMethods:{associate:function(e){s.belongsTo(e.User,{onDelete:"CASCADE",foreignKey:{allowNull:!1}})}}})};

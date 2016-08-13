@@ -1,1 +1,0 @@
-module.exports={development:{apipath:"/api/dev",dialect:"sqlite",storage:"./sunny.sqlite",omitNull:!0},production:{apipath:"/api/dev",dialect:"sqlite",storage:process.env.OPENSHIFT_DATA_DIR+"sunny.sqlite",omitNull:!0}};
