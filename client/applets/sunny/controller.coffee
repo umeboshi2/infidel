@@ -9,12 +9,6 @@ SunnyChannel = Backbone.Radio.channel 'sunny'
 
 
 class Controller extends MainController
-  _get_doc_and_render_view: (viewclass) ->
-    @_make_editbar()
-    view = new viewclass
-      model: @root_doc
-    @_show_content view
-
   clients: SunnyChannel.request 'client-collection'
   
   list_clients: () ->
@@ -28,21 +22,21 @@ class Controller extends MainController
       response.fail =>
         MessageChannel.request 'danger', "Failed to load clients."
     # name the chunk
-    , 'sunny-views'
+    , 'sunny-view-list-clients'
 
   new_client: () ->
     require.ensure [], () =>
       { NewClientView } = require './views/clienteditor'
       @_show_content new NewClientView
     # name the chunk
-    , 'sunny-views'
+    , 'sunny-view-new-client'
       
   add_yard: (client_id) ->
     require.ensure [], () =>
       { NewYardView } = require './views/yardeditor'
       @_show_content new NewYardView
     # name the chunk
-    , 'sunny-views'
+    , 'sunny-view-add-yard'
       
 
   _show_edit_client: (vclass, model) ->
@@ -63,7 +57,7 @@ class Controller extends MainController
         response.fail =>
           MessageChannel.request 'danger', "Failed to load client data."
     # name the chunk
-    , 'sunny-views'
+    , 'sunny-view-edit-client'
       
       
   view_client: (id) ->
@@ -71,15 +65,23 @@ class Controller extends MainController
       ClientMainView = require './views/viewclient'
       model = SunnyChannel.request 'get-client', id
       if model.has 'name'
-        @_show_edit_client ClientMainView, model
+        @_show_view ClientMainView, model
       else
         response = model.fetch()
         response.done =>
-          @_show_edit_client ClientMainView, model
+          #@_show_edit_client ClientMainView, model
+          yards = SunnyChannel.request 'yard-collection'
+          yresponse = yards.fetch
+            data:
+              client_id: model.id
+          yresponse.done =>
+            @_show_view ClientMainView, model
+          yresponse.fail =>
+            MessageChannel.request 'danger', 'Failed to load yards.'
         response.fail =>
           MessageChannel.request 'danger', "Failed to load client data."
     # name the chunk
-    , 'sunny-views'
+    , 'sunny-view-client-view'
       
       
 module.exports = Controller

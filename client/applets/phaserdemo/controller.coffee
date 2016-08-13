@@ -11,7 +11,7 @@ class Controller extends MainController
       view = new PhaserView()
       @_show_content view
     # name the chunk
-    , 'phaser-views'
+    , 'phaser-view-resource'
     
   mainview: ->
     @_view_resource()

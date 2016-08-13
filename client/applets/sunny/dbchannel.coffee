@@ -1,6 +1,5 @@
 Backbone = require 'backbone'
 
-{ BaseCollection } = require 'agate/src/collections'
 { make_dbchannel } = require 'agate/src/basecrudchannel'
 
 SunnyChannel = Backbone.Radio.channel 'sunny'

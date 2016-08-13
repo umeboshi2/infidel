@@ -17,10 +17,6 @@ user_profile_template = tc.renderable (model) ->
             tc.h3 prop
           tc.td ->
             tc.span model.config[prop]
-    tc.br()
-    tc.div '.button-group', ->
-      tc.button '#edit-userconfig', 'Edit Config'
-      tc.button '#change-password', 'Change Password'
 
     
 class UserMainView extends Backbone.Marionette.ItemView

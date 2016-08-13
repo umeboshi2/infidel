@@ -11,6 +11,7 @@ class Router extends BootStrapAppRouter
     'profile': 'show_profile'
     'profile/editconfig': 'edit_config'
     'profile/chpassword': 'change_password'
+    'profile/mapview': 'view_map'
     
 MainChannel.reply 'applet:userprofile:route', () ->
   controller = new Controller MainChannel

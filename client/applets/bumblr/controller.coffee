@@ -44,7 +44,7 @@ class Controller extends MainController
       sidebar.empty()
     @set_header 'Bumblr'
     @list_blogs()
-    
+
   show_mainview: () ->
     @_make_sidebar()
     view = new MiscViews.MainBumblrView
@@ -69,7 +69,7 @@ class Controller extends MainController
         collection: blogs
       @_show_content view
     # name the chunk
-    , 'bumblr-views'
+    , 'bumblr-view-list-blogs'
     
   view_blog: (blog_id) ->
     #console.log 'view blog called for ' + blog_id
@@ -85,7 +85,7 @@ class Controller extends MainController
         @_show_content view
         Util.scroll_top_fast()
     # name the chunk
-    , 'bumblr-views'
+    , 'bumblr-view-blog-view'
     
   add_new_blog: () ->
     #console.log 'add_new_blog called'
@@ -96,7 +96,7 @@ class Controller extends MainController
       @_show_content view
       Util.scroll_top_fast()
     # name the chunk
-    , 'bumblr-views'
+    , 'bumblr-view-add-blog'
     
           
   settings_page: () ->
@@ -109,7 +109,7 @@ class Controller extends MainController
       @_show_content view
       Util.scroll_top_fast()
     # name the chunk
-    , 'bumblr-views'
+    , 'bumblr-view-settings'
     
 module.exports = Controller
 

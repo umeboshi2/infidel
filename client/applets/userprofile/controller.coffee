@@ -15,6 +15,10 @@ side_bar_data = new Backbone.Model
       url: '#profile'
     }
     {
+      name: 'Map'
+      url: '#profile/mapview'
+    }
+    {
       name: 'Settings'
       url: '#profile/editconfig'
     }
@@ -40,7 +44,20 @@ class Controller extends MainController
         model: user
       @_show_content view
     # name the chunk
-    , 'userprofile-views'
+    , 'userprofile-view-show-profile'
+
+  view_map: ->
+    @_make_sidebar()
+    require.ensure [], () =>
+      ViewClass = require './mapview'
+      # current-user is always there when app is
+      # running
+      user = MainChannel.request 'current-user'
+      view = new ViewClass
+        model: user
+      @_show_content view
+    # name the chunk
+    , 'userprofile-view-map-view'
 
   edit_config: ->
     @_make_sidebar()
@@ -53,7 +70,7 @@ class Controller extends MainController
         model: user
       @_show_content view
     # name the chunk
-    , 'userprofile-views'
+    , 'userprofile-view-edit-config'
       
   change_password: ->
     @_make_sidebar()
@@ -66,7 +83,7 @@ class Controller extends MainController
         model: user
       @_show_content view
     # name the chunk
-    , 'userprofile-views'
+    , 'userprofile-view-chpasswd'
       
       
 module.exports = Controller
