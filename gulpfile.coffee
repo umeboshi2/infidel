@@ -40,11 +40,15 @@ gulp.task 'coffee', () ->
   #.pipe size()
   .pipe gulp.dest './js'
 
-gulp.task 'serve', ['coffee'], () ->
+gulp.task 'serve', (callback) ->
   process.env.__DEV__ = 'true'
   nodemon
-    script: 'js/main.js'
-    watch: 'js/**/*.js'
+    script: 'server.js'
+    watch: [
+      'src/**/*.coffee'
+      'webpack-config/**/*.coffee'
+      'webpack.config.coffee'
+      ]
   
 gulp.task 'indexpage', (callback) ->
   manifest = {'app.js':'app.js'}
@@ -56,7 +60,7 @@ gulp.task 'indexpage', (callback) ->
   fs.writeFileSync 'index-dev.html', beautify index
   console.log "Created new index-dev.html"
 
-gulp.task 'webpack:build-prod', ['compass'], (callback) ->
+gulp.task 'webpack:build-prod', (callback) ->
   # run webpack
   process.env.PRODUCTION_BUILD = 'true'
   ProdConfig = require './webpack.config'
