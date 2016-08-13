@@ -3,8 +3,8 @@ beautify = require('js-beautify').html
 pages = require './templates'
 webpackManifest = require '../../build/manifest.json'
 
-# FIXME require this
-UseMiddleware = false or process.env.__DEV__ is 'true'
+# FIXME require this  
+UseMiddleware = false or process.env.__DEV_MIDDLEWARE__ is 'true'
 
 make_page_html = (name, theme) ->
   if UseMiddleware

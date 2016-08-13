@@ -6,6 +6,7 @@ expressSession = require 'express-session'
 morgan = require 'morgan'
 httpsRedirect = require 'express-https-redirect'
 
+env = process.env.NODE_ENV or 'development'
 
 setup = (app) ->
   # logging
@@ -14,7 +15,7 @@ setup = (app) ->
   # parsing
   app.use cookieParser()
   app.use bodyParser.json()
-  app.use bodyParser.urlencoded({ extended: false })
+  app.use bodyParser.urlencoded({ extended: true })
 
   # session handling
   app.use expressSession
@@ -23,7 +24,8 @@ setup = (app) ->
     saveUninitialized: false
 
   # redirect to https
-  if '__DEV__' of process.env and process.env.__DEV__ is 'true'
+  #if '__DEV__' of process.env and process.env.__DEV__ is 'true'
+  if env is 'development'
     console.log 'skipping httpsRedirect'
   else
     app.use '/', httpsRedirect()

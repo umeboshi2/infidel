@@ -6,11 +6,12 @@ gulp = require 'gulp'
 gutil = require 'gulp-util'
 size = require 'gulp-size'
 compass = require 'gulp-compass'
-coffee = require 'gulp-coffee'
 nodemon = require 'gulp-nodemon'
+
+coffee = require 'gulp-coffee'
 #runSequence = require 'run-sequence'
-concat = require 'gulp-concat'
-uglify = require 'gulp-uglify'
+#concat = require 'gulp-concat'
+#uglify = require 'gulp-uglify'
 
 webpack = require 'webpack'
 tc = require 'teacup'
@@ -26,6 +27,7 @@ gulp.task 'compass', () ->
   .pipe size()
   .pipe gulp.dest 'assets/stylesheets'
 
+
 gulp.task 'coffee', () ->
   gulp.src('./src/**/*.coffee')
   .pipe coffee
@@ -33,33 +35,37 @@ gulp.task 'coffee', () ->
   .on 'error', gutil.log
   .pipe size
     showFiles: true
-  .pipe uglify()
-  .pipe size
-    showFiles: true
-  #.pipe concat 'main.js'
-  #.pipe size()
   .pipe gulp.dest './js'
 
-gulp.task 'serve', (callback) ->
-  process.env.__DEV__ = 'true'
+gulp.task 'ghost-config', () ->
+  gulp.src('./config.coffee')
+  .pipe coffee
+    bare: true
+  .on 'error', gutil.log
+  .pipe size
+    showFiles: true
+  .pipe gulp.dest './'
+
+gulp.task 'serve', ['ghost-config'], (callback) ->
+  process.env.__DEV_MIDDLEWARE__ = 'true'
   nodemon
     script: 'server.js'
     watch: [
-      'src/**/*.coffee'
-      'webpack-config/**/*.coffee'
+      'src'
+      'webpack-config'
       'webpack.config.coffee'
       ]
   
-gulp.task 'indexpage', (callback) ->
-  manifest = {'app.js':'app.js'}
-  theme = css_theme
-  pages = require './src/pages'
-  beautify = require('js-beautify').html
-  #console.log "page", page manifest
-  index = pages.index manifest, theme
-  fs.writeFileSync 'index-dev.html', beautify index
-  console.log "Created new index-dev.html"
-
+gulp.task 'serve:prod', (callback) ->
+  process.env.__DEV_MIDDLEWARE__ = 'false'
+  nodemon
+    script: 'server.js'
+    watch: [
+      'src/'
+      'webpack-config/'
+      'webpack.config.coffee'
+      ]
+  
 gulp.task 'webpack:build-prod', (callback) ->
   # run webpack
   process.env.PRODUCTION_BUILD = 'true'
@@ -73,14 +79,8 @@ gulp.task 'webpack:build-prod', (callback) ->
   return
 
 gulp.task 'default', ->
-  gulp.start 'coffee'
+  gulp.start 'serve'
   
-gulp.task 'watch', ['coffee', 'serve'], ->
-  process.env.__DEV__ = 'true'
-  gulp.watch ['./src/**/*.coffee'], ['coffee']
-  
-
 gulp.task 'production', ->
   gulp.start 'compass'
-  gulp.start 'coffee'
   gulp.start 'webpack:build-prod'

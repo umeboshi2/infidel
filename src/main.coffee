@@ -16,11 +16,11 @@ pages = require './pages'
 webpackManifest = require '../build/manifest.json'
 
 sql = db.sequelize
-UseMiddleware = false or process.env.__DEV__ is 'true'
+UseMiddleware = false or process.env.__DEV_MIDDLEWARE__ is 'true'
 PORT = process.env.NODE_PORT or 8081
 HOST = process.env.NODE_IP or os.hostname()
 
-# create express app
+# create express app 
 app = express()
 auth = UserAuth.auth
 
@@ -37,7 +37,7 @@ app.get '/health', (req, res, next) ->
 
 app.use '/assets', express.static(path.join __dirname, '../assets')
 if UseMiddleware
-  require 'coffee-script/register'
+  #require 'coffee-script/register'
   webpack = require 'webpack'
   middleware = require 'webpack-dev-middleware'
   config = require '../webpack.config'
@@ -53,6 +53,15 @@ else
   app.use '/build', gzipStatic(path.join __dirname, '../build')
 
 
+
+auth = (req, res, next) ->
+  if req.isAuthenticated()
+    console.log req
+    next()
+  else
+    res.redirect '/#frontdoor/login'
+    
+
 app.get '/', pages.make_page 'index'
 app.get '/sunny', auth, pages.make_page 'sunny'
 
@@ -63,14 +72,34 @@ admin_auth = (req, res, next) ->
     res.sendStatus(403)
     
 app.get '/admin', auth, admin_auth, pages.make_page 'admin'
+
+ghost = require './ghost-middleware'
+ghostOptions =
+  config: path.join __dirname, '..', 'config.js'
+
+app.use '/blog', ghost ghostOptions
       
 
 
 server = http.createServer app
-
-
 sql.sync()
   .then ->
     server.listen PORT, HOST, -> 
       console.log "Server running on #{HOST}:#{PORT}."
+  
+module.exports =
+  app: app
+  ghost: ghost
+  server: server
+  
+#sql.sync()
+#.then ->
+#  ghost ghostOptions
+#  .then (ghostServer) ->
+#    app.use ghostServer.config.paths.subdir, ghostServer.rootApp
+#    ghostServer.start app
+#    .then ->
+#      server = http.createServer app
+#      server.listen PORT, HOST, -> 
+#      console.log "Server running on #{HOST}:#{PORT}."
   
