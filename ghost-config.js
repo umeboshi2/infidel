@@ -1,17 +1,21 @@
-var config, path;
+var config, devUrl, os, path;
 
 path = require('path');
+
+os = require('os');
+
+devUrl = "http://localhost:8081/blog";
 
 config = void 0;
 
 config = {
   production: {
-    url: 'http://my-ghost-blog.com',
+    url: 'http://my-ghost-blog.com/blog',
     mail: {},
     database: {
       client: 'sqlite3',
       connection: {
-        filename: path.join(__dirname, '/content/data/ghost.db')
+        filename: process.env.OPENSHIFT_DATA_DIR + "sunny.sqlite"
       },
       debug: false
     },
@@ -21,11 +25,11 @@ config = {
     }
   },
   development: {
-    url: 'http://localhost:8081/blog',
+    url: devUrl,
     database: {
       client: 'sqlite3',
       connection: {
-        filename: path.join(__dirname, '/content/data/ghost-dev.db')
+        filename: path.join(__dirname, '/sunny.sqlite')
       },
       debug: false
     },

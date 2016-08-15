@@ -12,14 +12,15 @@ makeGhostMiddleware = (options) ->
   ghost(options).then (ghost) ->
     app = ghost.rootApp
     processBuffer requestBuffer, app
-    handleRequest = (req, res) ->
-      if !app
-        requestBuffer.unshift [
-          req
-          res
-        ]
-      else
-        app req, res
-    handleRequest
+    return
+  (req, res) ->
+    if !app
+      requestBuffer.unshift [
+        req
+        res
+      ]
+    else
+      app req, res
+    return
 
 module.exports = makeGhostMiddleware

@@ -38,7 +38,7 @@ gulp.task 'coffee', () ->
   .pipe gulp.dest './js'
 
 gulp.task 'ghost-config', () ->
-  gulp.src('./config.coffee')
+  gulp.src('./ghost-config.coffee')
   .pipe coffee
     bare: true
   .on 'error', gutil.log
@@ -48,20 +48,28 @@ gulp.task 'ghost-config', () ->
 
 gulp.task 'serve', ['ghost-config'], (callback) ->
   process.env.__DEV_MIDDLEWARE__ = 'true'
+  gulp.watch './ghost-config.coffee', ->
+    gulp.start 'ghost-config'
   nodemon
     script: 'server.js'
+    ext: 'js coffee'
     watch: [
       'src'
+      'ghost-config.js'
       'webpack-config'
       'webpack.config.coffee'
       ]
   
-gulp.task 'serve:prod', (callback) ->
+gulp.task 'serve:prod', ['ghost-config'], (callback) ->
   process.env.__DEV_MIDDLEWARE__ = 'false'
+  gulp.watch './ghost-config.coffee', ->
+    gulp.start 'ghost-config'
   nodemon
     script: 'server.js'
+    ext: 'js coffee'
     watch: [
       'src/'
+      'ghost-config.js'
       'webpack-config/'
       'webpack.config.coffee'
       ]

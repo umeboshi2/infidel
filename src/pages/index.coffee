@@ -32,7 +32,8 @@ write_page = (page, res, next) ->
 make_page = (name) ->
   (req, res, next) ->
     # FIXME make a site config
-    theme = 'custom'
+    theme = 'cornsilk'
+    console.log 'request', req
     if req.isAuthenticated()
       config = req.user.config
       theme = config.theme

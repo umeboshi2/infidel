@@ -1,12 +1,13 @@
+ghost_config = require '../ghost-config'
+
 module.exports =
   development:
     apipath: '/api/dev'
     dialect: 'sqlite'
-    storage: './sunny.sqlite'
+    storage: "#{ghost_config.development.database.connection.filename}-extra"
     omitNull: true
   production:
     apipath: '/api/dev'
     dialect: 'sqlite'
-    # trailing slash on OPENSHIFT_DATA_DIR
-    storage: "#{process.env.OPENSHIFT_DATA_DIR}sunny.sqlite"
+    storage: "#{ghost_config.production.database.connection.filename}-extra"
     omitNull: true

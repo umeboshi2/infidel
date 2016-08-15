@@ -7,28 +7,41 @@ gzipStatic = require 'connect-gzip-static'
 # FIXME start using this
 ensureLogin = require 'connect-ensure-login'
 
+passport = require 'passport'
+ClientPasswordStrategy  = require('passport-oauth2-client-password').Strategy
+BearerStrategy = require('passport-http-bearer').Strategy
+
 Middleware = require './middleware'
-UserAuth = require './userauth'
-ApiRoutes = require './apiroutes'
-db = require './models'
+#UserAuth = require './userauth'
 pages = require './pages'
 
 webpackManifest = require '../build/manifest.json'
 
-sql = db.sequelize
 UseMiddleware = false or process.env.__DEV_MIDDLEWARE__ is 'true'
 PORT = process.env.NODE_PORT or 8081
-HOST = process.env.NODE_IP or os.hostname()
+HOST = process.env.NODE_IP or 'localhost'
 
 # create express app 
 app = express()
-auth = UserAuth.auth
 
-#app.use express.favicon()
+ghost = require './ghost-middleware'
+ghostOptions =
+  config: path.join __dirname, '..', 'ghost-config.js'
+
+ghost_middleware = ghost ghostOptions
+console.log "ghost_middleware", ghost_middleware
+app.use '/blog', ghost_middleware
+db = require './models'
+sql = db.sequelize
 
 Middleware.setup app
-UserAuth.setup app
+  
+ApiRoutes = require './apiroutes'
 ApiRoutes.setup app
+
+
+# FIXME
+# make a bearer strategy similar to ghost strategy
 
   
 # health url required for openshift
@@ -73,11 +86,6 @@ admin_auth = (req, res, next) ->
     
 app.get '/admin', auth, admin_auth, pages.make_page 'admin'
 
-ghost = require './ghost-middleware'
-ghostOptions =
-  config: path.join __dirname, '..', 'config.js'
-
-app.use '/blog', ghost ghostOptions
       
 
 
