@@ -1,11 +1,13 @@
 tc = require 'teacup'
 
-base_page = tc.renderable (appfile, manifest, theme) ->
+base_page = tc.renderable (appfile, manifest, theme, clients) ->
   tc.doctype()
   tc.html xmlns:'http://www.w3.org/1999/xhtml', ->
     tc.head ->
       tc.meta charset:'utf-8'
       tc.meta name:'viewport', content:"width=device-width, initial-scale=1"
+      tc.meta name:'client-id', value:'ghost-admin'
+      tc.meta name:'client-secret', value:clients['ghost-admin']
       tc.link rel:'stylesheet', type:'text/css',
       href:"assets/stylesheets/font-awesome.css"
       tc.link rel:'stylesheet', type:'text/css',
@@ -33,12 +35,12 @@ base_page = tc.renderable (appfile, manifest, theme) ->
         src: "build/#{manifest[appfile]}"
               
 
-index = (manifest, theme) ->
-  base_page 'index.js', manifest, theme
-sunny = (manifest, theme) ->
-  base_page 'sunny.js', manifest, theme
-admin = (manifest, theme) ->
-  base_page 'admin.js', manifest, theme
+index = (manifest, theme, clients) ->
+  base_page 'index.js', manifest, theme, clients
+sunny = (manifest, theme, clients) ->
+  base_page 'sunny.js', manifest, theme, clients
+admin = (manifest, theme, clients) ->
+  base_page 'admin.js', manifest, theme, clients
   
 module.exports =
   index: index

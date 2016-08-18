@@ -24,12 +24,24 @@ HOST = process.env.NODE_IP or 'localhost'
 # create express app 
 app = express()
 
+# FIXME
+kdb = require './kmodels'
+
+# FIXME use express template render
+#app.set "views", "./views"
+#app.set 'view_engine', 'teacup/lib/express'
+ 
+#app.configure ->
+#  app.engine "coffee", tc.renderFile
+
+
 ghost = require './ghost-middleware'
 ghostOptions =
   config: path.join __dirname, '..', 'ghost-config.js'
 
 ghost_middleware = ghost ghostOptions
 console.log "ghost_middleware", ghost_middleware
+
 app.use '/blog', ghost_middleware
 db = require './models'
 sql = db.sequelize
@@ -97,7 +109,7 @@ sql.sync()
   
 module.exports =
   app: app
-  ghost: ghost
+  kdb: kdb
   server: server
   
 #sql.sync()
