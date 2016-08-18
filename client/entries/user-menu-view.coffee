@@ -47,7 +47,7 @@ user_menu = tc.renderable (user) ->
                 href = '#'
               tc.a href:href, 'Administer Site'
           tc.li ->
-            tc.a href:'/logout', 'Logout'
+            tc.a href:'/blog/ghost/logout', 'Logout'
 
 
 class UserMenuView extends Backbone.Marionette.ItemView
