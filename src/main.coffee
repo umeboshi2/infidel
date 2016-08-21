@@ -17,6 +17,10 @@ pages = require './pages'
 
 webpackManifest = require '../build/manifest.json'
 
+# Set the default environment to be `development`
+# this needs to be set before booting ghost
+process.env.NODE_ENV = process.env.NODE_ENV || 'development'
+
 UseMiddleware = false or process.env.__DEV_MIDDLEWARE__ is 'true'
 PORT = process.env.NODE_PORT or 8081
 HOST = process.env.NODE_IP or 'localhost'

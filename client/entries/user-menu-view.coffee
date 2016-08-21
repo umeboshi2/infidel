@@ -20,7 +20,8 @@ user_menu = tc.renderable (user) ->
           tc.a href:'/blog', 'Blog'
         if name == undefined
           tc.li ->
-            tc.a href:'/blog/ghost/signin', 'login'
+            #tc.a href:'/blog/ghost/signin', 'login'
+            tc.a href:'/#frontdoor/login', 'login'
         else
           tc.li ->
             tc.a href:'#profile', 'Profile Page'
@@ -28,18 +29,14 @@ user_menu = tc.renderable (user) ->
           # to populate this menu with 'admin' link
           # FIXME use "?." to help here
           admin = false
-          unless name == undefined
-            groups = user.groups
-            if groups != undefined
-              for g in groups
-                if g.name == 'admin'
-                  admin = true
-          # FIXME I don't like using username
           for role in user.roles
             if role.name is 'Owner'
               admin = true
               break
           if admin
+            tc.li ->
+              href = '/blog/ghost'
+              tc.a href:href, 'Administer Blog'
             tc.li ->
               href = '/admin'
               pathname = window.location.pathname
@@ -47,7 +44,7 @@ user_menu = tc.renderable (user) ->
                 href = '#'
               tc.a href:href, 'Administer Site'
           tc.li ->
-            tc.a href:'/blog/ghost/logout', 'Logout'
+            tc.a href:'/blog/logout', 'Logout'
 
 
 class UserMenuView extends Backbone.Marionette.ItemView

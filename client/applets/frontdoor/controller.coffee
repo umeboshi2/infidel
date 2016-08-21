@@ -18,6 +18,14 @@ class Controller extends MainController
     # name the chunk
     , 'frontdoor-main-view'
     
+
+  _view_login: ->
+    require.ensure [], () =>
+      LoginView = require './loginview'
+      view = new LoginView
+      @_show_content view
+    # name the chunk
+    , 'frontdoor-login-view'
     
   view_page: (name) ->
     doc = DocChannel.request 'get-document', name
@@ -36,9 +44,7 @@ class Controller extends MainController
       @show_login()
       
   show_login: ->
-    view = new Backbone.Marionette.ItemView
-      template: login_form
-    @_show_content view
+    @_view_login()
     
   frontdoor_hasuser: (user) ->
     @default_view()

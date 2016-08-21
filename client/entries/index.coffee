@@ -30,7 +30,8 @@ MainChannel.reply 'main:app:appmodel', ->
 
 ######################
 # require applets
-require 'agate/src/applets/frontdoor/main'
+#require 'agate/src/applets/frontdoor/main'
+require '../applets/frontdoor/main'
 require '../applets/userprofile/main'
 require '../applets/bumblr/main'
 

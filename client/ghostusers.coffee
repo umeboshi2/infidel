@@ -2,27 +2,33 @@ $ = require 'jquery'
 Backbone = require 'backbone'
 { navigate_to_url } = require 'agate/src/apputil'
 
+GhostAuth = require './ghostauth'
+
+
 MainChannel = Backbone.Radio.channel 'global'
 MessageChannel = Backbone.Radio.channel 'messages'
 
-get_blog_session = ->
-  JSON.parse localStorage.getItem 'ghost-blog:session'
+############################################
+# FIXME adjust original auth/refresh policy
+############################################
+# get the blog_session from local storage
+# look at the time left on the key
+# if it is less than 15min (or something) then
+# make a refresh token request
+# otherwise, set a timer for that 15min to
+# make the post request to get another token
+# and store the results in local storage
 
-get_refresh_token = ->
-  s = get_blog_session()
-  s.authenticated.refresh_token
+# If it is still time for a refresh, do the
+# refresh request, store the new tokens, then
+# start the pate
+#
+# If there is no time left for the token,
+# either display the page, or redirect to
+# login.
+# 
+############################################
 
-  
-class AuthToken extends Backbone.Model
-  url: '/blog/ghost/api/v0.1/authentication/token'
-
-  refresh_token: ->
-    @set 'grant_type', 'refresh_token'
-    @set 'refresh_token', get_refresh_token()
-    @set 'client_id', $('meta[name="client-id"]').attr('value')
-    @set 'client_secret', $('meta[name="client-id"]').attr('value')
-    
-    
 ghostusers_url = '/blog/ghost/api/v0.1/users/me?include=roles&status=all'
 class GhostUser extends Backbone.Model
   url: ghostusers_url
@@ -35,47 +41,63 @@ ghost_user = new GhostUser
 MainChannel.reply 'current-user', ->
   ghost_user
 
-send_auth_header = (xhr) ->
-  # retrieve from local storage on each request
-  # to ensure current token
-  s = get_blog_session().authenticated
-  console.log 'get_blog_session', s
-  value = "#{s.token_type} #{s.access_token}"
-  console.log "auth value is", value
-  xhr.setRequestHeader "Authorization", value
-  
-start_with_user = (app, url=ghostusers_url) ->
-  # get the blog_session from local storage
-  # look at the time left on the key
-  # if it is less than 15min (or something) then
-  # make a refresh token request
-  # otherwise, set a timer for that 15min to
-  # make the post request to get another token
-  # and store the results in local storage
 
-  # If it is still time for a refresh, do the
-  # refresh request, store the new tokens, then
-  # start the pate
-  #
-  # If there is no time left for the token,
-  # either display the page, or redirect to
-  # login.
-  # 
+auth = new GhostAuth
+MainChannel.reply 'main:app:ghostauth', ->
+  auth
   
-  # fetch the authenticated user before starting the app
-  #user = MainChannel.request 'create-current-user-object', url
-  blog_session = get_blog_session()
-  console.log 'blog_session', blog_session
-  if blog_session and blog_session.authenticated
+start_with_user = (app) ->
+  console.log 'start_with_user'
+  console.log 'auth', auth
+  if auth.isAuthenticated()
+    auth.triggerRefresh()
+    # fetch the authenticated user before starting the app
     user = MainChannel.request 'current-user'
+    # FIXME add auth to models (or sendAuthHeader)
     response = user.fetch
-      beforeSend: send_auth_header
+      beforeSend: auth.sendAuthHeader
     response.done =>
       app.start()
     response.fail =>
+      # FIXME make better failure response
       console.log "Response failed", response
-      # FIXME do we ask for refresh?
-      #navigate_to_url '/blog/ghost/signin'
+  # check is session.authenticated is {}    
+  else if not Object.keys(auth.state).length
+    app.start()
+  # FIXME 
+  else if not auth.state.expires_in
+    app.start()
+  else if auth.expiresIn() <= 0
+    time = auth.getTime()
+    #auth.triggerRefresh()
+    console.log 'auth.refresh', auth.state
+    res = auth.refresh()
+    console.log 'res', res
+    res.done =>
+      data = res.responseJSON
+      data.time = time
+      auth.save res.responseJSON
+      auth.triggerRefresh()
+      user = MainChannel.request 'current-user'
+      ures = user.fetch
+        beforeSend: auth.sendAuthHeader
+      ures.done =>
+        app.start()
+        
+    #res.then =>
+    #  res.success res.responseJSON
+    #  console.log 'res.done', auth.state, res
+    #  user = MainChannel.request 'current-user'
+    #  ures = user.fetch
+    #    beforeSend: auth.sendAuthHeader
+    #  ures.done =>
+    #    app.start()
+    #  ures.fail =>
+    #    console.error 'Response failed', ures
+    #res.error =>
+    #  app.start()
+    #  MessageChannel.request 'warn', 'Failed to authenticate.'
+      
       
 
 module.exports =

@@ -1,4 +1,4 @@
-ghost = require('ghost')
+ghost = require('./bootghost')
 
 processBuffer = (buffer, app) ->
   while buffer.length
@@ -9,7 +9,7 @@ processBuffer = (buffer, app) ->
 makeGhostMiddleware = (options) ->
   requestBuffer = []
   app = false
-  ghost(options).then (ghost) ->
+  ghost.init(options).then (ghost) ->
     app = ghost.rootApp
     processBuffer requestBuffer, app
     return
