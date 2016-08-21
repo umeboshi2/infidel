@@ -5,10 +5,13 @@ require 'radio-shim'
   
 require 'bootstrap'
 
-Views = require 'agate/src/views'
+UserMenuView = require './user-menu-view'
+
 initialize_page = require 'agate/src/app-initpage'
 
-require 'agate/src/users'
+#require 'agate/src/users'
+{ start_with_user } = require '../ghostusers'
+
 require 'agate/src/clipboard'
 require 'agate/src/messages'
 require '../static-documents'
@@ -49,21 +52,14 @@ MainChannel.on 'appregion:navbar:displayed', ->
   # current user should already be fetched before
   # any view is shown
   user = MainChannel.request 'current-user'
-  view = new Views.UserMenuView
+  view = new UserMenuView
     model: user
   usermenu = MainChannel.request 'main:app:get-region', 'usermenu'
   usermenu.show view
-    
-start_with_user = (app, url='/api/dev/current-user') ->
-  # fetch the authenticated user before starting the app
-  user = MainChannel.request 'create-current-user-object', url
-  response = user.fetch()
-  response.done =>
-    app.start()
-  response.fail =>
-    MessageChannel.request 'danger', 'Get current user failed!'
+
+  
+
 
 module.exports =
   start_with_user: start_with_user
-
-
+  

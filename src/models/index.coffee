@@ -9,7 +9,7 @@ sequelize = new Sequelize(config.database, config.username, config.password, con
 db = {}
 
 # import models
-sequelize.import './user'
+sequelize.import './userconfig'
 sequelize.import './document'
 sequelize.import './todo'
 sequelize.import './client'
@@ -26,18 +26,18 @@ sequelize.import './yard'
 #  return
 
 # FIXME get this from config
-sequelize.models.user.findOrCreate
-  where:
-    name: 'admin'
-  defaults:
-    password: 'admin'
-    config:
-      theme: 'BlanchedAlmond'
-      foo: 'bar'
-      cat: 'dog'
-      
-.then (user, created) ->
-  return
+#sequelize.models.user.findOrCreate
+#  where:
+#    name: 'admin'
+#  defaults:
+#    password: 'admin'
+#    config:
+#      theme: 'BlanchedAlmond'
+#      foo: 'bar'
+#      cat: 'dog'
+#      
+#.then (user, created) ->
+#  return
   
 #sequelize.models.todo.sync
 #  force: true

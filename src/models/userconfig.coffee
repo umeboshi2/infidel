@@ -1,18 +1,7 @@
-bcrypt = require 'bcryptjs'
-
 module.exports = (sequelize, DataTypes) ->
-  sequelize.define 'user',
-    name:
-      type: DataTypes.STRING
-      unique: true
-    email:
-      type: DataTypes.STRING
-      unique: true
-    password:
-      type: DataTypes.STRING
-      set: (value) ->
-        salt_rounds = 10
-        @setDataValue 'password', bcrypt.hashSync(value, salt_rounds)
+  sequelize.define 'userconfig',
+    user_id:
+      type: DataTypes.INTEGER
     config:
       # FIXME
       # this should be json on postgresql
