@@ -1,0 +1,22 @@
+Backbone = require 'backbone'
+Marionette = require 'backbone.marionette'
+tc = require 'teacup'
+
+{ navigate_to_url } = require 'agate/src/apputil'
+
+view_template = tc.renderable (model) ->
+  tc.div '.row.listview-list-entry', ->
+    tc.span "Name: #{model.name}"
+    tc.br()
+    tc.span "Full Name: #{model.fullname}"
+    tc.br()
+    tc.span "Description"
+    tc.br()
+    tc.div model.description
+    tc.span ".glyphicon.glyphicon-grain"
+    
+class MainView extends Backbone.Marionette.ItemView
+  template: view_template
+    
+module.exports = MainView
+
