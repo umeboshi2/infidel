@@ -90,5 +90,6 @@ gulp.task 'default', ->
   gulp.start 'serve'
   
 gulp.task 'production', ->
+  gulp.start 'ghost-config'
   gulp.start 'compass'
   gulp.start 'webpack:build-prod'

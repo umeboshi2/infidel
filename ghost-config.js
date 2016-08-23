@@ -10,7 +10,7 @@ config = void 0;
 
 config = {
   production: {
-    url: 'http://my-ghost-blog.com/blog',
+    url: 'https://infidel-frobozz.rhcloud.com/blog',
     mail: {},
     database: {
       client: 'sqlite3',

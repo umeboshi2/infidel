@@ -8,7 +8,7 @@ devUrl = "http://localhost:8081/blog"
 config = undefined
 config =
   production:
-    url: 'http://my-ghost-blog.com/blog'
+    url: 'https://infidel-frobozz.rhcloud.com/blog'
     mail: {}
     database:
       client: 'sqlite3'
