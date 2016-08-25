@@ -1,5 +1,5 @@
 module.exports = (sequelize, DataTypes) ->
-  sequelize.define 'client',
+  sequelize.define 'sunnyclient',
     name:
       type: DataTypes.STRING
       unique: true

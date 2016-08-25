@@ -1,3 +1,4 @@
+Promise = require 'bluebird'
 epilogue = require 'epilogue'
 
 env = process.env.NODE_ENV or 'development'
@@ -7,15 +8,26 @@ db = require './models'
 sql = db.sequelize
 UserAuth = require './userauth'
 
-auth = UserAuth.auth
 APIPATH = config.apipath
 
-api_auth = (req, res, context) ->
-  if req.isAuthenticated()
-    context.continue
-  else
-    res.redirect '/#frontdoor/login'
+ghost_auth = require 'ghost/core/server/middleware/auth'
 
+auth = ghost_auth.requiresAuthorizedUser
+
+# FIXME this just determines if a user has
+# passed a valid token, but the user isn't
+# retrieved from database
+api_auth = (req, res, context) ->
+  new Promise (resolve, reject) ->
+    ghost_auth.authenticateUser req, res, (err, user, info) ->
+      if user?.id
+        # FIXME get user and look at scope in info
+        resolve context.continue
+      else
+        res.status(401).send
+          message: 'Unauthorized'
+        resolve context.stop
+        
 setup = (app) ->
   epilogue.initialize
     app: app
@@ -75,7 +87,7 @@ setup = (app) ->
       
   clientPath = "#{APIPATH}/sunny/clients"
   clientResource = epilogue.resource
-    model: sql.models.client
+    model: sql.models.sunnyclient
     endpoints: [clientPath, "#{clientPath}/:id"]
   for f in ['list', 'create', 'read', 'update', 'delete']
     do (f) ->

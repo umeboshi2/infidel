@@ -39,91 +39,113 @@ kdb = require './kmodels'
 #  app.engine "coffee", tc.renderFile
 
 
-ghost = require './ghost-middleware'
-ghostOptions =
-  config: path.join __dirname, '..', 'ghost-config.js'
+setup_after_ghost = (ghost) ->
 
-ghost_middleware = ghost ghostOptions
-console.log "ghost_middleware", ghost_middleware
-
-app.use '/blog', ghost_middleware
-db = require './models'
-sql = db.sequelize
-
-Middleware.setup app
+  passport = require 'passport'
+  app.use passport.initialize()
   
-ApiRoutes = require './apiroutes'
-ApiRoutes.setup app
+  db = require './models'
+  sql = db.sequelize
 
-
-# FIXME
-# make a bearer strategy similar to ghost strategy
+  Middleware.setup app
+  
+  ApiRoutes = require './apiroutes'
+  ApiRoutes.setup app
+  # FIXME
+  # make a bearer strategy similar to ghost strategy
 
   
-# health url required for openshift
-app.get '/health', (req, res, next) ->
-  res.end()
+  # health url required for openshift
+  app.get '/health', (req, res, next) ->
+    res.end()
 
-app.use '/assets', express.static(path.join __dirname, '../assets')
-if UseMiddleware
-  #require 'coffee-script/register'
-  webpack = require 'webpack'
-  middleware = require 'webpack-dev-middleware'
-  config = require '../webpack.config'
-  compiler = webpack config
-  app.use middleware compiler,
-    #publicPath: config.output.publicPath
-    # FIXME using abosule path?
-    publicPath: '/build/'
-    stats:
-      colors: true
-  console.log "Using webpack middleware"
-else
-  app.use '/build', gzipStatic(path.join __dirname, '../build')
-
-
-
-auth = (req, res, next) ->
-  if req.isAuthenticated()
-    console.log req
-    next()
+  app.use '/assets', express.static(path.join __dirname, '../assets')
+  if UseMiddleware
+    #require 'coffee-script/register'
+    webpack = require 'webpack'
+    middleware = require 'webpack-dev-middleware'
+    config = require '../webpack.config'
+    compiler = webpack config
+    app.use middleware compiler,
+      #publicPath: config.output.publicPath
+      # FIXME using abosule path?
+      publicPath: '/build/'
+      stats:
+        colors: true
+    console.log "Using webpack middleware"
   else
-    res.redirect '/#frontdoor/login'
-    
+    app.use '/build', gzipStatic(path.join __dirname, '../build')
 
-app.get '/', pages.make_page 'index'
-app.get '/sunny', auth, pages.make_page 'sunny'
-
-admin_auth = (req, res, next) ->
-  if req.isAuthenticated() and req.user.name == 'admin'
-    next()
-  else
-    res.sendStatus(403)
+  auth = (req, res, next) ->
+    #console.log req
+    if req.isAuthenticated()
+      #console.log req
+      next()
+    else
+      res.redirect '/#frontdoor/login'
     
-app.get '/admin', auth, admin_auth, pages.make_page 'admin'
+  auth = require 'ghost/core/server/middleware/auth'
+  console.log auth
+
+  app.get '/', pages.make_page 'index'
+  #app.get '/sunny', auth.requiresAuthorizedUser, pages.make_page 'sunny'
+  app.get '/sunny', pages.make_page 'sunny'
+
+  admin_auth = (req, res, next) ->
+    if req.isAuthenticated() and req.user.name == 'admin'
+      next()
+    else
+      res.sendStatus(403)
+    
+  app.get '/admin', auth.requiresAuthorizedUser, admin_auth, pages.make_page 'admin'
 
       
 
 
-server = http.createServer app
-sql.sync()
-  .then ->
-    server.listen PORT, HOST, -> 
-      console.log "Server running on #{HOST}:#{PORT}."
+  server = http.createServer app
+  sql.sync()
+    .then ->
+      server.listen PORT, HOST, -> 
+        console.log "Infidel server running on #{HOST}:#{PORT}."
+
+
+bootghost = require('./bootghost')
+
+processBuffer = (buffer, app) ->
+  while buffer.length
+    request = buffer.pop()
+    app request[0], request[1]
+  return
+
+#ghostServer = undefined
+
+makeGhostMiddleware = (options) ->
+  requestBuffer = []
+  exapp = false
+  bootghost.init(options).then (ghost) ->
+    setup_after_ghost ghost
+    exapp = ghost.rootApp
+    #console.log "global.ghostServer", global.ghostServer
+    console.log "global.ghostServer"
+    processBuffer requestBuffer, exapp
+    return
+  (req, res) ->
+    if !exapp
+      requestBuffer.unshift [
+        req
+        res
+      ]
+    else
+      exapp req, res
+    return
+
+ghostOptions =
+  config: path.join __dirname, '..', 'ghost-config.js'
+ghost_middleware = makeGhostMiddleware ghostOptions
+app.use '/blog', ghost_middleware
+
   
 module.exports =
   app: app
   kdb: kdb
-  server: server
-  
-#sql.sync()
-#.then ->
-#  ghost ghostOptions
-#  .then (ghostServer) ->
-#    app.use ghostServer.config.paths.subdir, ghostServer.rootApp
-#    ghostServer.start app
-#    .then ->
-#      server = http.createServer app
-#      server.listen PORT, HOST, -> 
-#      console.log "Server running on #{HOST}:#{PORT}."
   

@@ -12,7 +12,7 @@ db = {}
 sequelize.import './userconfig'
 sequelize.import './document'
 sequelize.import './todo'
-sequelize.import './client'
+sequelize.import './sunnyclient'
 sequelize.import './yard'
 #fs.readdirSync(__dirname).filter((file) ->
 #  file.indexOf('.') != 0 and file != 'index.js'
