@@ -28,6 +28,7 @@ class MapView extends Backbone.Marionette.ItemView
     @Map.on 'locationerror', @onLocationError
     @Map.locate
       setView: true
+      watch: true
     layer = Leaflet.tileLayer 'http://{s}.tile.osm.org/{z}/{x}/{y}.png'
     layer.addTo @Map
     console.log "MAP, LAYER", @Map, layer
