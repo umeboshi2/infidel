@@ -18,7 +18,7 @@ class Controller extends MainController
       response.done =>
         @_show_content view
       response.fail =>
-        MessageChannel.request 'danger', "Failed to load clients."
+        MessageChannel.request 'danger', "Failed to load documents."
     # name the chunk
     , 'dbdocs-view-list-pages'
 
