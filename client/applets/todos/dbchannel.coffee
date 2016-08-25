@@ -1,15 +1,20 @@
 Backbone = require 'backbone'
 
+# FIXME: find a better place 
+{ GhostModel
+  GhostCollection } = require '../../ghostusers'
+
+
 { BaseCollection } = require 'agate/src/collections'
 { make_dbchannel } = require 'agate/src/basecrudchannel'
 
 TodoChannel = Backbone.Radio.channel 'todos'
 
 url = '/api/dev/todos'
-class Todo extends Backbone.Model
+class Todo extends GhostModel
   urlRoot: url
 
-class TodoCollection extends Backbone.Collection
+class TodoCollection extends GhostCollection
   url: url
   model: Todo
 

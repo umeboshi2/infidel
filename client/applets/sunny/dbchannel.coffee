@@ -2,15 +2,23 @@ Backbone = require 'backbone'
 
 { make_dbchannel } = require 'agate/src/basecrudchannel'
 
+# FIXME: find a better place 
+{ GhostModel
+  GhostCollection } = require '../../ghostusers'
+  
+
+MainChannel = Backbone.Radio.channel 'global'
 SunnyChannel = Backbone.Radio.channel 'sunny'
 
-url = '/api/dev/sunny/clients'
-class Client extends Backbone.Model
-  urlRoot: url
 
-class ClientCollection extends Backbone.Collection
+url = '/api/dev/sunny/clients'
+class Client extends GhostModel
+  urlRoot: url
+    
+class ClientCollection extends GhostCollection
   model: Client
   url: url
+
   
 
 make_dbchannel SunnyChannel, 'client', Client, ClientCollection

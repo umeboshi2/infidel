@@ -45,6 +45,24 @@ MainChannel.reply 'current-user', ->
 auth = new GhostAuth
 MainChannel.reply 'main:app:ghostauth', ->
   auth
+
+ghost_sync_options = (options) ->
+  auth = MainChannel.request 'main:app:ghostauth'
+  console.log 'auth auth', auth
+  options = options || {}
+  options.beforeSend = auth.sendAuthHeader
+  console.log "sync", options
+  options
+
+class GhostModel extends Backbone.Model
+  sync: (method, model, options) ->
+    options = ghost_sync_options options
+    super method, model, options
+
+class GhostCollection extends Backbone.Collection
+  sync: (method, model, options) ->
+    options = ghost_sync_options options
+    super method, model, options
   
 start_with_user = (app) ->
   console.log 'start_with_user'
@@ -102,4 +120,6 @@ start_with_user = (app) ->
 
 module.exports =
   start_with_user: start_with_user
-
+  GhostModel: GhostModel
+  GhostCollection: GhostCollection
+  
