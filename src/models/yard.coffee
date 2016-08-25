@@ -5,9 +5,13 @@ module.exports = (sequelize, DataTypes) ->
       references:
         model: 'sunnyclient'
         key: 'id'
+    location_id:
+      type: DataTypes.INTEGER
+      references:
+        model: 'gpslocation'
+        key: 'id'
     name:
       type: DataTypes.STRING
-      unique: true
     description:
       type: DataTypes.TEXT
     jobdetails:
