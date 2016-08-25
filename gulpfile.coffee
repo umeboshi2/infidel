@@ -16,8 +16,6 @@ coffee = require 'gulp-coffee'
 webpack = require 'webpack'
 tc = require 'teacup'
 
-css_theme = 'cornsilk'
-
 gulp.task 'compass', () ->
   gulp.src('./sass/*.scss')
   .pipe compass
