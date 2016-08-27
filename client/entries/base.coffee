@@ -12,6 +12,9 @@ initialize_page = require 'agate/src/app-initpage'
 #require 'agate/src/users'
 { start_with_user } = require '../ghostusers'
 
+# FIXME
+require '../ghostposts'
+
 require 'agate/src/clipboard'
 require 'agate/src/messages'
 require '../static-documents'

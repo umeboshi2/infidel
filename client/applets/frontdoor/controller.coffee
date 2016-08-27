@@ -6,7 +6,6 @@ Marionette = require 'backbone.marionette'
 
 MainChannel = Backbone.Radio.channel 'global'
 MessageChannel = Backbone.Radio.channel 'messages'
-DocChannel = Backbone.Radio.channel 'static-documents'
 
 class Controller extends MainController
   _view_resource: (doc) ->
@@ -28,10 +27,13 @@ class Controller extends MainController
     , 'frontdoor-login-view'
     
   view_page: (name) ->
-    doc = DocChannel.request 'get-document', name
-    response = doc.fetch()
+    posts = MainChannel.request 'main:ghost:posts'
+    response = posts.fetch
+      data:
+        slug: name
     response.done =>
-      @_view_resource doc
+      post = posts.find slug: name
+      @_view_resource post
     response.fail =>
       MessageChannel.request 'danger', 'Failed to get document'
       
@@ -50,7 +52,7 @@ class Controller extends MainController
     @default_view()
 
   default_view: ->
-    @view_page 'intro'
+    @view_page 'welcome-to-ghost'
       
   frontdoor: ->
     appmodel = MainChannel.request 'main:app:appmodel'
@@ -58,7 +60,7 @@ class Controller extends MainController
       console.log 'needUser is true'
       @frontdoor_needuser()
     else
-      @view_page 'intro'
+      @default_view()
 
 module.exports = Controller
 

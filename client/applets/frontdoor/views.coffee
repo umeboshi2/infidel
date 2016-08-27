@@ -5,11 +5,10 @@ marked = require 'marked'
 
 MainChannel = Backbone.Radio.channel 'global'
 
-DefaultStaticDocumentTemplate = tc.renderable (doc) ->
+DefaultStaticDocumentTemplate = tc.renderable (post) ->
   tc.article '.document-view.content', ->
     tc.div '.body', ->
-      tc.raw marked doc.content
-
+      tc.raw marked post.markdown
 
 class FrontDoorMainView extends Backbone.Marionette.ItemView
   template: DefaultStaticDocumentTemplate
