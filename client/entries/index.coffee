@@ -3,18 +3,37 @@ Marionette = require 'backbone.marionette'
 prepare_app = require 'agate/src/app-prepare'
 
 AppModel = require './base-appmodel'
-AppModel.set 'applets',
+#AppModel.set 'applets',
+applets = 
   [
     {
-      name: 'Clients'
-      url: '/sunny'
+      appname: 'sunny'
+      name: 'Sunny'
+      url: '#sunny'
     }
     {
       appname: 'bumblr'
       name: 'Bumblr'
       url: '#bumblr'
     }
+    {
+      appname: 'todos'
+      name: 'Todos'
+      url: '#todos'
+    }
+    {
+      appname: 'userprofile'
+      name: 'Profile Page'
+      url: '#profile'
+    }
+    {
+      appname: 'dbdocs'
+      name: 'DB Docs'
+      url: '#dbdocs'
+    }
   ]
+AppModel.set 'applets', applets
+
 brand = AppModel.get 'brand'
 brand.url = '#'
 AppModel.set brand: brand
@@ -23,6 +42,32 @@ MainChannel = Backbone.Radio.channel 'global'
 MessageChannel = Backbone.Radio.channel 'messages'
 DocChannel = Backbone.Radio.channel 'static-documents'
 
+sunny_entry =
+  label: 'Sunny'
+  applets: ['sunny', 'todos', 'dbdocs']
+  single_applet: false
+  url: 'not/here'
+
+applet_menus = [
+  sunny_entry
+  {
+    label: 'Blog'
+    single_applet: false
+    url: '/blog'
+  }
+  {
+    label: 'Stuff'
+    single_applet: false
+    applets: ['bumblr', 'userprofile']
+  }
+  ]
+
+AppModel.set 'applet_menus', applet_menus
+
+#applets = {}
+#for applet in AppModel.get 'applets'
+#  applets[applet.appname] = applet
+  
 
 # use a signal to request appmodel
 MainChannel.reply 'main:app:appmodel', ->
@@ -34,6 +79,10 @@ MainChannel.reply 'main:app:appmodel', ->
 require '../applets/frontdoor/main'
 require '../applets/userprofile/main'
 require '../applets/bumblr/main'
+
+require '../applets/sunny/main'
+require '../applets/dbdocs/main'
+require '../applets/todos/main'
 
 app = new Marionette.Application()
 

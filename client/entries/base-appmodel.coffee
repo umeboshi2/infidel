@@ -6,6 +6,9 @@ Backbone = require 'backbone'
 { BaseAppModel
   appregions } = require 'agate/src/appmodel'
 
+NavbarView = require './navbar'
+
+
 tc = require 'teacup'
 
 layout_template = tc.renderable () ->
@@ -29,5 +32,6 @@ appmodel = new BaseAppModel
   layout_template: layout_template
   container: 'container-fluid'
   regions: appregions
-
+  navbar_viewclass: NavbarView
+  
 module.exports = appmodel
