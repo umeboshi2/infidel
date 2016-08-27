@@ -1,8 +1,10 @@
 $ = require 'jquery'
 Backbone = require 'backbone'
+Marionette = require 'backbone.marionette'
 
 Util = require 'agate/src/apputil'
 { MainController } = require 'agate/src/controllers'
+{ make_sidebar_template } = require 'agate/src/templates/layout'
 
 Models = require './models'
 Collections = require './collections'
@@ -12,6 +14,10 @@ SideBarView = require './views/sidebar'
 
 
 BumblrChannel = Backbone.Radio.channel 'bumblr'
+
+sidebar_template = make_sidebar_template()
+  
+
 
 side_bar_data = new Backbone.Model
   entries: [
@@ -25,7 +31,18 @@ side_bar_data = new Backbone.Model
     }
     ]
 
+class BumblerLayout extends Backbone.Marionette.LayoutView
+  template: sidebar_template
+  regions:
+    sidebar: '#sidebar'
+    content: '#main-content'
+    
+  
 class Controller extends MainController
+  layoutClass: BumblerLayout
+  initialize: (options) ->
+    console.log 'initialize bumblr controller'
+
   sidebarclass: SideBarView
   sidebar_model: side_bar_data
   
@@ -34,14 +51,8 @@ class Controller extends MainController
     header.text title
     
   start: ->
-    content = @_get_region 'content'
-    sidebar = @_get_region 'sidebar'
-    if content.hasView()
-      console.log 'empty content....'
-      content.empty()
-    if sidebar.hasView()
-      console.log 'empty sidebar....'
-      sidebar.empty()
+    #console.log 'bumblr start called'
+    @setup_layout_if_needed()
     @set_header 'Bumblr'
     @list_blogs()
 
@@ -58,7 +69,7 @@ class Controller extends MainController
     Util.scroll_top_fast()
       
   list_blogs: () ->
-    #console.log 'list_blogs called;'
+    @setup_layout_if_needed()
     @_make_sidebar()
     require.ensure [], () =>
       console.log "sidebar created"
@@ -73,6 +84,7 @@ class Controller extends MainController
     
   view_blog: (blog_id) ->
     #console.log 'view blog called for ' + blog_id
+    @setup_layout_if_needed()
     @_make_sidebar()
     require.ensure [], () =>
       host = blog_id + '.tumblr.com'
@@ -88,7 +100,7 @@ class Controller extends MainController
     , 'bumblr-view-blog-view'
     
   add_new_blog: () ->
-    #console.log 'add_new_blog called'
+    @setup_layout_if_needed()
     @_make_sidebar()
     require.ensure [], () =>
       NewBlogFormView = require './views/newblog'
@@ -100,7 +112,7 @@ class Controller extends MainController
     
           
   settings_page: () ->
-    #console.log 'Settings page.....'
+    @setup_layout_if_needed()
     @_make_sidebar()
     require.ensure [], () =>
       ConsumerKeyFormView = require './views/settingsform'

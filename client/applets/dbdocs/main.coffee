@@ -9,7 +9,6 @@ ResourceChannel = Backbone.Radio.channel 'resources'
 
 
 class Router extends BootStrapAppRouter
-  empty_sidebar_on_route: true
   appRoutes:
     'dbdocs': 'list_pages'
     'dbdocs/documents/new': 'new_page'

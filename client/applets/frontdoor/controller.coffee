@@ -7,13 +7,30 @@ Marionette = require 'backbone.marionette'
 MainChannel = Backbone.Radio.channel 'global'
 MessageChannel = Backbone.Radio.channel 'messages'
 
+tc = require 'teacup'
+
+frontdoor_template = tc.renderable () ->
+  tc.div '#main-content.col-sm-12'
+  
+
+class FrontdoorLayout extends Backbone.Marionette.LayoutView
+  template: frontdoor_template
+  regions:
+    content: '#main-content'
+    
+
+
 class Controller extends MainController
+  layoutClass: FrontdoorLayout
+  
   _view_resource: (doc) ->
+    @setup_layout_if_needed()
     require.ensure [], () =>
       { FrontDoorMainView } = require './views'
       view = new FrontDoorMainView
         model: doc
       @_show_content view
+      #applet.show view
     # name the chunk
     , 'frontdoor-main-view'
     
@@ -55,6 +72,7 @@ class Controller extends MainController
     @view_page 'welcome-to-ghost'
       
   frontdoor: ->
+    @setup_layout_if_needed()
     appmodel = MainChannel.request 'main:app:appmodel'
     if appmodel.get 'needUser'
       console.log 'needUser is true'

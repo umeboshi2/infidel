@@ -11,6 +11,7 @@ class Controller extends MainController
   collection: TodoChannel.request 'todo-collection'
   
   list_todos: () ->
+    @setup_layout_if_needed()
     require.ensure [], () =>
       ListView = require './views/todolist'
       view = new ListView
@@ -24,6 +25,7 @@ class Controller extends MainController
     , 'todos-list-todos'
 
   new_todo: () ->
+    @setup_layout_if_needed()
     require.ensure [], () =>
       { NewView } = require './views/editor'
       @_show_content new NewView
@@ -31,6 +33,7 @@ class Controller extends MainController
     , 'todos-new-todo'
 
   edit_todo: (id) ->
+    @setup_layout_if_needed()
     require.ensure [], () =>
       { EditView } = require './views/editor'
       model = TodoChannel.request 'get-todo', id
@@ -39,6 +42,7 @@ class Controller extends MainController
     , 'todos-edit-todo'
       
   view_todo: (id) ->
+    @setup_layout_if_needed()
     require.ensure [], () =>
       MainView = require './views/viewtodo'
       model = TodoChannel.request 'get-todo', id

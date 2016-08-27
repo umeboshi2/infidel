@@ -9,6 +9,7 @@ class Controller extends MainController
   collection: ResourceChannel.request 'document-collection'
   
   list_pages: () ->
+    @setup_layout_if_needed()
     console.log "List Pages"
     require.ensure [], () =>
       ListView = require './views/pagelist'
@@ -23,6 +24,7 @@ class Controller extends MainController
     , 'dbdocs-view-list-pages'
 
   edit_page: (id) ->
+    @setup_layout_if_needed()
     require.ensure [], () =>
       { EditPageView } = require './views/editor'
       model = ResourceChannel.request 'get-document', id
@@ -31,6 +33,7 @@ class Controller extends MainController
     , 'dbdocs-view-edit-page'
       
   new_page: () ->
+    @setup_layout_if_needed()
     require.ensure [], () =>
       { NewPageView } = require './views/editor'
       @_show_content new NewPageView

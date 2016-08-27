@@ -34,6 +34,7 @@ class Controller extends MainController
   sidebar_model: side_bar_data
   
   show_profile: ->
+    @setup_layout_if_needed()
     @_make_sidebar()
     require.ensure [], () =>
       ViewClass = require './mainview'
@@ -47,6 +48,7 @@ class Controller extends MainController
     , 'userprofile-view-show-profile'
 
   view_map: ->
+    @setup_layout_if_needed()
     @_make_sidebar()
     require.ensure [], () =>
       ViewClass = require './mapview'
@@ -60,6 +62,7 @@ class Controller extends MainController
     , 'userprofile-view-map-view'
 
   edit_config: ->
+    @setup_layout_if_needed()
     @_make_sidebar()
     require.ensure [], () =>
       ViewClass = require './configview'
@@ -73,6 +76,7 @@ class Controller extends MainController
     , 'userprofile-view-edit-config'
       
   change_password: ->
+    @setup_layout_if_needed()
     @_make_sidebar()
     require.ensure [], () =>
       ViewClass = require './chpassview'

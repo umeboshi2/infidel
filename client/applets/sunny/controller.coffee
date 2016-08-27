@@ -12,6 +12,7 @@ class Controller extends MainController
   clients: SunnyChannel.request 'client-collection'
   
   list_clients: () ->
+    @setup_layout_if_needed()
     require.ensure [], () =>
       ListView = require './views/clientlist'
       view = new ListView
@@ -25,6 +26,7 @@ class Controller extends MainController
     , 'sunny-view-list-clients'
 
   new_client: () ->
+    @setup_layout_if_needed()
     require.ensure [], () =>
       { NewClientView } = require './views/clienteditor'
       @_show_content new NewClientView
@@ -32,6 +34,7 @@ class Controller extends MainController
     , 'sunny-view-new-client'
       
   add_yard: (client_id) ->
+    @setup_layout_if_needed()
     require.ensure [], () =>
       { NewYardView } = require './views/yardeditor'
       @_show_content new NewYardView
@@ -45,6 +48,7 @@ class Controller extends MainController
     @_show_content view
     
   edit_client: (id) ->
+    @setup_layout_if_needed()
     require.ensure [], () =>
       { EditClientView } = require './views/clienteditor'
       model = SunnyChannel.request 'get-client', id
@@ -61,6 +65,7 @@ class Controller extends MainController
       
       
   view_client: (id) ->
+    @setup_layout_if_needed()
     require.ensure [], () =>
       ClientMainView = require './views/viewclient'
       model = SunnyChannel.request 'get-client', id

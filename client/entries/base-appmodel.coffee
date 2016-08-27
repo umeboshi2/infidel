@@ -15,10 +15,10 @@ layout_template = tc.renderable () ->
     tc.div '.row', ->
       tc.div '.col-sm-12', ->
         tc.div '#messages'
-      tc.div '#sidebar.col-sm-3.left-column'
-      tc.div '#main-content.col-sm-9'
+    tc.div '#applet-content.row'
   tc.div '#footer'
   tc.div '#modal'
+
 
 appmodel = new BaseAppModel
   hasUser: true
