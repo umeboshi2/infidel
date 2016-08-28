@@ -31,6 +31,11 @@ applets =
       name: 'DB Docs'
       url: '#dbdocs'
     }
+    {
+      appname: 'mappy'
+      name: 'Map'
+      url: '#mappy'
+    }
   ]
 AppModel.set 'applets', applets
 
@@ -57,7 +62,7 @@ applet_menus = [
   {
     label: 'Stuff'
     single_applet: false
-    applets: ['bumblr', 'userprofile']
+    applets: ['mappy', 'bumblr', 'userprofile']
   }
   ]
 
@@ -78,6 +83,7 @@ MainChannel.reply 'main:app:appmodel', ->
 require '../applets/frontdoor/main'
 require '../applets/userprofile/main'
 require '../applets/bumblr/main'
+require '../applets/mappy/main'
 
 require '../applets/sunny/main'
 require '../applets/dbdocs/main'
