@@ -15,6 +15,7 @@ sequelize.import './todo'
 sequelize.import './sunnyclient'
 sequelize.import './yard'
 sequelize.import './gpslocation'
+sequelize.import './maplocation'
 
 #fs.readdirSync(__dirname).filter((file) ->
 #  file.indexOf('.') != 0 and file != 'index.js'
