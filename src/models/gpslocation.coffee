@@ -1,9 +1,9 @@
 module.exports = (sequelize, DataTypes) ->
   sequelize.define 'gpslocation',
-    lat:
+    latitude:
       type: DataTypes.FLOAT
-    long:
+    longitude:
       type: DataTypes.FLOAT
     # reserve a column for altitude
-    alt:
+    altitude:
       type: DataTypes.FLOAT

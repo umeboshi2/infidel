@@ -117,6 +117,14 @@ setup = (app) ->
     do (f) ->
       todoResource[f].auth api_auth 
   
+  gpslocationPath = "#{APIPATH}/gpslocations"
+  gpslocationResource = epilogue.resource
+    model: sql.models.gpslocation
+    endpoints: [gpslocationPath, "#{gpslocationPath}/:id"]
+  for f in ['list', 'create', 'read', 'update', 'delete']
+    do (f) ->
+      gpslocationResource[f].auth api_auth 
+  
 
 module.exports =
   setup: setup
