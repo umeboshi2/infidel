@@ -3,6 +3,7 @@ Marionette = require 'backbone.marionette'
 
 { MainController } = require 'agate/src/controllers'
 { login_form } = require 'agate/src/templates/forms'
+{ SlideDownRegion } = require 'agate/src/regions'
 
 MainChannel = Backbone.Radio.channel 'global'
 MessageChannel = Backbone.Radio.channel 'messages'
@@ -12,13 +13,13 @@ tc = require 'teacup'
 frontdoor_template = tc.renderable () ->
   tc.div '#main-content.col-sm-12'
   
-
 class FrontdoorLayout extends Backbone.Marionette.LayoutView
   template: frontdoor_template
-  regions:
-    content: '#main-content'
-    
-
+  regions: ->
+    content: new SlideDownRegion
+      el: '#main-content'
+      speed: 'slow'
+  
 
 class Controller extends MainController
   layoutClass: FrontdoorLayout
@@ -29,8 +30,7 @@ class Controller extends MainController
       { FrontDoorMainView } = require './views'
       view = new FrontDoorMainView
         model: doc
-      @_show_content view
-      #applet.show view
+      @layout.showChildView 'content', view
     # name the chunk
     , 'frontdoor-main-view'
     
@@ -39,7 +39,8 @@ class Controller extends MainController
     require.ensure [], () =>
       LoginView = require './loginview'
       view = new LoginView
-      @_show_content view
+      @layout.showChildView 'content', view
+      #@_show_content view
     # name the chunk
     , 'frontdoor-login-view'
     
@@ -67,10 +68,19 @@ class Controller extends MainController
     @default_view()
 
   default_view: ->
-    @view_page 'welcome-to-ghost'
-      
-  frontdoor: ->
     @setup_layout_if_needed()
+    require.ensure [], () =>
+      { PostList } = require './views'
+      posts = MainChannel.request 'main:ghost:posts'
+      response = posts.fetch()
+      response.done =>
+        view = new PostList
+          collection: posts
+        @layout.showChildView 'content', view
+    # name the chunk
+    , 'frontdoor-main-view'
+    
+  frontdoor: ->
     appmodel = MainChannel.request 'main:app:appmodel'
     if appmodel.get 'needUser'
       console.log 'needUser is true'
