@@ -30,5 +30,9 @@ posts_collection = new GhostPostCollection
 MainChannel.reply 'main:ghost:posts', ->
   posts_collection
       
-
+MainChannel.reply 'main:ghost:get-post', (slug) ->
+    posts_collection.fetch
+      data:
+        slug: slug
+        
 module.exports = null

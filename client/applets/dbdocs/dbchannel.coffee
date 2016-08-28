@@ -2,7 +2,7 @@ Backbone = require 'backbone'
 
 # FIXME: find a better place 
 { GhostModel
-  GhostCollection } = require '../../ghostusers'
+  GhostCollection } = require '../../ghost/users'
 
 { make_dbchannel } = require 'agate/src/basecrudchannel'
 

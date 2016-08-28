@@ -4,7 +4,7 @@ Backbone = require 'backbone'
 
 # FIXME: find a better place 
 { GhostModel
-  GhostCollection } = require '../../ghostusers'
+  GhostCollection } = require '../../ghost/users'
   
 
 MainChannel = Backbone.Radio.channel 'global'

@@ -45,9 +45,7 @@ class Controller extends MainController
     
   view_page: (name) ->
     posts = MainChannel.request 'main:ghost:posts'
-    response = posts.fetch
-      data:
-        slug: name
+    response = MainChannel.request 'main:ghost:get-post', name
     response.done =>
       post = posts.find slug: name
       @_view_resource post

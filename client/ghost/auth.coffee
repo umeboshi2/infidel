@@ -85,7 +85,6 @@ class GhostAuth extends Marionette.Object
 
   isAuthenticated: ->
     @load()
-    #console.log "isAuthenticated", @state
     @getTime() < @state.expires_at
     
 
@@ -100,9 +99,15 @@ class GhostAuth extends Marionette.Object
       console.log 'triggerRefresh called'
       expires_in = @expiresIn() / 60000.0
       console.log "expires_in", expires_in
-      if @expiresIn <= 0
+      if @expiresIn() <= 0
+        console.log 'performing refresh', @isAuthenticated()
         @refresh()
         setTimeout @triggerRefresh, AUTO_REFRESH_TIME
+        return
+      setTimeout @triggerRefresh, AUTO_REFRESH_TIME
+    else
+      console.log 'performing refresh', @isAuthenticated()
+      @refresh()
       setTimeout @triggerRefresh, AUTO_REFRESH_TIME
       
   sendAuthHeader: (xhr) ->
@@ -135,7 +140,15 @@ class GhostAuth extends Marionette.Object
         console.log response.responseJSON
         for error in response.responseJSON.errors
           MessageChannel.request 'warning', error.message
-          
+
+  refresh_success: (data, status, xhr) =>
+    console.log "refresh->success", data
+    console.log status
+    data.time = time
+    @save data
+    @trigger 'refresh', response, this
+    console.log "success", response
+    
   refresh: ->
     console.log "refresh called"
     if @isAuthenticated()
@@ -143,6 +156,7 @@ class GhostAuth extends Marionette.Object
       msg = 'No authentication data, use access method first.'
       console.log msg
       @trigger 'error', msg, @
+    console.log "refresh starting.............."
     # save a reference to the current time before the request is
     # sent.  This assures us that we can set an expiration that
     # the server can agree with.
@@ -159,13 +173,7 @@ class GhostAuth extends Marionette.Object
       dataType: 'json'
       headers: 'authorization', make_auth_header()
       # FIXME this is never called
-      success: (data, status, xhr) =>
-        console.log "refresh->success", data
-        console.log status
-        data.time = time
-        @save data
-        @trigger 'refresh', response, this
-        console.log "success", response
+      success: @refresh_success
       error: (response) ->
         console.log "refresh->ERROR", @
         self.trigger 'error', response, @

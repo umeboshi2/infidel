@@ -13,9 +13,9 @@ nav_pt_content = tc.renderable (appmodel) ->
         applets = {}
         for applet in appmodel.applets
           applets[applet.appname] = applet
-        console.log "applets", applets
+        #console.log "applets", applets
         for entry in appmodel.applet_menus
-          console.log 'menu entry', entry
+          #console.log 'menu entry', entry
           if entry?.applets
             tc.li '.dropdown', ->
               tc.a '.dropdown-toggle', 'data-toggle':'dropdown', ->

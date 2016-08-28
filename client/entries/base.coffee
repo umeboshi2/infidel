@@ -10,10 +10,10 @@ UserMenuView = require './user-menu-view'
 initialize_page = require 'agate/src/app-initpage'
 
 #require 'agate/src/users'
-{ start_with_user } = require '../ghostusers'
+{ start_with_user } = require '../ghost/users'
 
 # FIXME
-require '../ghostposts'
+require '../ghost/posts'
 
 require 'agate/src/clipboard'
 require 'agate/src/messages'

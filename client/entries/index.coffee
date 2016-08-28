@@ -46,7 +46,6 @@ sunny_entry =
   label: 'Sunny'
   applets: ['sunny', 'todos', 'dbdocs']
   single_applet: false
-  url: 'not/here'
 
 applet_menus = [
   sunny_entry

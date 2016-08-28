@@ -40,9 +40,6 @@ class BumblerLayout extends Backbone.Marionette.LayoutView
   
 class Controller extends MainController
   layoutClass: BumblerLayout
-  initialize: (options) ->
-    console.log 'initialize bumblr controller'
-
   sidebarclass: SideBarView
   sidebar_model: side_bar_data
   
