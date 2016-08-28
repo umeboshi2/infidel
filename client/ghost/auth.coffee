@@ -101,13 +101,14 @@ class GhostAuth extends Marionette.Object
       console.log "expires_in", expires_in
       if @expiresIn() <= 0
         console.log 'performing refresh', @isAuthenticated()
-        @refresh()
-        setTimeout @triggerRefresh, AUTO_REFRESH_TIME
+        response = @refresh()
+        response.done = @refresh_success
         return
       setTimeout @triggerRefresh, AUTO_REFRESH_TIME
     else
-      console.log 'performing refresh', @isAuthenticated()
-      @refresh()
+      console.log 'else performing refresh', @isAuthenticated()
+      response = @refresh()
+      response.done = @refresh_success
       setTimeout @triggerRefresh, AUTO_REFRESH_TIME
       
   sendAuthHeader: (xhr) ->
@@ -148,6 +149,7 @@ class GhostAuth extends Marionette.Object
     @save data
     @trigger 'refresh', response, this
     console.log "success", response
+    @triggerRefresh()
     
   refresh: ->
     console.log "refresh called"

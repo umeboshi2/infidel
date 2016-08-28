@@ -2,9 +2,8 @@ Backbone = require 'backbone'
 
 { make_dbchannel } = require 'agate/src/basecrudchannel'
 
-# FIXME: find a better place 
 { GhostModel
-  GhostCollection } = require '../../ghost/users'
+  GhostCollection } = require '../../ghost/base'
   
 
 MainChannel = Backbone.Radio.channel 'global'

@@ -3,6 +3,10 @@ Backbone = require 'backbone'
 { navigate_to_url } = require 'agate/src/apputil'
 
 GhostAuth = require './auth'
+{ GhostModel
+  GhostCollection } = require './base'
+  
+
 
 
 MainChannel = Backbone.Radio.channel 'global'
@@ -46,6 +50,7 @@ auth = new GhostAuth
 MainChannel.reply 'main:app:ghostauth', ->
   auth
 
+###
 ghost_sync_options = (options) ->
   auth = MainChannel.request 'main:app:ghostauth'
   console.log 'auth auth', auth
@@ -63,7 +68,8 @@ class GhostCollection extends Backbone.Collection
   sync: (method, model, options) ->
     options = ghost_sync_options options
     super method, model, options
-  
+###
+
 start_with_user = (app) ->
   console.log 'start_with_user'
   console.log 'auth', auth

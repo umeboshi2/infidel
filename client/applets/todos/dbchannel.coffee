@@ -1,8 +1,7 @@
 Backbone = require 'backbone'
 
-# FIXME: find a better place 
 { GhostModel
-  GhostCollection } = require '../../ghost/users'
+  GhostCollection } = require '../../ghost/base'
 
 
 { BaseCollection } = require 'agate/src/collections'
