@@ -9,7 +9,7 @@ nav_pt_content = tc.renderable (appmodel) ->
       navbar_collapse_button 'navbar-view-collapse'
       tc.a '.navbar-brand', href:appmodel.brand.url, appmodel.brand.name
     tc.div '#navbar-view-collapse.collapse.navbar-collapse', ->
-      tc.ul '.nav.navbar-nav', ->
+      tc.ul '.nav.navbar-nav.nav-pills', ->
         applets = {}
         for applet in appmodel.applets
           applets[applet.appname] = applet
