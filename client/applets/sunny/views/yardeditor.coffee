@@ -25,18 +25,22 @@ YardForm = tc.renderable (model) ->
 
 
 class BaseYardEditor extends BootstrapFormView
-  fieldList: ['name', 'fullname']
+  fieldList: ['name']
   ui: ->
     uiobject = make_field_input_ui @fieldList
-    _.extend uiobject, {'description': 'textarea[name="description"]'}
+    textareas =
+      description: 'textarea[name="description"]'
+      jobdetails: 'textarea[name="jobdetails"]'
+    _.extend uiobject, textareas
     return uiobject
   
   updateModel: ->
-    for field in @fieldList.concat ['description']
+    for field in @fieldList.concat ['description', 'jobdetails']
       console.log 'field', field, @ui[field].val()
       @model.set field, @ui[field].val()
     # update other fields
-    
+      console.log "model client_id", @model.get 'client_id'
+      
   onSuccess: (model) ->
     name = model.get 'name'
     MessageChannel.request 'display-message', "#{name} saved successfully.", "success"
@@ -46,8 +50,10 @@ class BaseYardEditor extends BootstrapFormView
 class NewYardView extends BaseYardEditor
   template: YardForm
   createModel: ->
-    SunnyChannel.request 'new-yard'
-
+    model = SunnyChannel.request 'new-yard'
+    model.set 'client_id', @client_id
+    model
+    
   saveModel: ->
     callbacks =
       success: => @trigger 'save:form:success', @model

@@ -31,6 +31,7 @@ class ClientYardView extends Backbone.Marionette.ItemView
   
 class ClientMainView extends Backbone.Marionette.CompositeView
   childView: ClientYardView
+  childViewContainer: '#client-yards'
   template: client_view_template
   ui:
     addyard: '#add-yard-btn'

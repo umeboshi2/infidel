@@ -23,10 +23,10 @@ class ClientCollection extends GhostCollection
 make_dbchannel SunnyChannel, 'client', Client, ClientCollection
   
 url = '/api/dev/sunny/yards'
-class Yard extends Backbone.Model
+class Yard extends GhostModel
   urlRoot: url
 
-class YardCollection extends Backbone.Collection
+class YardCollection extends GhostCollection
   model: Yard
   url: url
   
