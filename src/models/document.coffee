@@ -8,4 +8,6 @@ module.exports = (sequelize, DataTypes) ->
     # FIXME - make this an enum
     doctype: DataTypes.STRING
     content: DataTypes.TEXT
+  ,
+    underscored: true
     

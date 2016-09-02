@@ -17,6 +17,43 @@ sequelize.import './yard'
 sequelize.import './gpslocation'
 sequelize.import './maplocation'
 
+# setup associations
+sql = sequelize
+
+#sql.models.yard.belongsTo sql.models.sunnyclient,
+#  foreignKey: 'client_id'
+#  targetKey: 'id'
+
+# FIXME, are these two associations equivalent?
+sql.models.sunnyclient.hasMany sql.models.yard
+sql.models.yard.belongsTo sql.models.sunnyclient
+
+
+sql.models.yard.belongsTo sql.models.gpslocation,
+  foreignKey: 'location_id'
+  targetKey: 'id'
+  
+
+sql.models.maplocation.hasOne sql.models.gpslocation
+
+#sql.models.userconfig.sync
+#  force: true
+#sql.models.todo.sync
+#  force: true
+#sql.models.document.sync
+#  force: true
+#sql.models.yard.sync
+#  force: true
+#sql.models.gpslocation.sync
+#  force: true
+#sql.models.sunnyclient.sync
+#  force: true
+#sql.models.maplocation.sync
+#  force: true
+  
+  
+
+
 #fs.readdirSync(__dirname).filter((file) ->
 #  file.indexOf('.') != 0 and file != 'index.js'
 #).forEach (file) ->
@@ -42,8 +79,6 @@ sequelize.import './maplocation'
 #.then (user, created) ->
 #  return
   
-#sequelize.models.todo.sync
-#  force: true
   
 db.sequelize = sequelize
 db.Sequelize = Sequelize

@@ -7,3 +7,5 @@ module.exports = (sequelize, DataTypes) ->
       type: DataTypes.TEXT
     description:
       type: DataTypes.TEXT
+  ,
+    underscored: true

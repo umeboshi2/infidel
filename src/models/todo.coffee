@@ -6,3 +6,5 @@ module.exports = (sequelize, DataTypes) ->
       type: DataTypes.TEXT
     completed:
       type: DataTypes.BOOLEAN
+  ,
+    underscored: true

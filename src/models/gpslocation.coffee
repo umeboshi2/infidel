@@ -7,3 +7,5 @@ module.exports = (sequelize, DataTypes) ->
     # reserve a column for altitude
     altitude:
       type: DataTypes.FLOAT
+  ,
+    underscored: true
