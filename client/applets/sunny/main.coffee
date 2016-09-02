@@ -15,6 +15,8 @@ class Router extends BootStrapAppRouter
     'sunny/clients/edit/:id': 'edit_client'
     'sunny/clients/view/:id': 'view_client'
     'sunny/clients/addyard/:client_id': 'add_yard'
+    'sunny/yards/view/:id': 'view_yard'
+    
         
 MainChannel.reply 'applet:sunny:route', () ->
   controller = new Controller MainChannel

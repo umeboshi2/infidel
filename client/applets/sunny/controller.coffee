@@ -42,7 +42,22 @@ class Controller extends MainController
       @layout.showChildView 'content', view
     # name the chunk
     , 'sunny-view-add-yard'
-      
+
+  view_yard: (yard_id) ->
+    @setup_layout_if_needed()
+    require.ensure [], () =>
+      { EditYardView } = require './views/yardeditor'
+      model = SunnyChannel.request 'get-yard', yard_id
+      if model.has 'name'
+        @_show_edit_client EditYardView, model
+      else
+        response = model.fetch()
+        response.done =>
+          @_show_edit_client EditYardView, model
+        response.fail =>
+          MessageChannel.request 'danger', "Failed to load yard data."
+    # name the chunk
+    , 'sunny-view-yard-view'
 
   _show_edit_client: (vclass, model) ->
     view = new vclass

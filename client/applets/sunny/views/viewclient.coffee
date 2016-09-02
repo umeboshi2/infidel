@@ -6,7 +6,7 @@ tc = require 'teacup'
 
 client_yard_teplate = tc.renderable (model) ->
   tc.div '.row.listview-list-entry', ->
-    tc.span model.name
+    tc.a href:"#sunny/yards/view/#{model.id}", model.name
     
 client_view_template = tc.renderable (model) ->
   tc.div '.row.listview-list-entry', ->

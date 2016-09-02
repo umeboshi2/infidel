@@ -16,14 +16,14 @@ SunnyChannel = Backbone.Radio.channel 'sunny'
 
 YardForm = tc.renderable (model) ->
   tc.div '.listview-header', 'Yard'
+  tc.a href:"#sunny/clients/view/#{model.sunnyclient_id}", 'View Client'
   make_field_input('name')(model)
+  tc.div "#yard-location"
   for field in ['description', 'jobdetails']
     make_field_textarea(field)(model)
   tc.input '.btn.btn-default', type:'submit', value:"Submit"
   tc.div '.spinner.fa.fa-spinner.fa-spin'
   
-
-
 class BaseYardEditor extends BootstrapFormView
   fieldList: ['name']
   ui: ->
@@ -31,9 +31,28 @@ class BaseYardEditor extends BootstrapFormView
     textareas =
       description: 'textarea[name="description"]'
       jobdetails: 'textarea[name="jobdetails"]'
+      yardLocation: '#yard-location'
     _.extend uiobject, textareas
     return uiobject
-  
+
+  onDomRefresh: (event) ->
+    console.log 'onDomRefresh called on BaseYardEditor'
+    @get_location()
+    
+
+  locationSuccess: (position) =>
+    position = position.coords
+    console.log 'locationSuccess', position
+    @currentPosition = position
+    @ui.yardLocation.text "#{position.latitude}, #{position.longitude}"
+    
+  get_location: ->
+    console.log "getting location..."
+    navigator.geolocation.getCurrentPosition @locationSuccess, @locationError
+    
+
+    
+
   updateModel: ->
     for field in @fieldList.concat ['description', 'jobdetails']
       console.log 'field', field, @ui[field].val()
