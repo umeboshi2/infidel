@@ -4,9 +4,12 @@ module.exports = (sequelize, DataTypes) ->
       type: DataTypes.INTEGER
       primaryKey: true
       references:
-        model: 'gpslocation'
+        model: 'geoposition'
         key: 'id'
     name:
       type: DataTypes.STRING
     description:
       type: DataTypes.TEXT
+  ,
+    underscored: true
+

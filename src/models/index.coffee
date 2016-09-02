@@ -14,7 +14,7 @@ sequelize.import './document'
 sequelize.import './todo'
 sequelize.import './sunnyclient'
 sequelize.import './yard'
-sequelize.import './gpslocation'
+sequelize.import './geoposition'
 sequelize.import './maplocation'
 
 # setup associations
@@ -29,12 +29,12 @@ sql.models.sunnyclient.hasMany sql.models.yard
 sql.models.yard.belongsTo sql.models.sunnyclient
 
 
-sql.models.yard.belongsTo sql.models.gpslocation,
+sql.models.yard.belongsTo sql.models.geoposition,
   foreignKey: 'location_id'
   targetKey: 'id'
   
 
-sql.models.maplocation.hasOne sql.models.gpslocation
+sql.models.maplocation.belongsTo sql.models.geoposition
 
 #sql.models.userconfig.sync
 #  force: true
@@ -44,7 +44,7 @@ sql.models.maplocation.hasOne sql.models.gpslocation
 #  force: true
 #sql.models.yard.sync
 #  force: true
-#sql.models.gpslocation.sync
+#sql.models.geoposition.sync
 #  force: true
 #sql.models.sunnyclient.sync
 #  force: true

@@ -5,6 +5,7 @@ $ = require 'jquery'
 _ = require 'underscore'
 Backbone = require 'backbone'
 Marionette = require 'backbone.marionette'
+ms = require 'ms'
 
 MainChannel = Backbone.Radio.channel 'global'
 MessageChannel = Backbone.Radio.channel 'messages'
@@ -70,7 +71,8 @@ class GhostAuth extends Marionette.Object
     # similar to ghost
     delete state.time
     # Cast expires_in to Int and multiply by 1000 to get ms
-    expires_in = parseInt(state.expires_in) * 1000
+    #expires_in = parseInt(state.expires_in) * 1000
+    expires_in = ms "#{state.expires_in}s"
     state.expires_at = starttime + expires_in
     # authenticator is needed on ghost blog
     state.authenticator = 'authenticator:oauth2'
@@ -97,19 +99,31 @@ class GhostAuth extends Marionette.Object
   triggerRefresh: =>
     if @isAuthenticated()
       console.log 'triggerRefresh called'
-      expires_in = @expiresIn() / 60000.0
-      console.log "expires_in", expires_in
-      if @expiresIn() <= 0
-        console.log 'performing refresh', @isAuthenticated()
-        response = @refresh()
-        response.done = @refresh_success
-        return
-      setTimeout @triggerRefresh, AUTO_REFRESH_TIME
+      #expires_in = @expiresIn() / 60000.0
+      console.log "expires_in", ms @expiresIn()
+      #if @expiresIn() <= 0
+      #  console.log 'performing refresh', @isAuthenticated()
+      #  response = @refresh()
+      #  #response.done = @refresh_success
+      #  response.done => @refresh_success
+      #  return
+      expires_in = @expiresIn()
+      if expires_in <= ms '60s'
+        console.log "Setting tribber refresh for", ms expires_in
+        setTimeout @triggerRefresh, expires_in()
+      else
+        setTimeout @triggerRefresh, AUTO_REFRESH_TIME
     else
       console.log 'else performing refresh', @isAuthenticated()
+      # save a reference to the current time before the request is
+      # sent.  This assures us that we can set an expiration that
+      # the server can agree with.
+      time = @getTime()
       response = @refresh()
-      response.done = @refresh_success
-      setTimeout @triggerRefresh, AUTO_REFRESH_TIME
+      response.done (data, status, xhr) =>
+        console.log "data, status, xhr", data, status, xhr
+        @refresh_success time, data, status, xhr
+        #setTimeout @triggerRefresh, AUTO_REFRESH_TIME
       
   sendAuthHeader: (xhr) ->
     send_auth_header xhr
@@ -142,17 +156,19 @@ class GhostAuth extends Marionette.Object
         for error in response.responseJSON.errors
           MessageChannel.request 'warning', error.message
 
-  refresh_success: (data, status, xhr) =>
+  refresh_success: (time, data, status, xhr) =>
     console.log "refresh->success", data
     console.log status
     data.time = time
     @save data
-    @trigger 'refresh', response, this
-    console.log "success", response
+    @trigger 'refresh', data, this
+    console.log "success", data
     @triggerRefresh()
     
   refresh: ->
     console.log "refresh called"
+    # FIXME we need to be able to refresh before
+    # losing access.  check for if 1min or less until expire
     if @isAuthenticated()
       #return @trigger 'success', @state, @
       msg = 'No authentication data, use access method first.'
@@ -174,8 +190,6 @@ class GhostAuth extends Marionette.Object
         refresh_token: @state.refresh_token 
       dataType: 'json'
       headers: 'authorization', make_auth_header()
-      # FIXME this is never called
-      success: @refresh_success
       error: (response) ->
         console.log "refresh->ERROR", @
         self.trigger 'error', response, @
