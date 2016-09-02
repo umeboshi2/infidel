@@ -89,6 +89,7 @@ setup = (app) ->
   clientResource = epilogue.resource
     model: sql.models.sunnyclient
     endpoints: [clientPath, "#{clientPath}/:id"]
+    associations: false
   for f in ['list', 'create', 'read', 'update', 'delete']
     do (f) ->
       clientResource[f].auth api_auth 
@@ -97,6 +98,7 @@ setup = (app) ->
   yardResource = epilogue.resource
     model: sql.models.yard
     endpoints: [yardPath, "#{yardPath}/:id"]
+    associations: true
   for f in ['list', 'create', 'read', 'update', 'delete']
     do (f) ->
       yardResource[f].auth api_auth 
@@ -117,19 +119,20 @@ setup = (app) ->
     do (f) ->
       todoResource[f].auth api_auth 
   
-  gpslocationPath = "#{APIPATH}/mappy/gpslocations"
-  gpslocationResource = epilogue.resource
-    model: sql.models.gpslocation
-    endpoints: [gpslocationPath, "#{gpslocationPath}/:id"]
+  geopositionPath = "#{APIPATH}/mappy/geopositions"
+  geopositionResource = epilogue.resource
+    model: sql.models.geoposition
+    endpoints: [geopositionPath, "#{geopositionPath}/:id"]
   for f in ['list', 'create', 'read', 'update', 'delete']
     do (f) ->
-      gpslocationResource[f].auth api_auth
+      geopositionResource[f].auth api_auth
       
       
   maplocationPath = "#{APIPATH}/mappy/maplocations"
   maplocationResource = epilogue.resource
     model: sql.models.maplocation
     endpoints: [maplocationPath, "#{maplocationPath}/:id"]
+    associations: true
   for f in ['list', 'create', 'read', 'update', 'delete']
     do (f) ->
       maplocationResource[f].auth api_auth 
