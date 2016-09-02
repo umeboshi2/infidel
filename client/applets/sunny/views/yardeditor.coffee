@@ -39,7 +39,7 @@ class BaseYardEditor extends BootstrapFormView
       console.log 'field', field, @ui[field].val()
       @model.set field, @ui[field].val()
     # update other fields
-      console.log "model client_id", @model.get 'client_id'
+      console.log "model sunnyclient_id", @model.get 'sunnyclient_id'
       
   onSuccess: (model) ->
     name = model.get 'name'
@@ -51,7 +51,7 @@ class NewYardView extends BaseYardEditor
   template: YardForm
   createModel: ->
     model = SunnyChannel.request 'new-yard'
-    model.set 'client_id', @client_id
+    model.set 'sunnyclient_id', @sunnyclient_id
     model
     
   saveModel: ->

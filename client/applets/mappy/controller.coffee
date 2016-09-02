@@ -31,10 +31,10 @@ class Controller extends MainController
     require.ensure [], () =>
       ViewClass = require './mapview'
       view = new ViewClass
-      #@layout.showChildView 'content', view
-      content = @layout.getRegion 'content'
-      content.empty()
-      content.show view
+      @layout.showChildView 'content', view
+      #content = @layout.getRegion 'content'
+      #content.empty()
+      #content.show view
       #@_show_content view
       console.log 'view shown?', view
       

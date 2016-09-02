@@ -38,7 +38,7 @@ class Controller extends MainController
     require.ensure [], () =>
       { NewYardView } = require './views/yardeditor'
       view = new NewYardView
-      view.client_id = client_id
+      view.sunnyclient_id = client_id
       @layout.showChildView 'content', view
     # name the chunk
     , 'sunny-view-add-yard'
@@ -70,7 +70,7 @@ class Controller extends MainController
     yards = SunnyChannel.request 'yard-collection'
     yresponse = yards.fetch
       data:
-        client_id: client.id
+        sunnyclient_id: client.id
     yresponse.done =>
       view = new viewclass
         model: client
@@ -100,3 +100,4 @@ class Controller extends MainController
       
 module.exports = Controller
 
+  
