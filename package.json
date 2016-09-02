@@ -87,6 +87,7 @@
     "lazer": "0.0.1",
     "leaflet": "^0.7.7",
     "leaflet-wunderground": "^1.0.3",
+    "leaflet.icon.glyph": "^0.2.0",
     "lodash": "^4.14.1",
     "marked": "^0.3.6",
     "masonry-layout": "^4.1.0",
