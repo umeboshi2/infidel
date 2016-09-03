@@ -110,7 +110,7 @@ class GhostAuth extends Marionette.Object
       expires_in = @expiresIn()
       if expires_in <= ms '60s'
         console.log "Setting tribber refresh for", ms expires_in
-        setTimeout @triggerRefresh, expires_in()
+        setTimeout @triggerRefresh, expires_in
       else
         setTimeout @triggerRefresh, AUTO_REFRESH_TIME
     else
