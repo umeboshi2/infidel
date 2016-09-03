@@ -12,7 +12,7 @@ tc = require 'teacup'
 main_template = tc.renderable () ->
   tc.div '#main-content.col-sm-12'
 
-class MappyLayout extends Backbone.Marionette.LayoutView
+class MappyLayout extends Backbone.Marionette.View
   template: main_template
   regions: ->
     content: new SlideDownRegion

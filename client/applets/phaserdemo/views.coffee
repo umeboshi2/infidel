@@ -187,16 +187,7 @@ class PhaserDemo extends Backbone.Marionette.Object
     @current_score += 10
     @scoreText.text = "Score: #{@current_score}"
 
-class FrontDoorMainView extends Backbone.Marionette.ItemView
-  template: PhaserViewTemplate
-
-  onDomRefresh: ->
-    game = new PhaserDemo()
-    game.start()
-    window.mygame = game
-
-
-class PhaserView extends Backbone.Marionette.ItemView
+class PhaserView extends Backbone.Marionette.View
   template: PhaserViewTemplate
 
   onDomRefresh: ->

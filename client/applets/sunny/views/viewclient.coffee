@@ -26,7 +26,7 @@ client_view_template = tc.renderable (model) ->
     tc.div "#client-yards"
 
 
-class ClientYardView extends Backbone.Marionette.ItemView
+class ClientYardView extends Backbone.Marionette.View
   template: client_yard_teplate
   
 class ClientMainView extends Backbone.Marionette.CompositeView

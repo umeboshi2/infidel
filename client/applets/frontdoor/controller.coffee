@@ -13,7 +13,7 @@ tc = require 'teacup'
 frontdoor_template = tc.renderable () ->
   tc.div '#main-content.col-sm-12'
   
-class FrontdoorLayout extends Backbone.Marionette.LayoutView
+class FrontdoorLayout extends Backbone.Marionette.View
   template: frontdoor_template
   regions: ->
     content: new SlideDownRegion

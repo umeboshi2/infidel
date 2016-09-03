@@ -22,14 +22,14 @@ post_list = tc.renderable ->
   tc.div '#post-list.list-group'
 
 
-class PostListItem extends Backbone.Marionette.ItemView
+class PostListItem extends Backbone.Marionette.View
   template: post_list_item
 
 class PostList extends Backbone.Marionette.CompositeView
   template: post_list
   childView: PostListItem
   
-class FrontDoorMainView extends Backbone.Marionette.ItemView
+class FrontDoorMainView extends Backbone.Marionette.View
   template: DefaultStaticDocumentTemplate
 
 module.exports =

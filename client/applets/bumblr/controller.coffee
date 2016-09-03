@@ -31,7 +31,7 @@ side_bar_data = new Backbone.Model
     }
     ]
 
-class BumblerLayout extends Backbone.Marionette.LayoutView
+class BumblerLayout extends Backbone.Marionette.View
   template: sidebar_template
   regions:
     sidebar: '#sidebar'

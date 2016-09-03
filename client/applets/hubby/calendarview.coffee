@@ -39,7 +39,7 @@ loading_calendar_events = (bool) ->
     loading.hide()
     header.show()
   
-class MeetingCalendarView extends Backbone.Marionette.ItemView
+class MeetingCalendarView extends Backbone.Marionette.View
   template: meeting_calendar
   ui:
     calendar: '#maincalendar'

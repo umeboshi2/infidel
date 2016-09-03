@@ -31,10 +31,10 @@ simple_blog_list = tc.renderable () ->
     tc.div '#bloglist-container.listview-list'
 
 ########################################
-class BlogModal extends Backbone.Marionette.ItemView
+class BlogModal extends Backbone.Marionette.View
   template: blog_dialog_view
 
-class SimpleBlogInfoView extends Backbone.Marionette.ItemView
+class SimpleBlogInfoView extends Backbone.Marionette.View
   template: simple_blog_info
 
 class SimpleBlogListView extends Backbone.Marionette.CompositeView

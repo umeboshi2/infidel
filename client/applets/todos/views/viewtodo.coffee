@@ -15,7 +15,7 @@ view_template = tc.renderable (model) ->
     tc.div model.description
     tc.span ".glyphicon.glyphicon-grain"
     
-class MainView extends Backbone.Marionette.ItemView
+class MainView extends Backbone.Marionette.View
   template: view_template
     
 module.exports = MainView

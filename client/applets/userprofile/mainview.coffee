@@ -19,7 +19,7 @@ user_profile_template = tc.renderable (model) ->
             tc.span model.config[prop]
 
     
-class UserMainView extends Backbone.Marionette.ItemView
+class UserMainView extends Backbone.Marionette.View
   template: user_profile_template
   ui:
     edit: '#edit-userconfig'

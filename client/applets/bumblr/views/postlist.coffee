@@ -43,7 +43,7 @@ simple_post_view = tc.renderable (post) ->
         tc.img src:size.url
 
 ########################################
-class SimpleBlogPostView extends Backbone.Marionette.ItemView
+class SimpleBlogPostView extends Backbone.Marionette.View
   template: simple_post_view
   #className: 'col-sm-10'
   className: 'post'

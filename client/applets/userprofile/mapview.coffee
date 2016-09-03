@@ -15,7 +15,7 @@ map_view_template = tc.renderable (model) ->
     tc.div "#map-view", style:'height:20em;'
 
     
-class MapView extends Backbone.Marionette.ItemView
+class MapView extends Backbone.Marionette.View
   template: map_view_template
   ui:
     map: '#map-view'
