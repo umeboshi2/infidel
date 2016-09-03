@@ -22,6 +22,15 @@ layout_template = tc.renderable () ->
   tc.div '#footer'
   tc.div '#modal'
 
+class MainPageLayout extends Backbone.Marionette.View
+  template: layout_template
+  regions:
+    messages: '#messages'
+    navbar: '#navbar-view-container'
+    modal: '#modal'
+    applet: '#applet-content'
+    footer: '#footer'
+    
 
 appmodel = new BaseAppModel
   hasUser: true
@@ -29,9 +38,11 @@ appmodel = new BaseAppModel
   brand:
     name: 'Infidel'
     url: '/'
-  layout_template: layout_template
-  container: 'container-fluid'
+  appView: MainPageLayout
+  navbarView: NavbarView
+  
   regions: appregions
-  navbar_viewclass: NavbarView
+  navbar_viewclass: 'boo'
+  container: 'container-fluid'
   
 module.exports = appmodel

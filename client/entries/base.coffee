@@ -41,7 +41,7 @@ MainChannel.reply 'mainpage:init', (appmodel) ->
   MainChannel.trigger 'mainpage:displayed'
 
 
-MainChannel.on 'appregion:navbar:displayed', ->
+MainChannel.on 'mainpage:displayed', ->
   # this handler is useful if there are views that need to be
   # added to the navbar.  The navbar should have regions to attach
   # the views
@@ -49,16 +49,15 @@ MainChannel.on 'appregion:navbar:displayed', ->
   # view = new view
   # aregion = MainChannel.request 'main:app:get-region', aregion
   # aregion.show view
-  if __DEV__ and DEBUG
-    console.warn "__DEV__ navbar displayed"
+
   # current user should already be fetched before
   # any view is shown
   user = MainChannel.request 'current-user'
   view = new UserMenuView
     model: user
-  usermenu = MainChannel.request 'main:app:get-region', 'usermenu'
-  usermenu.show view
-
+  app = MainChannel.request 'main:app:object'
+  navbar = app.getView().getChildView('navbar')
+  navbar.showChildView 'usermenu', view
   
 
 

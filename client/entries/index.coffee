@@ -89,9 +89,9 @@ require '../applets/sunny/main'
 require '../applets/dbdocs/main'
 require '../applets/todos/main'
 
-app = new Marionette.Application()
+#app = new Marionette.Application()
 
-prepare_app app, AppModel
+app = prepare_app AppModel
 
 if __DEV__
   # DEBUG attach app to window

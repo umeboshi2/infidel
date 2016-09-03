@@ -47,7 +47,7 @@ user_menu = tc.renderable (user) ->
             tc.a href:'/blog/logout', 'Logout'
 
 
-class UserMenuView extends Backbone.Marionette.ItemView
+class UserMenuView extends Backbone.Marionette.View
   template: user_menu
 
 module.exports = UserMenuView

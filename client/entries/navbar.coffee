@@ -38,7 +38,7 @@ navbar_template = tc.renderable (appmodel) ->
   role:'navigation', ->
     nav_pt_content appmodel
     
-class NavbarView extends Backbone.Marionette.LayoutView
+class NavbarView extends Backbone.Marionette.View
   template: navbar_template
   regions:
     #navbarview: '#navbar-view'
