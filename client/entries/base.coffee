@@ -1,7 +1,6 @@
 $ = require 'jquery'
 Backbone = require 'backbone'
 Marionette = require 'backbone.marionette'
-require 'radio-shim'
   
 require 'bootstrap'
 
