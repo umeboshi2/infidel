@@ -12,6 +12,9 @@ TodoChannel = Backbone.Radio.channel 'todos'
 url = '/api/dev/todos'
 class Todo extends GhostModel
   urlRoot: url
+  defaults:
+    completed: false
+    
 
 class TodoCollection extends GhostCollection
   url: url

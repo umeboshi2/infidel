@@ -1,28 +1,60 @@
 Util = require 'agate/src/apputil'
 
 { MainController } = require 'agate/src/controllers'
+SidebarView = require 'agate/src/sidebarview'
 
 
 MainChannel = Backbone.Radio.channel 'global'
 MessageChannel = Backbone.Radio.channel 'messages'
 TodoChannel = Backbone.Radio.channel 'todos'
 
+side_bar_data = new Backbone.Model
+  entries: [
+    {
+      name: 'List'
+      url: '#todos'
+    }
+    {
+      name: 'Calendar'
+      url: '#todos/calendar'
+    }
+    {
+      name: 'Complete'
+      url: '#todos/completed'
+    }
+    ]
+
 class Controller extends MainController
+  sidebarclass: SidebarView
+  sidebar_model: side_bar_data
   collection: TodoChannel.request 'todo-collection'
+
+  setup_layout_if_needed: ->
+    super()
+    @_make_sidebar()
+
   
-  list_todos: () ->
+  list_certain_todos: (completed) ->
     @setup_layout_if_needed()
     require.ensure [], () =>
       ListView = require './views/todolist'
       view = new ListView
         collection: @collection
-      response = @collection.fetch()
+      response = @collection.fetch
+        data:
+          completed: completed
       response.done =>
         @_show_content view
       response.fail =>
         MessageChannel.request 'danger', "Failed to load todos."
     # name the chunk
     , 'todos-list-todos'
+
+  list_completed_todos: () ->
+    @list_certain_todos true
+
+  list_todos: () ->
+    @list_certain_todos false
 
   new_todo: () ->
     @setup_layout_if_needed()
