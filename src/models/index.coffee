@@ -29,10 +29,11 @@ sql.models.sunnyclient.hasMany sql.models.yard
 sql.models.yard.belongsTo sql.models.sunnyclient
 
 
-sql.models.yard.belongsTo sql.models.geoposition,
-  foreignKey: 'location_id'
-  targetKey: 'id'
-  
+#sql.models.yard.belongsTo sql.models.geoposition,
+#  foreignKey: 'location_id'
+#  targetKey: 'id'
+
+
 
 sql.models.maplocation.belongsTo sql.models.geoposition
 
