@@ -42,9 +42,11 @@ class BasePageEditor extends BootstrapFormView
       behaviorClass: HasAceEditor
       
   afterDomRefresh: () ->
-    content = @model.get 'content'
-    #content = beautify content
-    @editor.setValue content
+    if @model.has 'content'
+      content = @model.get 'content'
+      console.log 'afterDomRefresh content is', content
+      #content = beautify content
+      @editor.setValue content
 
   updateModel: ->
     for field in ['name', 'title', 'description']
