@@ -3,9 +3,8 @@ Backbone = require 'backbone'
 { navigate_to_url } = require 'agate/src/apputil'
 
 GhostAuth = require './auth'
-# FIXME: find a better place 
 { GhostModel
-  GhostCollection } = require './users'
+  GhostCollection } = require './base'
 
 
 MainChannel = Backbone.Radio.channel 'global'

@@ -4,10 +4,10 @@ MainChannel = Backbone.Radio.channel 'global'
 
 ghost_sync_options = (options) ->
   auth = MainChannel.request 'main:app:ghostauth'
-  console.log 'auth auth', auth
+  #console.log 'auth auth', auth
   options = options || {}
   options.beforeSend = auth.sendAuthHeader
-  console.log "sync", options
+  #console.log "sync", options
   options
 
 class GhostModel extends Backbone.Model

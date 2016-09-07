@@ -34,7 +34,7 @@ MessageChannel = Backbone.Radio.channel 'messages'
 ############################################
 
 ghostusers_url = '/blog/ghost/api/v0.1/users/me?include=roles&status=all'
-class GhostUser extends Backbone.Model
+class GhostUser extends GhostModel
   url: ghostusers_url
 
   parse: (response) ->
@@ -50,36 +50,13 @@ auth = new GhostAuth
 MainChannel.reply 'main:app:ghostauth', ->
   auth
 
-###
-ghost_sync_options = (options) ->
-  auth = MainChannel.request 'main:app:ghostauth'
-  console.log 'auth auth', auth
-  options = options || {}
-  options.beforeSend = auth.sendAuthHeader
-  console.log "sync", options
-  options
-
-class GhostModel extends Backbone.Model
-  sync: (method, model, options) ->
-    options = ghost_sync_options options
-    super method, model, options
-
-class GhostCollection extends Backbone.Collection
-  sync: (method, model, options) ->
-    options = ghost_sync_options options
-    super method, model, options
-###
-
 start_with_user = (app) ->
-  console.log 'start_with_user'
-  console.log 'auth', auth
   if auth.isAuthenticated()
     auth.triggerRefresh()
     # fetch the authenticated user before starting the app
     user = MainChannel.request 'current-user'
     # FIXME add auth to models (or sendAuthHeader)
-    response = user.fetch
-      beforeSend: auth.sendAuthHeader
+    response = user.fetch()
     response.done =>
       app.start()
     response.fail =>
@@ -93,7 +70,6 @@ start_with_user = (app) ->
     app.start()
   else if auth.expiresIn() <= 0
     time = auth.getTime()
-    #auth.triggerRefresh()
     console.log 'auth.refresh', auth.state
     res = auth.refresh()
     console.log 'res', res
@@ -103,29 +79,11 @@ start_with_user = (app) ->
       auth.save res.responseJSON
       auth.triggerRefresh()
       user = MainChannel.request 'current-user'
-      ures = user.fetch
-        beforeSend: auth.sendAuthHeader
+      ures = user.fetch()
       ures.done =>
         app.start()
-        
-    #res.then =>
-    #  res.success res.responseJSON
-    #  console.log 'res.done', auth.state, res
-    #  user = MainChannel.request 'current-user'
-    #  ures = user.fetch
-    #    beforeSend: auth.sendAuthHeader
-    #  ures.done =>
-    #    app.start()
-    #  ures.fail =>
-    #    console.error 'Response failed', ures
-    #res.error =>
-    #  app.start()
-    #  MessageChannel.request 'warn', 'Failed to authenticate.'
-      
       
 
 module.exports =
   start_with_user: start_with_user
-  GhostModel: GhostModel
-  GhostCollection: GhostCollection
   

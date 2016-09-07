@@ -98,18 +98,11 @@ class GhostAuth extends Marionette.Object
     
   triggerRefresh: =>
     if @isAuthenticated()
-      console.log 'triggerRefresh called'
-      #expires_in = @expiresIn() / 60000.0
-      console.log "expires_in", ms @expiresIn()
-      #if @expiresIn() <= 0
-      #  console.log 'performing refresh', @isAuthenticated()
-      #  response = @refresh()
-      #  #response.done = @refresh_success
-      #  response.done => @refresh_success
-      #  return
+      #console.log 'triggerRefresh called'
+      #console.log "expires_in", ms @expiresIn()
       expires_in = @expiresIn()
       if expires_in <= ms '60s'
-        console.log "Setting tribber refresh for", ms expires_in
+        console.log "Setting trigger refresh for", ms expires_in
         setTimeout @triggerRefresh, expires_in
       else
         setTimeout @triggerRefresh, AUTO_REFRESH_TIME
@@ -123,7 +116,6 @@ class GhostAuth extends Marionette.Object
       response.done (data, status, xhr) =>
         console.log "data, status, xhr", data, status, xhr
         @refresh_success time, data, status, xhr
-        #setTimeout @triggerRefresh, AUTO_REFRESH_TIME
       
   sendAuthHeader: (xhr) ->
     send_auth_header xhr
@@ -166,7 +158,7 @@ class GhostAuth extends Marionette.Object
     @triggerRefresh()
     
   refresh: ->
-    console.log "refresh called"
+    #console.log "refresh called"
     # FIXME we need to be able to refresh before
     # losing access.  check for if 1min or less until expire
     if @isAuthenticated()
@@ -174,7 +166,7 @@ class GhostAuth extends Marionette.Object
       msg = 'No authentication data, use access method first.'
       console.log msg
       @trigger 'error', msg, @
-    console.log "refresh starting.............."
+    #console.log "refresh starting.............."
     # save a reference to the current time before the request is
     # sent.  This assures us that we can set an expiration that
     # the server can agree with.
