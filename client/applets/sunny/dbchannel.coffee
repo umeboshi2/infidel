@@ -32,6 +32,7 @@ class YardCollection extends GhostCollection
   
 make_dbchannel SunnyChannel, 'yard', Yard, YardCollection
 
+
 module.exports =
   ClientCollection: ClientCollection
   YardCollection: YardCollection

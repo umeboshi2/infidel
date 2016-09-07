@@ -14,7 +14,8 @@ class Router extends BootStrapAppRouter
     'sunny/clients/new': 'new_client'
     'sunny/clients/edit/:id': 'edit_client'
     'sunny/clients/view/:id': 'view_client'
-    'sunny/clients/addyard/:client_id': 'add_yard'
+
+    'sunny/yards/add/:client_id': 'add_yard'
     'sunny/yards/view/:id': 'view_yard'
     
         

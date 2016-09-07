@@ -1,14 +1,31 @@
+Backbone = require 'backbone'
+Marionette = require 'backbone.marionette'
 Util = require 'agate/src/apputil'
+tc = require 'teacup'
+ms = require 'ms'
 
 { MainController } = require 'agate/src/controllers'
-
+{ SlideDownRegion } = require 'agate/src/regions'
 
 MainChannel = Backbone.Radio.channel 'global'
 MessageChannel = Backbone.Radio.channel 'messages'
 SunnyChannel = Backbone.Radio.channel 'sunny'
 
+layout_template = tc.renderable () ->
+  tc.div '#main-content.col-sm-12'
+
+
+class AppletLayout extends Backbone.Marionette.View
+  template: layout_template
+  regions: ->
+    region = new SlideDownRegion
+      el: '#main-content'
+    region.slide_speed = ms '.01s'
+    content: region
+  
 
 class Controller extends MainController
+  layoutClass: AppletLayout
   clients: SunnyChannel.request 'client-collection'
   
   list_clients: () ->
@@ -36,9 +53,13 @@ class Controller extends MainController
   add_yard: (client_id) ->
     @setup_layout_if_needed()
     require.ensure [], () =>
-      { NewYardView } = require './views/yardeditor'
-      view = new NewYardView
-      view.sunnyclient_id = client_id
+      YardView = require './views/yardview'
+      # { NewYardView } = require './views/yardeditor'
+      # view = new NewYardView
+      model = SunnyChannel.request 'new-yard'
+      model.set 'sunnyclient_id', client_id
+      view = new YardView
+        model: model
       @layout.showChildView 'content', view
     # name the chunk
     , 'sunny-view-add-yard'
@@ -46,14 +67,14 @@ class Controller extends MainController
   view_yard: (yard_id) ->
     @setup_layout_if_needed()
     require.ensure [], () =>
-      { EditYardView } = require './views/yardeditor'
+      YardView = require './views/yardview'
       model = SunnyChannel.request 'get-yard', yard_id
       if model.has 'name'
-        @_show_edit_client EditYardView, model
+        @_show_edit_client YardView, model
       else
         response = model.fetch()
         response.done =>
-          @_show_edit_client EditYardView, model
+          @_show_edit_client YardView, model
         response.fail =>
           MessageChannel.request 'danger', "Failed to load yard data."
     # name the chunk

@@ -40,7 +40,7 @@ class ClientMainView extends Backbone.Marionette.CompositeView
     'click @ui.addyard': 'add_yard'
 
   add_yard: ->
-    navigate_to_url "#sunny/clients/addyard/#{@model.id}"
+    navigate_to_url "#sunny/yards/add/#{@model.id}"
     
 module.exports = ClientMainView
 
