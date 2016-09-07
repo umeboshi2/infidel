@@ -3,8 +3,8 @@ jQuery = require 'jquery'
 _ = require 'underscore'
 Backbone = require 'backbone'
 
-{ BaseAppModel
-  appregions } = require 'agate/src/appmodel'
+BaseAppModel = require 'agate/src/appmodel'
+{ BootstrapModalRegion } = require 'agate/src/regions'
 
 NavbarView = require './navbar'
 
@@ -27,7 +27,7 @@ class MainPageLayout extends Backbone.Marionette.View
   regions:
     messages: '#messages'
     navbar: '#navbar-view-container'
-    modal: '#modal'
+    modal: new BootstrapModalRegion
     applet: '#applet-content'
     footer: '#footer'
     
@@ -40,9 +40,8 @@ appmodel = new BaseAppModel
     url: '/'
   appView: MainPageLayout
   navbarView: NavbarView
-  
-  regions: appregions
-  navbar_viewclass: 'boo'
+
+  #FIXME
   container: 'container-fluid'
   
 module.exports = appmodel

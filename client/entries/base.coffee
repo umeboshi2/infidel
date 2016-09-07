@@ -1,6 +1,11 @@
 $ = require 'jquery'
 Backbone = require 'backbone'
 Marionette = require 'backbone.marionette'
+
+#if window.__agent
+#  console.warn '__agent is present'
+#  window.__agent.start Backbone, Marionette
+
   
 require 'bootstrap'
 
@@ -17,6 +22,8 @@ require '../ghost/posts'
 require 'agate/src/clipboard'
 require 'agate/src/messages'
 require '../static-documents'
+require '../datachannels/geopositions'
+
 
 MainChannel = Backbone.Radio.channel 'global'
 MessageChannel = Backbone.Radio.channel 'messages'
