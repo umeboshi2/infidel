@@ -2,17 +2,14 @@ Promise = require 'bluebird'
 epilogue = require 'epilogue'
 
 env = process.env.NODE_ENV or 'development'
-config = require('./config')[env]
+config = require('../config')[env]
 
-db = require './models'
+db = require '../models'
 sql = db.sequelize
-UserAuth = require './userauth'
 
 APIPATH = config.apipath
 
 ghost_auth = require 'ghost/core/server/middleware/auth'
-
-auth = ghost_auth.requiresAuthorizedUser
 
 # FIXME this just determines if a user has
 # passed a valid token, but the user isn't
@@ -27,64 +24,20 @@ api_auth = (req, res, context) ->
         res.status(401).send
           message: 'Unauthorized'
         resolve context.stop
+
+update_foreign_key = (req, res, context) ->
+  console.log "update_foreign_key called", context
+  context.options = {raw: true}
+  context.attributes = { location_id: null }
+  console.log "update_foreign_key called", context
+  context.continue()
+  
         
 setup = (app) ->
   epilogue.initialize
     app: app
     sequelize: sql
 
-  app.get "#{APIPATH}/dbadmin", (req, res, next) ->
-    models =
-      clients: 'client'
-      yards: 'yard'
-      todos: 'todo'
-      documents: 'document'
-    data =
-      action: 'get'
-      selected: null
-      models: models
-    res.json data
-
-  app.put "#{APIPATH}/dbadmin", (req, res, next) ->
-    body = req.body
-    if body.action is 'recreate_table'
-      modelName = body.selected
-      model = sql.models[modelName]
-      model.sync
-        force: true
-      .then res.json
-        result: 'success'
-  
-  app.get "#{APIPATH}/current-user", (req, res, next) ->
-    user = null
-    if req?.user
-      user = req.user
-    res.json user
-
-  app.put "#{APIPATH}/current-user", auth, (req, res, next) ->
-    user = req.user
-    model = sql.models.user
-    #console.log 'user is', user
-    #console.log 'req is', req
-    console.log 'req.body is', req.body
-    if 'config' of req.body
-      user.update
-        config: req.body.config
-        where:
-          id: user.id
-      .then res.json
-        result: 'success'
-    else if 'password' of req.body
-      user.update
-        password: req.body.password
-        where:
-          id: user.id
-      .then res.json
-        result: 'success'
-    else
-      # FIXME, send properr status
-      res.sendStatus(403)
-      
   clientPath = "#{APIPATH}/sunny/clients"
   clientResource = epilogue.resource
     model: sql.models.sunnyclient
@@ -101,8 +54,10 @@ setup = (app) ->
     associations: true
   for f in ['list', 'create', 'read', 'update', 'delete']
     do (f) ->
-      yardResource[f].auth api_auth 
-
+      yardResource[f].auth api_auth
+      #if f is 'update'
+      #  yardResource[f].fetch.before update_foreign_key
+        
   documentPath = "#{APIPATH}/sitedocuments"
   documentResource = epilogue.resource
     model: sql.models.document
