@@ -45,13 +45,12 @@ class LoginView extends BootstrapFormView
 
   saveModel: ->
     auth = MainChannel.request 'main:app:ghostauth'
-    console.log auth
     username  = @model.get 'username'
     password = @model.get 'password'
     res = auth.access username, password
-    res.error =>
+    res.fail =>
       @trigger 'save:form:failure', @model
-    res.success =>
+    res.done =>
       @trigger 'save:form:success', @model
       
   onSuccess: ->

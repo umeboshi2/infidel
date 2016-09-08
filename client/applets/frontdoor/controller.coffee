@@ -62,6 +62,7 @@ class Controller extends MainController
       @show_login()
       
   show_login: ->
+    @setup_layout_if_needed()
     @_view_login()
     
   frontdoor_hasuser: (user) ->
