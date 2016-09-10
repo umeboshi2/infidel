@@ -9,7 +9,7 @@ Backbone = require 'backbone'
 
 TodoChannel = Backbone.Radio.channel 'todos'
 
-url = '/api/dev/todos'
+url = '/api/dev/basic/todos'
 class Todo extends GhostModel
   urlRoot: url
   defaults:
@@ -26,7 +26,7 @@ todo_collection = new TodoCollection()
 make_dbchannel TodoChannel, 'todo', Todo, TodoCollection
 
 class TodoCalendar extends GhostCollection
-  url: "/api/dev/sunny/funny/todocal"
+  url: "/api/dev/basic/todos/create-cal"
   model: Todo
 
 todo_cal = new TodoCalendar

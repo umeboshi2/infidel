@@ -58,7 +58,7 @@ class TodoCalendarView extends Backbone.Marionette.View
       defaultView: 'month'
       eventSources:
         [
-          url: '/api/dev/sunny/funny/todocal'
+          url: "/api/dev/basic/todos/create-cal"
           beforeSend: auth.sendAuthHeader
         ]
       eventRender: render_calendar_event

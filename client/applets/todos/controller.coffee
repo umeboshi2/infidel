@@ -65,10 +65,12 @@ class Controller extends MainController
     , 'todos-list-todos'
 
   list_completed_todos: () ->
-    @list_certain_todos true
+    # FIXME - fix rest inferface to use booleans
+    @list_certain_todos 1
 
   list_todos: () ->
-    @list_certain_todos false
+    # FIXME - fix rest inferface to use booleans
+    @list_certain_todos 0
 
   new_todo: () ->
     @setup_layout_if_needed()
