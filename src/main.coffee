@@ -8,8 +8,6 @@ gzipStatic = require 'connect-gzip-static'
 ensureLogin = require 'connect-ensure-login'
 
 passport = require 'passport'
-ClientPasswordStrategy  = require('passport-oauth2-client-password').Strategy
-BearerStrategy = require('passport-http-bearer').Strategy
 
 Middleware = require './middleware'
 #UserAuth = require './userauth'
@@ -29,7 +27,8 @@ HOST = process.env.NODE_IP or 'localhost'
 app = express()
 
 # FIXME
-kdb = require './kmodels'
+#kdb = require './kmodels'
+kdb = require 'ghost/core/server/data/db'
 
 # FIXME use express template render
 #app.set "views", "./views"
@@ -126,7 +125,7 @@ makeGhostMiddleware = (options) ->
     setup_after_ghost ghost
     exapp = ghost.rootApp
     #console.log "global.ghostServer", global.ghostServer
-    console.log "global.ghostServer"
+    console.log "bootghost.init"
     processBuffer requestBuffer, exapp
     return
   (req, res) ->
