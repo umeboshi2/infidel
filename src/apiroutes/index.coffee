@@ -1,8 +1,6 @@
 Promise = require 'bluebird'
 
-epilogRoutes = require './epilogroutes'
 miscApi = require './miscapi'
-
 
 env = process.env.NODE_ENV or 'development'
 config = require('../config')[env]
@@ -16,12 +14,17 @@ ghost_auth = require 'ghost/core/server/middleware/auth'
 
 auth = ghost_auth.requiresAuthorizedUser
 
+# model routes
+basicmodel = require './basicmodel'
+
         
 setup = (app) ->
-  epilogRoutes.setup app
-  miscApi.setup app
+  # FIXME epilogue can only use one router/app
+  epilogRoutes = require './epilogroutes'
+  app.use "#{APIPATH}/epi", epilogRoutes
   
-  
+  app.use APIPATH, miscApi
+  app.use "#{APIPATH}/basic", basicmodel
 
 module.exports =
   setup: setup
