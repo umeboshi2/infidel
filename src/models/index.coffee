@@ -14,6 +14,12 @@ sequelize.import './document'
 sequelize.import './todo'
 sequelize.import './sunnyclient'
 sequelize.import './yard'
+sequelize.import './yardroutine'
+sequelize.import './yardroutinejob'
+sequelize.import './singleyardjob'
+sequelize.import './singleclientjob'
+
+
 sequelize.import './geoposition'
 sequelize.import './maplocation'
 

@@ -11,6 +11,7 @@ class Router extends BootStrapAppRouter
   appRoutes:
     'todos': 'list_todos'
     'todos/completed': 'list_completed_todos'
+    'todos/calendar': 'view_calendar'
     'todos/todos/new': 'new_todo'
     'todos/todos/edit/:id': 'edit_todo'
     'todos/todos/view/:id': 'view_todo'

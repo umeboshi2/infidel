@@ -33,6 +33,20 @@ class Controller extends MainController
     super()
     @_make_sidebar()
 
+  _load_view: (vclass, model, objname) ->
+    # FIXME
+    # presume "id" is only attribute there if length is 1
+    #if model.isEmpty() or Object.keys(model.attributes).length is 1
+    if model.isEmpty() or not model.has 'created_at'
+      response = model.fetch()
+      response.done =>
+        @_show_view vclass, model
+      response.fail =>
+        msg = "Failed to load #{objname} data."
+        MessageChannel.request 'danger', msg
+    else
+      @_show_view vclass, model
+    
   
   list_certain_todos: (completed) ->
     @setup_layout_if_needed()
@@ -81,6 +95,14 @@ class Controller extends MainController
       @_load_view MainView, model, 'todo'
     # name the chunk
     , 'todos-view-todo'
+      
+  view_calendar: () ->
+    @setup_layout_if_needed()
+    require.ensure [], () =>
+      View = require './views/todocal'
+      @layout.showChildView 'content', new View
+    # name the chunk
+    , 'todos-view-calendar'
       
       
 module.exports = Controller
