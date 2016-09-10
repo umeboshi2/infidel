@@ -7,6 +7,8 @@ GhostAuth = require './auth'
   GhostCollection } = require './base'
   
 
+get_blog_session = ->
+  JSON.parse localStorage.getItem 'ghost-blog:session'
 
 
 MainChannel = Backbone.Radio.channel 'global'
@@ -59,9 +61,19 @@ start_with_user = (app) ->
     response = user.fetch()
     response.done =>
       app.start()
-    response.fail =>
+    response.fail (xhr, status, errcode) =>
       # FIXME make better failure response
-      console.log "Response failed", response
+      console.log "Response failed", status, errcode
+      #console.log "data", data
+      #console.log 'status', status
+      if errcode is 'Unauthorized'
+        # If we are unauthorized, we have bad tokens
+        # erase them and require login again
+        session = get_blog_session() || {}
+        session.authenticated = {}
+        localStorage.setItem 'ghost-blog:session', JSON.stringify session
+        app.start()
+        
   # check is session.authenticated is {}    
   else if not Object.keys(auth.state).length
     app.start()
@@ -72,7 +84,7 @@ start_with_user = (app) ->
     time = auth.getTime()
     console.log 'auth.refresh', auth.state
     res = auth.refresh()
-    console.log 'res', res
+    #console.log 'res', res
     res.done =>
       data = res.responseJSON
       data.time = time
@@ -82,6 +94,9 @@ start_with_user = (app) ->
       ures = user.fetch()
       ures.done =>
         app.start()
+    res.fail =>
+      # start app without user
+      app.start()
       
 
 module.exports =
