@@ -2,6 +2,7 @@ Backbone = require 'backbone'
 Marionette = require 'backbone.marionette'
 tc = require 'teacup'
 marked = require 'marked'
+{ navigate_to_url } = require 'agate/src/apputil'
 
 MainChannel = Backbone.Radio.channel 'global'
 
@@ -13,8 +14,6 @@ DefaultStaticDocumentTemplate = tc.renderable (post) ->
 
 post_list_item = tc.renderable (post) ->
   tc.div '.listview-list-entry', ->
-    #tc.a href:"#pages/#{post.slug}", post.title
-    tc.a '.btn.btn-default', href:"#pages/#{post.slug}", "View"
     tc.raw marked post.markdown.slice 0, 500
     
 post_list = tc.renderable ->
@@ -24,7 +23,15 @@ post_list = tc.renderable ->
 
 class PostListItem extends Backbone.Marionette.View
   template: post_list_item
+  ui:
+    item: '.listview-list-entry'
+  events:
+    'click @ui.item': 'view_post'
 
+  view_post: (event) ->
+    slug = @model.get 'slug'
+    navigate_to_url "#pages/#{slug}"
+    
 class PostList extends Backbone.Marionette.CompositeView
   template: post_list
   childView: PostListItem
