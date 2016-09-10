@@ -10,7 +10,7 @@ MainChannel = Backbone.Radio.channel 'global'
 SunnyChannel = Backbone.Radio.channel 'sunny'
 
 
-url = '/api/dev/sunny/clients'
+url = '/api/dev/basic/sunnyclients'
 class Client extends GhostModel
   urlRoot: url
     
@@ -18,11 +18,11 @@ class ClientCollection extends GhostCollection
   model: Client
   url: url
 
-  
+
 
 make_dbchannel SunnyChannel, 'client', Client, ClientCollection
   
-url = '/api/dev/sunny/yards'
+url = '/api/dev/basic/yards'
 class Yard extends GhostModel
   urlRoot: url
 
@@ -31,7 +31,6 @@ class YardCollection extends GhostCollection
   url: url
   
 make_dbchannel SunnyChannel, 'yard', Yard, YardCollection
-
 
 module.exports =
   ClientCollection: ClientCollection

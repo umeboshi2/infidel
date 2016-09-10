@@ -1,9 +1,6 @@
 Templates = require '../templates'
 Views = require './base'
 
-    
-
-
 
 YardItemTemplate = Templates.base_item_template 'yard'
         

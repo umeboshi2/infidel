@@ -14,7 +14,6 @@ SunnyChannel = Backbone.Radio.channel 'sunny'
 layout_template = tc.renderable () ->
   tc.div '#main-content.col-sm-12'
 
-
 class AppletLayout extends Backbone.Marionette.View
   template: layout_template
   regions: ->
@@ -69,10 +68,12 @@ class Controller extends MainController
     require.ensure [], () =>
       YardView = require './views/yardview'
       model = SunnyChannel.request 'get-yard', yard_id
-      if model.has 'name'
+      if model.has 'sunnyclient'
         @_show_edit_client YardView, model
       else
-        response = model.fetch()
+        response = model.fetch
+          data:
+            "include[]": ['sunnyclient']
         response.done =>
           @_show_edit_client YardView, model
         response.fail =>
