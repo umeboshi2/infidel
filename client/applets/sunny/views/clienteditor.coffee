@@ -6,7 +6,8 @@ Backbone = require 'backbone'
 BootstrapFormView = require 'agate/src/bootstrap_formview'
 
 { navigate_to_url
-  make_field_input_ui } = require 'agate/src/apputil'
+  make_field_input_ui
+  capitalize } = require 'agate/src/apputil'
 
 tc = require 'teacup'
 { make_field_input
@@ -35,8 +36,12 @@ class BaseClientEditor extends BootstrapFormView
   
   updateModel: ->
     for field in @fieldList.concat ['description']
-      console.log 'field', field, @ui[field].val()
-      @model.set field, @ui[field].val()
+      value = @ui[field].val()
+      console.log 'field', field, value
+      if field is 'fullname' and not value
+        console.log 'no fullname here.....'
+        value = capitalize @model.get 'name' 
+      @model.set field, value
     # update other fields
     
   onSuccess: (model) ->
