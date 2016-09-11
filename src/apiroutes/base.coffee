@@ -37,19 +37,9 @@ hasUserAuthEpilog = (req, res, context) ->
           message: 'Unauthorized'
         resolve context.stop
 
-routemap =
-  clients: 'client'
-  yards: 'yard'
-  todos: 'todo'
-  yardroutines: 'yardroutine'
-  sunnyclients: "sunnyclient"
-  sitedocuments: 'document'
-
-  
 module.exports =
   hasUserAuth: hasUserAuth
   hasUserAuthEpilog: hasUserAuthEpilog
-  routemap: routemap
   
   
 
