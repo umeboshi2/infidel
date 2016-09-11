@@ -7,7 +7,7 @@ Backbone = require 'backbone'
 
 ResourceChannel = Backbone.Radio.channel 'resources'
 
-apipath = "/api/dev/epi/sitedocuments"
+apipath = "/api/dev/basic/sitedocuments"
 
 class Document extends GhostModel
   urlRoot: apipath
