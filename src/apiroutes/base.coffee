@@ -1,5 +1,4 @@
 Promise = require 'bluebird'
-send = require 'send'        
 express = require 'express'
 
 ghost_auth = require 'ghost/core/server/middleware/auth'
