@@ -16,14 +16,14 @@ SunnyChannel = Backbone.Radio.channel 'sunny'
 
 YardForm = tc.renderable (model) ->
   make_field_input('name')(model)
-  #make_field_input('location_id')(model)
+  #make_field_input('sunnyclient_id')(model)
   for field in ['description', 'jobdetails']
     make_field_textarea(field)(model)
   tc.input '.btn.btn-default', type:'submit', value:"Submit"
   tc.div '.spinner.fa.fa-spinner.fa-spin'
   
 class BaseYardEditor extends BootstrapFormView
-  #fieldList: ['name', 'location_id']
+  #fieldList: ['name', 'sunnyclient_id']
   fieldList: ['name']
   ui: ->
     uiobject = make_field_input_ui @fieldList
@@ -41,7 +41,8 @@ class BaseYardEditor extends BootstrapFormView
     #console.log "model sunnyclient_id", @model.get 'sunnyclient_id'
 
   afterSuccess: ->
-    null
+    controller = SunnyChannel.request 'main-controller'
+    controller.view_yard @model.id
       
   onSuccess: (model) ->
     name = model.get 'name'
@@ -71,6 +72,10 @@ class NewYardView extends BaseYardEditor
     yards = SunnyChannel.request 'yard-collection'
     yards.add @model
     super
+    
+  afterSuccess: ->
+    navigate_to_url "#sunny/yards/view/#{@model.id}"
+      
     
 class EditYardView extends BaseYardEditor
   template: YardForm
