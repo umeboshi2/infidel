@@ -12,16 +12,15 @@ db = {}
 sequelize.import './userconfig'
 sequelize.import './document'
 sequelize.import './todo'
+sequelize.import './geoposition'
+sequelize.import './maplocation'
+
 sequelize.import './sunnyclient'
 sequelize.import './yard'
 sequelize.import './yardroutine'
 sequelize.import './yardroutinejob'
 sequelize.import './singleyardjob'
 sequelize.import './singleclientjob'
-
-
-sequelize.import './geoposition'
-sequelize.import './maplocation'
 
 # setup associations
 sql = sequelize
@@ -34,12 +33,15 @@ sql = sequelize
 sql.models.sunnyclient.hasMany sql.models.yard
 sql.models.yard.belongsTo sql.models.sunnyclient
 
+sql.models.yard.belongsTo sql.models.geoposition,
+  foreignKey: 'location_id'
+  targetKey: 'id'
+  
+
 
 #sql.models.yard.belongsTo sql.models.geoposition,
 #  foreignKey: 'location_id'
 #  targetKey: 'id'
-
-
 
 sql.models.maplocation.belongsTo sql.models.geoposition
 

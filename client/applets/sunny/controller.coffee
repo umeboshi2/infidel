@@ -73,7 +73,7 @@ class Controller extends MainController
       else
         response = model.fetch
           data:
-            "include[]": ['sunnyclient']
+            "include[]": ['sunnyclient', 'geoposition']
         response.done =>
           @_show_edit_client YardView, model
         response.fail =>
