@@ -44,7 +44,7 @@ routemap =
   todos: 'todo'
   yardroutines: 'yardroutine'
   sunnyclients: "sunnyclient"
-
+  sitedocuments: 'document'
 
   
 module.exports =

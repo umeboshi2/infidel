@@ -19,10 +19,6 @@ basicmodel = require './basicmodel'
 
         
 setup = (app) ->
-  # FIXME epilogue can only use one router/app
-  epilogRoutes = require './epilogroutes'
-  app.use "#{APIPATH}/epi", epilogRoutes
-  
   app.use APIPATH, miscApi
   app.use "#{APIPATH}/basic", basicmodel
 
