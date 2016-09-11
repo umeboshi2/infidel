@@ -24,6 +24,12 @@ side_bar_data = new Backbone.Model
     }
     ]
 
+# FIXME use a better name
+rbool =
+  true: 1
+  false: 0
+  
+
 class Controller extends MainController
   sidebarclass: SidebarView
   sidebar_model: side_bar_data
@@ -66,11 +72,11 @@ class Controller extends MainController
 
   list_completed_todos: () ->
     # FIXME - fix rest inferface to use booleans
-    @list_certain_todos 1
+    @list_certain_todos rbool.true
 
   list_todos: () ->
     # FIXME - fix rest inferface to use booleans
-    @list_certain_todos 0
+    @list_certain_todos rbool.false
 
   new_todo: () ->
     @setup_layout_if_needed()
