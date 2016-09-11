@@ -4,8 +4,7 @@ http = require 'http'
 
 express = require 'express'
 gzipStatic = require 'connect-gzip-static'
-# FIXME start using this
-ensureLogin = require 'connect-ensure-login'
+favicon = require 'serve-favicon'
 
 passport = require 'passport'
 
@@ -25,6 +24,7 @@ HOST = process.env.NODE_IP or 'localhost'
 
 # create express app 
 app = express()
+app.use favicon path.join __dirname, '../assets/favicon.ico'
 
 # FIXME
 #kdb = require './kmodels'
@@ -102,10 +102,9 @@ setup_after_ghost = (ghost) ->
 
 
   server = http.createServer app
-  sql.sync()
-    .then ->
-      server.listen PORT, HOST, -> 
-        console.log "Infidel server running on #{HOST}:#{PORT}."
+  sql.sync().then ->
+    server.listen PORT, HOST, -> 
+      console.log "Infidel server running on #{HOST}:#{PORT}."
 
 
 bootghost = require('./bootghost')
