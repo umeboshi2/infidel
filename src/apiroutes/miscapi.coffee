@@ -34,32 +34,6 @@ router.put "/dbadmin", hasUserAuth, (req, res, next) ->
     .then res.json
       result: 'success'
 
-router.get "/sunny/funny/clients", hasUserAuth, (req, res, next) ->
-  client = sql.models.sunnyclient
-  client.findAndCountAll().then (result) ->
-    res.json result
-
-router.get "/sunny/funny/todocal", hasUserAuth, (req, res, next) ->
-  todo = sql.models.todo
-  where =
-    created_at:
-      $gte: req.query.start
-    updated_at:
-      $lte: req.query.end
-  todo.findAll
-    where: where
-  .then (result) ->
-    items = []
-    for todo in result
-      item =
-        id: todo.id
-        start: todo.created_at
-        end: todo.created_at
-        title: todo.name
-        completed: todo.completed
-      items.push item
-    res.json items
-        
 router.get "/current-user", hasUserAuth, (req, res, next) ->
   user = null
   if req?.user
