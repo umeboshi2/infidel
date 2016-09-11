@@ -14,5 +14,6 @@ module.exports =
     yardroutines: 'yardroutine'
     sunnyclients: 'sunnyclient'
     sitedocuments: 'document'
-
+    geopositions: 'geoposition'
+    
     

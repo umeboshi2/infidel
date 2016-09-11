@@ -1,11 +1,13 @@
 Backbone = require 'backbone'
 
 { make_dbchannel } = require 'agate/src/basecrudchannel'
+{ get_model } = require 'agate/src/apputil'
 
 GpsChannel = Backbone.Radio.channel 'gps'
 
 { GhostModel
   GhostCollection } = require '../ghost/base'
+  
 make_dbchannel = (channel, objname, modelClass, collectionClass) ->
   collection = new collectionClass
   channel.reply "#{objname}-collection", ->
@@ -18,7 +20,7 @@ make_dbchannel = (channel, objname, modelClass, collectionClass) ->
     get_model collection, id
 
 
-url = '/api/dev/mappy/geopositions'
+url = '/api/dev/basic/geopositions'
 class GeoPosition extends GhostModel
   urlRoot: url
 
