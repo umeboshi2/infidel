@@ -1,9 +1,10 @@
 {
-  "admin.js": "admin-6ee1c45e2b2c12a829d1.js",
-  "agate.js": "agate-e539c88badd955f8bf3a.js",
-  "dbdocs-view-edit-page.js": "1.dbdocs-view-edit-page-c67e6c36ab0a50eec296.js",
-  "frontdoor-main-view.js": "0.frontdoor-main-view-f6665b74ff079fd5c1d2.js",
-  "index.js": "index-8f355d9d242d9862503d.js",
-  "sunny.js": "sunny-637cbfb0dab1e4d846c8.js",
-  "vendor.js": "vendor-79d8ad8da3992bd4d6f0.js"
+  "admin.js": "admin-583bc69968ccd1664713.js",
+  "agate.js": "agate-96aa9f1716b5fb02d2bc.js",
+  "dbdocs-view-edit-page.js": "1.dbdocs-view-edit-page-f734c10393ed75e8be01.js",
+  "frontdoor-main-view.js": "0.frontdoor-main-view-e4e1197284efba110961.js",
+  "index.js": "index-350a0738f6326147f203.js",
+  "sunny.js": "sunny-4259cb524359b446e46a.js",
+  "todos-view-calendar.js": "2.todos-view-calendar-20738b156672d3841fd4.js",
+  "vendor.js": "vendor-91bbf792474c6c6010f2.js"
 }
