@@ -9,6 +9,7 @@ require 'leaflet/dist/leaflet.css'
 
 MainChannel = Backbone.Radio.channel 'global'
 SunnyChannel = Backbone.Radio.channel 'sunny'
+GpsChannel = Backbone.Radio.channel 'gps'
 
 default_mapview_style = 'height:20em;'
 fs_mapview_style = 'position: absolute; top: 0; right: 0; bottom: 0; left: 0;'
@@ -76,9 +77,10 @@ class MapView extends Backbone.Marionette.View
     layer.addTo @Map
     console.log "MAP, LAYER", @Map, layer
     yards = SunnyChannel.request 'yard-collection'
-    response = yards.fetch()
+    positions = GpsChannel.request 'position-collection'
+    response = positions.fetch()
     response.done =>
-      for model in yards.models
+      for model in positions.models
         atts = model.attributes
         if atts.latitude 
           loc = [atts.latitude, atts.longitude]
