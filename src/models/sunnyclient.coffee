@@ -4,7 +4,9 @@ module.exports = (sequelize, DataTypes) ->
       type: DataTypes.STRING
       unique: true
     fullname:
-      type: DataTypes.TEXT
+      type: DataTypes.STRING
+    email:
+      type: DataTypes.STRING
     description:
       type: DataTypes.TEXT
   ,
