@@ -14,25 +14,57 @@ url = '/api/dev/basic/sunnyclients'
 class Client extends GhostModel
   urlRoot: url
     
-class ClientCollection extends GhostCollection
+class Clients extends GhostCollection
   model: Client
   url: url
 
 
 
-make_dbchannel SunnyChannel, 'client', Client, ClientCollection
+make_dbchannel SunnyChannel, 'client', Client, Clients
   
 url = '/api/dev/basic/yards'
 class Yard extends GhostModel
   urlRoot: url
 
-class YardCollection extends GhostCollection
+class Yards extends GhostCollection
   model: Yard
   url: url
   
-make_dbchannel SunnyChannel, 'yard', Yard, YardCollection
+make_dbchannel SunnyChannel, 'yard', Yard, Yards
+
+url = '/api/dev/basic/yardroutines'
+class YardRoutine extends GhostModel
+  urlRoot: url
+  defaults:
+    frequency: 14
+    leeway: 3
+    rate: 50
+    active: true
+    
+
+class YardRoutines extends GhostCollection
+  model: YardRoutine
+  url: url
+
+make_dbchannel SunnyChannel, 'yardroutine', YardRoutine, YardRoutines
+  
+
+
+url = '/api/dev/basic/yardroutinejobs'
+class YardRoutineJob extends GhostModel
+  urlRoot: url
+
+class YardRoutineJobs extends GhostCollection
+  model: YardRoutineJob
+  url: url
+
+make_dbchannel SunnyChannel, 'yardroutinejob', YardRoutineJob, YardRoutineJobs
+
 
 module.exports =
-  ClientCollection: ClientCollection
-  YardCollection: YardCollection
+  Clients: Clients
+  Yards: Yards
+  YardRoutines: YardRoutines
+  YardRoutineJobs: YardRoutineJobs
+  
 

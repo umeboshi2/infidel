@@ -89,6 +89,8 @@ class Router extends BootStrapAppRouter
 
     'sunny/yards/add/:client_id': 'add_yard'
     'sunny/yards/view/:id': 'view_yard'
+
+    'sunny/yards/routines/:yard_id': 'yard_routines'
     
         
 MainChannel.reply 'applet:sunny:route', () ->

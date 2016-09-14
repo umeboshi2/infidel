@@ -81,6 +81,9 @@ class Controller extends MainController
     # name the chunk
     , 'sunny-view-yard-view'
 
+  yard_routines: (yard_id) ->
+    console.log 'yard_routines', yard_id
+    
   _show_edit_client: (vclass, model) ->
     view = new vclass
       model: model
