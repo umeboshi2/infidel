@@ -26,6 +26,16 @@ router.get '/:models', (req, res) ->
   .then (result) ->
     res.json result
 
+router.get '/:models/include', (req, res) ->
+  includes = []
+  for rel of req.ModelClass.associations
+    includes.push req.ModelClass.associations[rel]
+  req.ModelClass.findAll
+    where: req.query
+    include: includes
+  .then (result) ->
+    res.json result
+
 router.post '/:models', (req, res) ->
   console.log 'body---->', req.body
   # FIXME sanitize body
