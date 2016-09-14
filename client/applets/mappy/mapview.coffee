@@ -6,6 +6,8 @@ Leaflet = require 'leaflet'
 require 'leaflet/dist/leaflet.css'
 
 { navigate_to_url } = require 'agate/src/apputil'
+{ GhostModel
+  GhostCollection } = require '../../ghost/base'
 
 MainChannel = Backbone.Radio.channel 'global'
 SunnyChannel = Backbone.Radio.channel 'sunny'
@@ -60,8 +62,41 @@ class MapView extends Backbone.Marionette.View
       
     
   addYardMarkers: ->
-    null
+    yards = SunnyChannel.request 'yard-collection'
+    fullyards = new GhostCollection
+    #  model: yards.model
+    #  url: ->
+    #    "#{yards.url}/include"
+    fullyards.model = yards.model
+    fullyards.url = "#{yards.url}/include"
+    response = fullyards.fetch()
+    response.done =>
+      for model in fullyards.models
+        do (model) =>
+          atts = model.attributes.geoposition
+          if atts.latitude 
+            loc = [atts.latitude, atts.longitude]
+            marker = Leaflet.marker loc,
+              icon: myicon
+              url: "#sunny/yards/view/#{atts.id}"
+              title: model.attributes.name
+            marker.on 'click', ->
+              navigate_to_url "#sunny/yards/view/#{model.id}"
+            marker.addTo @Map    
     
+  addPositionMarkers: ->
+    positions = GpsChannel.request 'position-collection'
+    response = positions.fetch()
+    response.done =>
+      for model in positions.models
+        atts = model.attributes
+        if atts.latitude 
+          loc = [atts.latitude, atts.longitude]
+          marker = Leaflet.marker loc,
+            icon: myicon
+            url: "#sunny/yards/view/#{atts.id}"
+          console.log "marker location", loc, atts.id
+          marker.addTo @Map    
     
   onDomRefresh: ->
     @Map = Leaflet.map 'map-view'
@@ -76,19 +111,9 @@ class MapView extends Backbone.Marionette.View
     layer = Leaflet.tileLayer 'http://{s}.tile.osm.org/{z}/{x}/{y}.png'
     layer.addTo @Map
     console.log "MAP, LAYER", @Map, layer
-    yards = SunnyChannel.request 'yard-collection'
-    positions = GpsChannel.request 'position-collection'
-    response = positions.fetch()
-    response.done =>
-      for model in positions.models
-        atts = model.attributes
-        if atts.latitude 
-          loc = [atts.latitude, atts.longitude]
-          marker = Leaflet.marker loc,
-            icon: myicon
-            url: "#sunny/yards/view/#{atts.id}"
-          console.log "marker location", loc, atts.id
-          marker.addTo @Map
+    #@addPositionMarkers()
+    @addYardMarkers()
+    
       
   getCenter: (event) =>
     console.log @Map.getCenter()
