@@ -2,8 +2,8 @@
 Marionette = require 'backbone.marionette'
 prepare_app = require 'agate/src/app-prepare'
 
-AppModel = require './base-appmodel'
-#AppModel.set 'applets',
+appmodel = require './base-appmodel'
+#appmodel.set 'applets',
 applets = 
   [
     {
@@ -37,11 +37,11 @@ applets =
       url: '#mappy'
     }
   ]
-AppModel.set 'applets', applets
+appmodel.set 'applets', applets
 
-brand = AppModel.get 'brand'
+brand = appmodel.get 'brand'
 brand.url = '#'
-AppModel.set brand: brand
+appmodel.set brand: brand
   
 MainChannel = Backbone.Radio.channel 'global'
 MessageChannel = Backbone.Radio.channel 'messages'
@@ -66,16 +66,16 @@ applet_menus = [
   }
   ]
 
-AppModel.set 'applet_menus', applet_menus
+appmodel.set 'applet_menus', applet_menus
 
 #applets = {}
-#for applet in AppModel.get 'applets'
+#for applet in appmodel.get 'applets'
 #  applets[applet.appname] = applet
   
 
 # use a signal to request appmodel
 MainChannel.reply 'main:app:appmodel', ->
-  AppModel
+  appmodel
 
 ######################
 # require applets
@@ -91,7 +91,7 @@ require '../applets/todos/main'
 
 #app = new Marionette.Application()
 
-app = prepare_app AppModel
+app = prepare_app appmodel
 
 if __DEV__
   # DEBUG attach app to window

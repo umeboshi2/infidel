@@ -3,7 +3,7 @@ tc = require 'teacup'
 { navbar_collapse_button
   dropdown_toggle } = require 'agate/src/templates/buttons'
 
-nav_pt_content = tc.renderable (appmodel) ->
+nav_pt_content_orig = tc.renderable (appmodel) ->
   tc.div ".#{appmodel.container or 'container'}", ->
     tc.div '.navbar-header', ->
       navbar_collapse_button 'navbar-view-collapse'
@@ -31,17 +31,28 @@ nav_pt_content = tc.renderable (appmodel) ->
       tc.ul '#user-menu.nav.navbar-nav.navbar-right'
       tc.div '#form-search-container'
 
+nav_pt_content = tc.renderable (appmodel) ->
+  tc.div ".#{appmodel.container or 'container'}", ->
+    tc.div '.navbar-header', ->
+      navbar_collapse_button 'navbar-view-collapse'
+      tc.a '.navbar-brand', href:appmodel.brand.url, appmodel.brand.name
+    tc.div '#navbar-view-collapse.collapse.navbar-collapse', ->
+      tc.ul '#applet-menus.nav.navbar-nav.nav-pills'
+      tc.ul '#user-menu.nav.navbar-nav.navbar-right'
+      tc.div '#form-search-container'
+
 navbar_template = tc.renderable (appmodel) ->
   #tc.nav '#navbar-view.navbar.navbar-static-top.navbar-inverse',
   tc.nav '#navbar-view.navbar.navbar-static-top.navbar-default',
   xmlns:'http://www.w3.org/1999/xhtml', 'xml:lang':'en',
   role:'navigation', ->
-    nav_pt_content appmodel
-    
+    nav_pt_content_orig appmodel
+
 class NavbarView extends Backbone.Marionette.View
   template: navbar_template
   regions:
     #navbarview: '#navbar-view'
+    appletmenus: '#applet-menus'
     usermenu: '#user-menu'
     mainmenu: '#main-menu'
     

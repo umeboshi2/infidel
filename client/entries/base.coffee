@@ -1,6 +1,7 @@
 $ = require 'jquery'
 Backbone = require 'backbone'
 Marionette = require 'backbone.marionette'
+tc = require 'teacup'
 
 #if window.__agent
 #  console.warn '__agent is present'
@@ -36,6 +37,28 @@ if __DEV__
   #FIXME
   window.dchnnl = DocChannel
 
+
+
+class AppletMenuView extends Backbone.Marionette.View
+  templateContext: ->
+    applets: @applets
+    
+  template: tc.renderable (entry) ->
+    if entry?.applets
+      tc.li '.dropdown', ->
+        tc.a '.dropdown-toggle', 'data-toggle':'dropdown', ->
+          tc.text entry.label
+          tc.b '.caret'
+        tc.ul '.dropdown-menu', ->
+          for appname in entry.applets
+            tc.li appname:applets[appname].appname, ->
+              tc.a href:applets[appname].url, applets[appname].name
+    else
+      tc.li ->
+        tc.a href:entry.url, entry.label
+    
+
+
 ######################
 # start app setup
 
@@ -63,6 +86,17 @@ MainChannel.on 'mainpage:displayed', ->
   view = new UserMenuView
     model: user
   app = MainChannel.request 'main:app:object'
+  appmodel = MainChannel.request 'main:app:appmodel'
+  
+  #applets = {}
+  #for applet in appmodel.applets
+  #  applets[applet.appname] = applet
+  #for entry in appmodel.applet_menus
+  #  do (entry) ->
+  #    model = new Backbone.Model entry
+      
+      
+    
   navbar = app.getView().getChildView('navbar')
   navbar.showChildView 'usermenu', view
   
