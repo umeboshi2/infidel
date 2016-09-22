@@ -36,7 +36,8 @@ sql.models.yard.belongsTo sql.models.sunnyclient
 sql.models.yard.belongsTo sql.models.geoposition,
   foreignKey: 'location_id'
   targetKey: 'id'
-  
+
+sql.models.yard.hasMany sql.models.yardroutine
 
 
 #sql.models.yard.belongsTo sql.models.geoposition,
