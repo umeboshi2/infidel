@@ -17,18 +17,19 @@ MainChannel = Backbone.Radio.channel 'global'
 MessageChannel = Backbone.Radio.channel 'messages'
 SunnyChannel = Backbone.Radio.channel 'sunny'
 
-ClientForm = tc.renderable (model) ->
-  tc.div '.listview-header', 'Client'
-  for field in ['name', 'fullname']
-    make_field_input(field)(model)
-  make_field_textarea('description')(model)
-  tc.input '.btn.btn-default', type:'submit', value:"Submit"
-  tc.div '.spinner.fa.fa-spinner.fa-spin'
-  
-
-
 class BaseClientEditor extends BootstrapFormView
-  fieldList: ['name', 'fullname']
+  fieldList: ['name', 'fullname', 'email']
+  templateContext: ->
+    fieldList: @fieldList
+    
+  template: tc.renderable (model) ->
+    tc.div '.listview-header', 'Client'
+    for field in model.fieldList
+      make_field_input(field)(model)
+    make_field_textarea('description')(model)
+    tc.input '.btn.btn-default', type:'submit', value:"Submit"
+    tc.div '.spinner.fa.fa-spinner.fa-spin'
+    
   ui: ->
     uiobject = make_field_input_ui @fieldList
     _.extend uiobject, {'description': 'textarea[name="description"]'}
@@ -51,7 +52,6 @@ class BaseClientEditor extends BootstrapFormView
     
 
 class NewClientView extends BaseClientEditor
-  template: ClientForm
   createModel: ->
     SunnyChannel.request 'new-client'
 
@@ -61,8 +61,6 @@ class NewClientView extends BaseClientEditor
     super
     
 class EditClientView extends BaseClientEditor
-  template: ClientForm
-
   # the model should be assigned in the controller
   createModel: ->
     @model

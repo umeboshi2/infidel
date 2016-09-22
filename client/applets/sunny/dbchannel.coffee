@@ -35,12 +35,13 @@ make_dbchannel SunnyChannel, 'yard', Yard, Yards
 url = '/api/dev/basic/yardroutines'
 class YardRoutine extends GhostModel
   urlRoot: url
-  defaults:
+  defaults: ->
     frequency: 14
     leeway: 3
     rate: 50
     active: true
-    
+    routine_date: new Date()
+      
 
 class YardRoutines extends GhostCollection
   model: YardRoutine
@@ -48,7 +49,6 @@ class YardRoutines extends GhostCollection
 
 make_dbchannel SunnyChannel, 'yardroutine', YardRoutine, YardRoutines
   
-
 
 url = '/api/dev/basic/yardroutinejobs'
 class YardRoutineJob extends GhostModel

@@ -13,19 +13,11 @@ tc = require 'teacup'
   NewYardView } = require './yardeditor'
 
 YardLocationView = require './yardlocation'
+YardRoutineView = require './yardroutine'
 
 MainChannel = Backbone.Radio.channel 'global'
 MessageChannel = Backbone.Radio.channel 'messages'
 SunnyChannel = Backbone.Radio.channel 'sunny'
-
-yard_location_text = (position) ->
-  latitude = position.latitude.toPrecision 6
-  longitude = position.longitude.toPrecision 6
-  "#{latitude}, #{longitude}"  
-
-client_link = tc.renderable (model) ->
-  tc.a href:"#sunny/clients/view/#{model.sunnyclient_id}", 'View Client'
-
 
 class NewHeaderView extends Backbone.Marionette.View
   template: tc.renderable (model) ->
@@ -38,14 +30,24 @@ class YardHeaderView extends Backbone.Marionette.View
       tc.text "#{model.sunnyclient.fullname}" || 'client'
 
 class YardViewer extends Backbone.Marionette.View
-  template: tc.renderable (model) ->
+  templateOrig: tc.renderable (model) ->
     tc.div '#yard-header.listview-header'
     tc.div '#location-container.listview-list-entry'
     tc.div '#yard-editor.listview-list-entry'
+    tc.div '#yard-routine.listview-list-entry'
+    
+  template: tc.renderable (model) ->
+    tc.div '#yard-header.listview-header'
+    tc.div '#yard-routine.listview-list-entry'
+    tc.div '#location-container.listview-list-entry'
+    tc.div '#yard-editor.listview-list-entry'
+    
   regions:
     header: '#yard-header'
     location: '#location-container'
     editor: '#yard-editor'
+    routine: '#yard-routine'
+    
     
   _show_viewclass: (region, ViewClass) ->
     view = new ViewClass
@@ -62,7 +64,8 @@ class YardViewer extends Backbone.Marionette.View
     @_show_viewclass 'header', headerClass
     @_show_viewclass 'editor', editorClass
     @_show_viewclass 'location', YardLocationView
-
+    @_show_viewclass 'routine', YardRoutineView
+    
     
     
 module.exports = YardViewer

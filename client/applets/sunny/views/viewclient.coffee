@@ -14,6 +14,8 @@ client_view_template = tc.renderable (model) ->
     tc.br()
     tc.span "Full Name: #{model.fullname}"
     tc.br()
+    tc.span "Email: #{model.email}"
+    tc.br()
     tc.span "Description"
     tc.br()
     tc.div model.description

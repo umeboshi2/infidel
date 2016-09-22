@@ -11,11 +11,9 @@ MainChannel = Backbone.Radio.channel 'global'
 MessageChannel = Backbone.Radio.channel 'messages'
 SunnyChannel = Backbone.Radio.channel 'sunny'
 
-layout_template = tc.renderable () ->
-  tc.div '#main-content.col-sm-12'
-
 class AppletLayout extends Backbone.Marionette.View
-  template: layout_template
+  template: tc.renderable () ->
+    tc.div '#main-content.col-sm-12'
   regions: ->
     region = new SlideDownRegion
       el: '#main-content'
@@ -73,7 +71,8 @@ class Controller extends MainController
       else
         response = model.fetch
           data:
-            "include[]": ['sunnyclient', 'geoposition']
+            #"include[]": ['sunnyclient', 'geoposition']
+            include: '*'
         response.done =>
           @_show_edit_client YardView, model
         response.fail =>
