@@ -100,6 +100,13 @@ Item.belongsToMany Meeting,
     model: sql.models.lgr_meeting_item
   foreignKey: 'item_id'
 
+Attachment = sql.models.lgr_attachments
+Item.hasMany Attachment,
+  as: 'attachments'
+  foreignKey: 'item_id'
+
+
+Attachment.sync()
 Item.sync()
 #console.log "setup second association?"
 #console.log Object.keys Item.associations

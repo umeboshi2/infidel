@@ -40,4 +40,4 @@ module.exports = (sequelize, DataTypes) ->
   tableName: 'lgr_meeting_item'
   defaultScope:
     attributes:
-      exclude: ['createdAt', 'updatedAt']
+      exclude: ['id', 'createdAt', 'updatedAt']

@@ -69,6 +69,26 @@ router.get "/:models/hubcal", (req, res) ->
       cal_events.push item
     res.json cal_events
 
+handle_get_meeting = (req, res, next, options) ->
+  unless options?
+    options =
+      where:
+        id: req.params.id
+      include:
+        model: sql.models.lgr_items
+        as: 'items'
+        include:
+          model: sql.models.lgr_attachments
+          attributes:
+            exclude: ['createdAt', 'updatedAt']
+          as: 'attachments'
+  req.ModelClass.find options
+  .then (meeting) ->
+    #console.log "MEETING ITEMS", meeting.items
+    req.model = meeting
+    next()
+    
+    
 router.param 'id', (req, res, next, value) ->
   options =
     where:
@@ -88,10 +108,15 @@ router.param 'id', (req, res, next, value) ->
         includes.push req.ModelClass.associations[rel]
       options.include = includes
     console.log 'ModelClass', req.ModelClass, options
-  req.ModelClass.find options
-  .then (model) ->
-    req.model = model
-    next()
+  if req.ModelRoute != 'meetings'
+    console.log 'req.ModelRoute', req.ModelRoute
+    req.ModelClass.find options
+    .then (model) ->
+      req.model = model
+      next()
+  else
+    handle_get_meeting req, res, next
+  
     
   
 router.get '/:models/:id', (req, res) ->
