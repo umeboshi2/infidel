@@ -7,6 +7,11 @@ appmodel = require './base-appmodel'
 applets = 
   [
     {
+      appname: 'hubby'
+      name: 'Hubby'
+      url: '#hubby'
+    }
+    {
       appname: 'sunny'
       name: 'Sunny'
       url: '#sunny'
@@ -55,6 +60,11 @@ sunny_entry =
 applet_menus = [
   sunny_entry
   {
+    label: 'Hubby'
+    single_applet: 'hubby'
+    url: '#hubby'
+  }
+  {
     label: 'Blog'
     single_applet: false
     url: '/blog'
@@ -84,8 +94,10 @@ require '../applets/frontdoor/main'
 require '../applets/userprofile/main'
 require '../applets/bumblr/main'
 require '../applets/mappy/main'
+require '../applets/mappy/main'
 
 require '../applets/sunny/main'
+require '../applets/hubby/main'
 require '../applets/dbdocs/main'
 require '../applets/todos/main'
 

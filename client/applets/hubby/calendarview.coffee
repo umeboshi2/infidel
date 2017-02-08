@@ -4,7 +4,8 @@ Marionette = require 'backbone.marionette'
 FullCalendar = require 'fullcalendar'
 
 # FIXME
-require '../../node_modules/fullcalendar/dist/fullcalendar.css'
+#require '../../node_modules/fullcalendar/dist/fullcalendar.css'
+require 'fullcalendar/dist/fullcalendar.css'
 
 HubChannel = Backbone.Radio.channel 'hubby'
 
@@ -49,14 +50,14 @@ class MeetingCalendarView extends Backbone.Marionette.View
     cal = @ui.calendar
     cal.fullCalendar
       header:
-        left: 'month, today'
+        left: 'today'
         center: 'title'
         right: 'prev, next'
       theme: true
       defaultView: 'month'
       eventSources:
         [
-          url: '/hubcal'
+          url: '/api/dev/lgr/meetings/hubcal'
         ]
       eventRender: render_calendar_event
       viewRender: calendar_view_render

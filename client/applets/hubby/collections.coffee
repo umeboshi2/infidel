@@ -4,18 +4,23 @@ Backbone = require 'backbone'
 
 HubChannel = Backbone.Radio.channel 'hubby'
 
+apiroot = '/api/dev/lgr'
+
 class SimpleMeetingModel extends Backbone.Model
+  url: () ->
+    "#{apiroot}/meetings/#{@id}"
 
 class MainMeetingModel extends Backbone.Model
   url: () ->
-    '/rest/v0/main/meeting/' + @id
-  parse: (response) ->
-    response.data
+    "#{apiroot}/meetings/#{@id}"
+  #parse: (response) ->
+  #  response.data
 
     
-class MeetingCollection extends BaseCollection
+class MeetingCollection extends Backbone.Collection
   model: SimpleMeetingModel
-  url: '/rest/v0/main/meeting'
+  url: "#{apiroot}/meetings"
+  
 
 main_meeting_list = new MeetingCollection
 HubChannel.reply 'meetinglist', ->
