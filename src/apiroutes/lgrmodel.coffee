@@ -69,32 +69,8 @@ router.get "/:models/hubcal", (req, res) ->
       cal_events.push item
     res.json cal_events
 
-router.get "/:models/create-cal", (req, res) ->
-  req.ModelClass.findAll
-    where:
-      created_at:
-        $between: [req.query.start, req.query.end]
-  .then (rows) ->
-    cal_events = []
-    for model in rows
-      item =
-        id: model.id
-        start: model.created_at
-        end: model.created_at
-      if 'name' of model
-        item.title = model.name
-      else if 'title' of model
-        item.title = model.title
-      else
-        item.title = "#{req.ModelRoute}-#{item.id}"
-      cal_events.push item
-    res.json cal_events
-
-
 router.param 'id', (req, res, next, value) ->
   options =
-    attributes:
-      exclude: ['createdAt', 'updatedAt']
     where:
       id: req.params.id
   if 'include' of req.query
@@ -103,7 +79,9 @@ router.param 'id', (req, res, next, value) ->
     includes = []
     if req.query.include is '*'
       for rel of req.ModelClass.associations
-        includes.push req.ModelClass.associations[rel]
+        include = req.ModelClass.associations[rel]
+        console.log "rel, include", rel, include
+        includes.push include
       options.include = includes
     else
       for rel in req.query.include

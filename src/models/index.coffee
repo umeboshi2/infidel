@@ -8,6 +8,16 @@ config = require('../config')[env]
 sequelize = new Sequelize(config.database, config.username, config.password, config)
 db = {}
 
+force_sync = (model) ->
+  model.sync
+    force: true
+
+force_sync_models = (models) ->
+  for model in models
+    force_sync model
+    
+  
+
 # import models
 sequelize.import './userconfig'
 sequelize.import './document'
@@ -21,6 +31,28 @@ sequelize.import './yardroutine'
 sequelize.import './yardroutinejob'
 sequelize.import './singleyardjob'
 sequelize.import './singleclientjob'
+
+# import legistar models
+lgrdir = path.join __dirname, 'lgrmodels'
+
+# FIXME fix lgr_item_tags, ignored for now
+ignored_tables = ['lgr_item_tags']
+filtered = fs.readdirSync(lgrdir).filter (file) ->
+  #console.log "DIRNAME", __dirname, file
+  result = false
+  if file.endsWith '.coffee'
+    result = true
+    if file.split('.coffee')[0] in ignored_tables
+      console.log "ignoring", file
+      result = false
+  result
+
+filtered.forEach (file) ->
+  file = file.split('.coffee')[0]
+  console.log "IMPORT", file
+  sequelize.import path.join lgrdir, file
+console.log "===============ALL IMPORTED========================"
+
 
 # setup associations
 sql = sequelize
@@ -46,42 +78,33 @@ sql.models.yard.hasMany sql.models.yardroutine
 
 sql.models.maplocation.belongsTo sql.models.geoposition
 
-#sql.models.userconfig.sync
-#  force: true
-#sql.models.todo.sync
-#  force: true
-#sql.models.document.sync
-#  force: true
-#sql.models.yard.sync
-#  force: true
-#sql.models.geoposition.sync
-#  force: true
-#sql.models.sunnyclient.sync
-#  force: true
-#sql.models.maplocation.sync
-#  force: true
 
-# import legistar tables
+Meeting = sql.models.lgr_meetings
+Item = sql.models.lgr_items
 
-lgrdir = path.join __dirname, 'lgrmodels'
-# FIXME fix lgr_item_tags, ignored for now
-ignored_tables = ['lgr_item_tags']
-filtered = fs.readdirSync(lgrdir).filter (file) ->
-  #console.log "DIRNAME", __dirname, file
-  result = false
-  if file.endsWith '.coffee'
-    result = true
-    if file.split('.coffee')[0] in ignored_tables
-      console.log "ignoring", file
-      result = false
-  result
+# http://stackoverflow.com/a/25072476
+Meeting.belongsToMany Item,
+  as: 'items'
+  through:
+    model: sql.models.lgr_meeting_item
+  foreignKey: 'meeting_id'
 
-filtered.forEach (file) ->
-  file = file.split('.coffee')[0]
-  console.log "IMPORT", file
-  sequelize.import path.join lgrdir, file
-    
+Meeting.sync()
 
+#console.log "setup first association?"
+#console.log Object.keys Meeting.associations
+
+Item.belongsToMany Meeting,
+  as: 'meetings'
+  through:
+    model: sql.models.lgr_meeting_item
+  foreignKey: 'item_id'
+
+Item.sync()
+#console.log "setup second association?"
+#console.log Object.keys Item.associations
+
+  
 #fs.readdirSync(__dirname).filter((file) ->
 #  file.indexOf('.') != 0 and file != 'index.js'
 #).forEach (file) ->
@@ -93,20 +116,6 @@ filtered.forEach (file) ->
 #    db[modelName].associate db
 #  return
 
-# FIXME get this from config
-#sequelize.models.user.findOrCreate
-#  where:
-#    name: 'admin'
-#  defaults:
-#    password: 'admin'
-#    config:
-#      theme: 'BlanchedAlmond'
-#      foo: 'bar'
-#      cat: 'dog'
-#      
-#.then (user, created) ->
-#  return
-  
   
 db.sequelize = sequelize
 db.Sequelize = Sequelize
