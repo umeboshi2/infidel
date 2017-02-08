@@ -46,6 +46,9 @@ setup_after_ghost = (ghost) ->
   db = require './models'
   sql = db.sequelize
 
+  if process.env.NODE_ENV == 'development' and false
+    console.log db
+    
   Middleware.setup app
   
   ApiRoutes = require './apiroutes'
@@ -75,37 +78,23 @@ setup_after_ghost = (ghost) ->
   else
     app.use '/build', gzipStatic(path.join __dirname, '../build')
 
-  auth = (req, res, next) ->
-    #console.log req
-    if req.isAuthenticated()
-      #console.log req
-      next()
-    else
-      res.redirect '/#frontdoor/login'
-    
   auth = require 'ghost/core/server/middleware/auth'
-  console.log auth
 
   app.get '/', pages.make_page 'index'
-  #app.get '/sunny', auth.requiresAuthorizedUser, pages.make_page 'sunny'
   app.get '/sunny', pages.make_page 'sunny'
 
-  admin_auth = (req, res, next) ->
-    if req.isAuthenticated() and req.user.name == 'admin'
-      next()
-    else
-      res.sendStatus(403)
-    
-  app.get '/admin', auth.requiresAuthorizedUser, admin_auth, pages.make_page 'admin'
-
-      
-
-
   server = http.createServer app
-  sql.sync().then ->
-    server.listen PORT, HOST, -> 
+  if process.env.NO_DB_SYNC
+    server.listen PORT, HOST, ->
       console.log "Infidel server running on #{HOST}:#{PORT}."
-
+  else
+    console.log "calling sql.sync()"
+    sql.sync().then ->
+      console.log "sql.sync() finished."
+      server.listen PORT, HOST, -> 
+        console.log "Infidel server running on #{HOST}:#{PORT}."
+    
+    
 
 bootghost = require('./bootghost')
 

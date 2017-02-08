@@ -60,9 +60,27 @@ sql.models.maplocation.belongsTo sql.models.geoposition
 #  force: true
 #sql.models.maplocation.sync
 #  force: true
-  
-  
 
+# import legistar tables
+
+lgrdir = path.join __dirname, 'lgrmodels'
+# FIXME fix lgr_item_tags, ignored for now
+ignored_tables = ['lgr_item_tags']
+filtered = fs.readdirSync(lgrdir).filter (file) ->
+  #console.log "DIRNAME", __dirname, file
+  result = false
+  if file.endsWith '.coffee'
+    result = true
+    if file.split('.coffee')[0] in ignored_tables
+      console.log "ignoring", file
+      result = false
+  result
+
+filtered.forEach (file) ->
+  file = file.split('.coffee')[0]
+  console.log "IMPORT", file
+  sequelize.import path.join lgrdir, file
+    
 
 #fs.readdirSync(__dirname).filter((file) ->
 #  file.indexOf('.') != 0 and file != 'index.js'

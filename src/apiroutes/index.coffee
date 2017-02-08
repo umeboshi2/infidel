@@ -16,12 +16,14 @@ auth = ghost_auth.requiresAuthorizedUser
 
 # model routes
 basicmodel = require './basicmodel'
+lgrmodel = require './lgrmodel'
 
         
 setup = (app) ->
   app.use APIPATH, miscApi
   app.use "#{APIPATH}/basic", basicmodel
-
+  app.use "#{APIPATH}/lgr", lgrmodel
+  
 module.exports =
   setup: setup
   
