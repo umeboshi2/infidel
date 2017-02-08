@@ -29,3 +29,6 @@ node_modules
 /index-dev.html
 .sass-cache
 /build/stats.json
+
+# local auth info
+.auth.coffee
