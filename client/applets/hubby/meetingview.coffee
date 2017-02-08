@@ -2,6 +2,7 @@ Backbone = require 'backbone'
 Marionette = require 'backbone.marionette'
 
 Masonry = require 'masonry-layout'
+tc = require 'teacup'
 
 require 'jquery-ui'
 
@@ -12,9 +13,34 @@ HubChannel = Backbone.Radio.channel 'hubby'
 #################################
 { capitalize } = require 'agate/src/apputil'
 
-tc = require 'teacup'
+
+compare_meeting_item = (a,b) ->
+  if a.item_order < b.item_order
+    return -1
+  if a.item_order > b.item_order
+    return 1
+  return 0
+
+make_meeting_items = (meeting) ->
+  meeting_items = []
+  items = meeting.items
+  for item in meeting.items
+    mitem = item.lgr_meeting_item
+    meeting_items.push item.lgr_meeting_item
+  meeting_items.sort compare_meeting_item
+  meeting_items
+
+make_item_object = (meeting) ->
+  Items = {}
+  for item in meeting.items
+    Items[item.id] = item
+  Items
+  
 
 show_meeting_template = tc.renderable (meeting) ->
+  meeting.meeting_items = make_meeting_items meeting
+  meeting.Items = make_item_object meeting
+  window.meeting = meeting
   tc.div '.hubby-meeting-header', ->
     tc.div '.hubby-meeting-header-agenda', ->
       tc.text 'Agenda: ' + meeting.agenda_status
@@ -23,7 +49,8 @@ show_meeting_template = tc.renderable (meeting) ->
   tc.div '.hubby-meeting-item-list', ->
     agenda_section = 'start'
     for mitem in meeting.meeting_items
-      item = meeting.items[mitem.item_id]
+      item = meeting.Items[mitem.item_id]
+      #console.log "ITEM", item
       if mitem.type != agenda_section and mitem.type
         agenda_section = mitem.type
         section_header = capitalize agenda_section + ' Agenda'
@@ -39,8 +66,10 @@ show_meeting_template = tc.renderable (meeting) ->
             tc.div '.hubby-meeting-item-attachment-marker', 'Attachments'
             tc.div '.hubby-meeting-item-attachments', ->
               for att in item.attachments
+                console.log att
                 tc.div ->
-                  tc.a href:att.url, att.name
+                  url = "http://hattiesburg.legistar.com/#{att.link}"
+                  tc.a href:url, att.name
                   
           
 ##################################################################
@@ -52,7 +81,7 @@ class ShowMeetingView extends Backbone.Marionette.View
   onDomRefresh: () ->
     attachments = $ '.hubby-meeting-item-attachments'
     attachments.hide()
-    attachments.draggable()
+    #attachments.draggable()
     $('.hubby-meeting-item-info').click ->
       $(this).next().toggle()
     $('.hubby-meeting-item-attachment-marker').click ->
