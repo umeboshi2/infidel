@@ -50,4 +50,8 @@ module.exports = (sequelize, DataTypes) ->
       type: DataTypes.DATE
       allowNull: true
       defaultValue: undefined
-  }, tableName: 'lgr_meetings'
+  },
+  tableName: 'lgr_meetings'
+  defaultScope:
+    attributes:
+      exclude: ['createdAt', 'updatedAt']

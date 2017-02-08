@@ -47,4 +47,8 @@ module.exports = (sequelize, DataTypes) ->
       type: DataTypes.BOOLEAN
       allowNull: true
       defaultValue: undefined
-  }, tableName: 'lgr_items'
+  },
+  tableName: 'lgr_items'
+  defaultScope:
+    attributes:
+      exclude: ['createdAt', 'updatedAt']
