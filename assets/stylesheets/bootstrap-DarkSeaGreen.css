@@ -7363,3 +7363,200 @@ button.close {
   border-width: 0.2em;
   border-color: #f1f3f1;
 }
+
+.hubby-meeting-header {
+  -moz-border-radius: 0.5em;
+  -webkit-border-radius: 0.5em;
+  border-radius: 0.5em;
+  background: #bcc2bc;
+  color: #d7dad7;
+  text-align: center;
+  font-size: 1.5em;
+  position: relative;
+}
+
+.hubby-meeting-item {
+  -moz-border-radius: 0.5em;
+  -webkit-border-radius: 0.5em;
+  border-radius: 0.5em;
+  background: #aeb6ae;
+  border-style: solid;
+  border-color: #d7dad7;
+  margin: 0.1em;
+  position: relative;
+}
+
+.hubby-meeting-agenda-header {
+  text-align: center;
+  font-size: 1.1em;
+}
+
+.hubby-meeting-header-agenda {
+  position: absolute;
+  top: 0;
+  left: 0;
+  font-size: 0.5em;
+  margin: 0.5em;
+  font-family: "Play";
+}
+
+.hubby-meeting-header-minutes {
+  position: absolute;
+  top: 0;
+  right: 0;
+  font-size: 0.5em;
+  margin: 0.5em;
+  font-family: "Play";
+}
+
+.hubby-meeting-item-info {
+  font-size: 0.9em;
+  position: relative;
+  background: #bcc2bc;
+}
+
+.hubby-meeting-item-agenda-num {
+  font-size: 0.8em;
+  font-weight: bold;
+  position: relative;
+  top: 0em;
+  left: 0em;
+}
+
+.hubby-meeting-item-fileid {
+  font-size: 0.8em;
+  font-weight: bold;
+  position: absolute;
+  top: 0;
+  right: 0;
+}
+
+.hubby-meeting-item-status {
+  font-family: "Play";
+  font-size: 0.7em;
+  font-weight: bold;
+  position: absolute;
+  top: 0em;
+  width: 100%;
+  text-align: center;
+}
+
+.hubby-meeting-item-text {
+  font-size: 0.8em;
+}
+
+.hubby-meeting-item-attachment-marker {
+  color: #5f3939;
+  background-color: #bcc2bc;
+  border-color: #8b4c39;
+  font-size: 0.8em;
+  font-weight: bold;
+}
+.hubby-meeting-item-attachment-marker:focus, .hubby-meeting-item-attachment-marker.focus {
+  color: #5f3939;
+  background-color: #a1aaa1;
+  border-color: #311b14;
+}
+.hubby-meeting-item-attachment-marker:hover {
+  color: #5f3939;
+  background-color: #a1aaa1;
+  border-color: #603427;
+}
+.hubby-meeting-item-attachment-marker:active, .hubby-meeting-item-attachment-marker.active, .open > .hubby-meeting-item-attachment-marker.dropdown-toggle {
+  color: #5f3939;
+  background-color: #a1aaa1;
+  border-color: #603427;
+}
+.hubby-meeting-item-attachment-marker:active:hover, .hubby-meeting-item-attachment-marker:active:focus, .hubby-meeting-item-attachment-marker:active.focus, .hubby-meeting-item-attachment-marker.active:hover, .hubby-meeting-item-attachment-marker.active:focus, .hubby-meeting-item-attachment-marker.active.focus, .open > .hubby-meeting-item-attachment-marker.dropdown-toggle:hover, .open > .hubby-meeting-item-attachment-marker.dropdown-toggle:focus, .open > .hubby-meeting-item-attachment-marker.dropdown-toggle.focus {
+  color: #5f3939;
+  background-color: #8e998e;
+  border-color: #311b14;
+}
+.hubby-meeting-item-attachment-marker:active, .hubby-meeting-item-attachment-marker.active, .open > .hubby-meeting-item-attachment-marker.dropdown-toggle {
+  background-image: none;
+}
+.hubby-meeting-item-attachment-marker.disabled:hover, .hubby-meeting-item-attachment-marker.disabled:focus, .hubby-meeting-item-attachment-marker.disabled.focus, .hubby-meeting-item-attachment-marker[disabled]:hover, .hubby-meeting-item-attachment-marker[disabled]:focus, .hubby-meeting-item-attachment-marker[disabled].focus, fieldset[disabled] .hubby-meeting-item-attachment-marker:hover, fieldset[disabled] .hubby-meeting-item-attachment-marker:focus, fieldset[disabled] .hubby-meeting-item-attachment-marker.focus {
+  background-color: #bcc2bc;
+  border-color: #8b4c39;
+}
+.hubby-meeting-item-attachment-marker .badge {
+  color: #bcc2bc;
+  background-color: #5f3939;
+}
+
+.hubby-meeting-item-action-marker {
+  font-size: 0.7em;
+  font-weight: bold;
+}
+
+.hubby-action-text {
+  font-size: 0.6em;
+  -moz-border-radius: 5px;
+  -webkit-border-radius: 5px;
+  border-radius: 5px;
+  border-color: #bcc2bc;
+  border-style: solid;
+  border-width: 1px;
+}
+
+.hubby-meeting-item-attachments {
+  font-size: 0.8em;
+  z-index: 1;
+  position: absolute;
+  -moz-border-radius: 5px;
+  -webkit-border-radius: 5px;
+  border-radius: 5px;
+  background: #c6ccc6;
+  border-style: solid;
+  border-color: #8b4c39;
+  border-width: 1px;
+  padding-left: 0.25em;
+  padding-right: 0.25em;
+  padding-bottom: 0.25em;
+}
+
+.hubby-meeting-item-attachments-header {
+  -moz-border-radius-bottomleft: 5px;
+  -webkit-border-bottom-left-radius: 5px;
+  border-bottom-left-radius: 5px;
+  -moz-border-radius-bottomright: 5px;
+  -webkit-border-bottom-right-radius: 5px;
+  border-bottom-right-radius: 5px;
+  text-align: center;
+  background: #c9cec9;
+}
+
+.mini-calendar {
+  width: 20em;
+  margin: 0 auto;
+  font-family: "Droid Sans";
+  font-size: 0.5em;
+  padding: 0.5em;
+}
+.mini-calendar .fc-header td {
+  padding: 0.1em;
+  vertical-align: bottom;
+}
+.mini-calendar .fc-header-title h2 {
+  font-size: 1.1em;
+  font-family: "Cabin";
+  white-space: normal !important;
+}
+.mini-calendar .fc-view-month .fc-event, .mini-calendar .fc-view-agendaWeek .fc-event {
+  font-size: 1em;
+  overflow: hidden;
+  height: 1em;
+  margin: 0.0em;
+}
+.mini-calendar .fc-view-agendaWeek .fc-event-vert {
+  font-size: 0;
+  overflow: hidden;
+  width: 2px !important;
+}
+.mini-calendar .fc-agenda-axis {
+  width: 20px !important;
+  font-size: .7em;
+}
+.mini-calendar .fc-button-content {
+  padding: 0;
+}
