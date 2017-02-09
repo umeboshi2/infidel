@@ -63,10 +63,12 @@ show_meeting_template = tc.renderable (meeting) ->
         tc.div '.hubby-meeting-item-content', ->
           tc.p '.hubby-meeting-item-text', item.title
           if item.attachments != undefined and item.attachments.length
-            tc.div '.hubby-meeting-item-attachment-marker', 'Attachments'
+            marker = "One Attachment"
+            if item.attachments.length > 1
+              marker = "#{item.attachments.length} Attachments"
+            tc.span '.hubby-meeting-item-attachment-marker', marker
             tc.div '.hubby-meeting-item-attachments', ->
               for att in item.attachments
-                console.log att
                 tc.div ->
                   url = "http://hattiesburg.legistar.com/#{att.link}"
                   tc.a href:url, att.name
