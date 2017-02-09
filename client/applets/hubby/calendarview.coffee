@@ -18,21 +18,24 @@ tc = require 'teacup'
 meeting_calendar = tc.renderable () ->
   tc.div '.listview-header', 'Meetings'
   tc.div '#loading', ->
-    tc.h2 'Loading Meetings'
+    tc.h2 ->
+      tc.i '.fa.fa-spinner.fa-spin'
+      tc.text 'Loading Meetings'
   tc.div '#maincalendar'
 #################################
 
 render_calendar_event = (calEvent, element) ->
   calEvent.url = "#hubby/viewmeeting/#{calEvent.id}"
   element.css
-    'font-size' : '0.9em'
+    cursor: 'pointer'
+    'font-size': '0.9em'
 
 calendar_view_render = (view, element) ->
   HubChannel.request 'maincalendar:set-date'
   
 loading_calendar_events = (bool) ->
   loading = $ '#loading'
-  header = $ '.fc-header'
+  header = $ '.fc-toolbar'
   if bool
     loading.show()
     header.hide()
@@ -53,7 +56,7 @@ class MeetingCalendarView extends Backbone.Marionette.View
         left: 'today'
         center: 'title'
         right: 'prev, next'
-      theme: true
+      theme: false
       defaultView: 'month'
       eventSources:
         [
