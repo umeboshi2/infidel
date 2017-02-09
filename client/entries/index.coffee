@@ -3,43 +3,50 @@ Marionette = require 'backbone.marionette'
 prepare_app = require 'agate/src/app-prepare'
 
 appmodel = require './base-appmodel'
-#appmodel.set 'applets',
+
 applets = 
   [
     {
       appname: 'hubby'
       name: 'Hubby'
       url: '#hubby'
+      needUser: false
     }
     {
       appname: 'sunny'
       name: 'Sunny'
       url: '#sunny'
+      needUser: true
     }
     {
       appname: 'bumblr'
       name: 'Bumblr'
       url: '#bumblr'
+      needUser: false
     }
     {
       appname: 'todos'
       name: 'Todos'
       url: '#todos'
+      needUser: true
     }
     {
       appname: 'userprofile'
       name: 'Profile Page'
       url: '#profile'
+      needUser: true
     }
     {
       appname: 'dbdocs'
       name: 'DB Docs'
       url: '#dbdocs'
+      needUser: true
     }
     {
       appname: 'mappy'
       name: 'Map'
       url: '#mappy'
+      needUser: true
     }
   ]
 appmodel.set 'applets', applets
