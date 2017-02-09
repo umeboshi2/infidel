@@ -24,6 +24,8 @@ HubChannel.reply 'maincalendar:get-date', () ->
   
 MainChannel.reply 'applet:hubby:route', () ->
   controller = new Controller MainChannel
+  HubChannel.reply 'view-calendar', () ->
+    controller.mainview()
   router = new Router
     controller: controller
 

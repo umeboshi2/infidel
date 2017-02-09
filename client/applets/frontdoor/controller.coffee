@@ -7,6 +7,7 @@ Marionette = require 'backbone.marionette'
 
 MainChannel = Backbone.Radio.channel 'global'
 MessageChannel = Backbone.Radio.channel 'messages'
+HubChannel = Backbone.Radio.channel 'hubby'
 
 tc = require 'teacup'
 
@@ -72,13 +73,7 @@ class Controller extends MainController
     @setup_layout_if_needed()
     require.ensure [], () =>
       { PostList } = require './views'
-      posts = MainChannel.request 'main:ghost:posts'
-      response = posts.fetch()
-      response.done =>
-        view = new PostList
-          collection: posts
-        @layout.showChildView 'content', view
-    # name the chunk
+      HubChannel.request 'view-calendar'
     , 'frontdoor-main-view'
     
   frontdoor: ->

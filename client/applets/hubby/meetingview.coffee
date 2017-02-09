@@ -42,6 +42,7 @@ show_meeting_template = tc.renderable (meeting) ->
   meeting.Items = make_item_object meeting
   window.meeting = meeting
   tc.div '.hubby-meeting-header', ->
+    tc.text meeting.title
     tc.div '.hubby-meeting-header-agenda', ->
       tc.text 'Agenda: ' + meeting.agenda_status
     tc.div '.hubby-meeting-header-minutes', ->

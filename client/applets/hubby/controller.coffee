@@ -5,6 +5,7 @@ ms = require 'ms'
 
 { MainController } = require 'agate/src/controllers'
 { SlideDownRegion } = require 'agate/src/regions'
+Util = require 'agate/src/apputil'
 
 MainChannel = Backbone.Radio.channel 'global'
 MessageChannel = Backbone.Radio.channel 'messages'
@@ -12,22 +13,51 @@ HubChannel = Backbone.Radio.channel 'hubby'
 
 class AppletLayout extends Backbone.Marionette.View
   template: tc.renderable () ->
-    tc.div '#main-content.col-sm-12'
+    tc.div '.row', ->
+      tc.div  '#main-toolbar.col-sm-12.btn-toolbar'
+          
+    tc.div '.row', ->
+      tc.div '#main-content.col-sm-12'
   regions: ->
     region = new SlideDownRegion
       el: '#main-content'
     region.slide_speed = ms '.01s'
     content: region
+    toolbar: '#main-toolbar'
     
+class ToolbarView extends Backbone.Marionette.View
+  template: tc.renderable () ->
+    tc.div '.btn-group', ->
+      tc.button '#show-calendar-button.btn.btn-default', 'Calendar'
+      tc.button '#list-meetings-button.btn.btn-default', 'List Meetings'
+  ui:
+    show_cal_btn: '#show-calendar-button'
+    list_btn: '#list-meetings-button'
+  events:
+    'click @ui.show_cal_btn': 'show_calendar'
+    'click @ui.list_btn': 'list_meetings'
+
+  show_calendar: ->
+    Util.navigate_to_url '#hubby'
+
+  list_meetings: ->
+    Util.navigate_to_url '#hubby/listmeetings'
+    
+      
 class Controller extends MainController
   layoutClass: AppletLayout
+  setup_layout_if_needed: ->
+    super()
+    console.log 'layout', @layout
+    @layout.showChildView 'toolbar', new ToolbarView
+    
   mainview: ->
     @setup_layout_if_needed()
     console.log "mainview"
     require.ensure [], () =>
       MeetingCalendarView  = require './calendarview'
       view = new MeetingCalendarView
-      @_show_content view
+      @layout.showChildView 'content', view
     # name the chunk
     , 'hubby-mainview'
 
