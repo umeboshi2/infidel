@@ -1,4 +1,5 @@
 BootStrapAppRouter = require 'agate/src/bootstrap_router'
+{ create_new_approuter } = require 'agate/src/apputil'
 
 require './dbchannel'
 Controller = require './controller'
@@ -14,14 +15,6 @@ class Router extends BootStrapAppRouter
     #'mappy/mappy/edit/:id': 'edit_todo'
     #'mappy/mappy/view/:id': 'view_todo'
         
-    
 MainChannel.reply 'applet:mappy:route', () ->
-  controller = new Controller MainChannel
-  MappyChannel.reply 'main-controller', ->
-    controller
-  router = new Router
-    controller: controller
-  if __DEV__
-    #console.log controller
-    window.scontroller = controller
+  create_new_approuter MappyChannel, Router, Controller
   
