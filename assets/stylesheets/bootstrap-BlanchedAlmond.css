@@ -7368,8 +7368,8 @@ button.close {
   -moz-border-radius: 0.5em;
   -webkit-border-radius: 0.5em;
   border-radius: 0.5em;
-  background: #d7cfc2;
-  color: #ebe7e1;
+  background: #b8aa95;
+  color: #5f3939;
   text-align: center;
   font-size: 1.5em;
   position: relative;
@@ -7451,6 +7451,7 @@ button.close {
   border-color: #8b4c39;
   font-size: 0.8em;
   font-weight: bold;
+  cursor: pointer;
 }
 .hubby-meeting-item-attachment-marker:focus, .hubby-meeting-item-attachment-marker.focus {
   color: #5f3939;
