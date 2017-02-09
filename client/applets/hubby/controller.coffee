@@ -15,7 +15,6 @@ class AppletLayout extends Backbone.Marionette.View
   template: tc.renderable () ->
     tc.div '.row', ->
       tc.div  '#main-toolbar.col-sm-12.btn-toolbar'
-          
     tc.div '.row', ->
       tc.div '#main-content.col-sm-12'
   regions: ->
@@ -28,8 +27,10 @@ class AppletLayout extends Backbone.Marionette.View
 class ToolbarView extends Backbone.Marionette.View
   template: tc.renderable () ->
     tc.div '.btn-group', ->
-      tc.button '#show-calendar-button.btn.btn-default', 'Calendar'
-      tc.button '#list-meetings-button.btn.btn-default', 'List Meetings'
+      tc.button '#show-calendar-button.btn.btn-default', ->
+        tc.i '.fa.fa-calendar', ' Calendar'
+      tc.button '#list-meetings-button.btn.btn-default', ->
+        tc.i '.fa.fa-list', ' List Meetings'
   ui:
     show_cal_btn: '#show-calendar-button'
     list_btn: '#list-meetings-button'
