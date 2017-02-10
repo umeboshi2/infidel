@@ -40,16 +40,50 @@ make_agenda_link = (meeting, dtype='A') ->
   qry = "M=#{dtype}&ID=#{meeting.id}&GUID=#{meeting.guid}"
   return "http://hattiesburg.legistar.com/View.ashx?#{qry}"
 
-show_meeting_template = tc.renderable (meeting) ->
-  meeting.meeting_items = make_meeting_items meeting
-  meeting.Items = make_item_object meeting
-  window.meeting = meeting
-  tc.div '.hubby-meeting-header', ->
-    tc.text meeting.title
-    tc.div '.hubby-meeting-header-agenda', ->
-      tc.a href:make_agenda_link(meeting), "Agenda: #{meeting.agenda_status}"
-    tc.div '.hubby-meeting-header-minutes', ->
-      tc.a href:make_agenda_link(meeting, 'M'), "Minutes: #{meeting.minutes_status}"
+make_meeting_header = tc.renderable (meeting) ->
+  tc.div '.media.hubby-meeting-header', ->
+    tc.div '.media-left.media-middle', ->
+      tc.div '.media-object.hubby-meeting-header-agenda', ->
+        tc.i '.fa.fa-newspaper-o'
+        tc.a href:make_agenda_link(meeting), "Agenda: #{meeting.agenda_status}"
+    tc.div '.media-body.hubby-meeting-header-text-foo', ->
+      tc.h3 '.text-center', "#{meeting.title}"
+    tc.div '.media-right.media-middle', ->
+      tc.div '.media-object.hubby-meeting-header-minutes', ->
+        tc.i '.fa.fa-commenting-o'
+        tc.a href:make_agenda_link(meeting, 'M'), "Minutes: #{meeting.minutes_status}"
+
+make_attachments_section = tc.renderable (item) ->
+  if item.attachments != undefined and item.attachments.length
+    marker = "One Attachment"
+    if item.attachments.length > 1
+      marker = "#{item.attachments.length} Attachments"
+    tc.span '.btn.hubby-meeting-item-attachment-marker', marker
+    tc.div '.hubby-meeting-item-attachments', ->
+      tc.div '.hubby-meeting-item-attachments-header', 'Attachments'
+      for att in item.attachments
+        tc.div ->
+          url = "http://hattiesburg.legistar.com/#{att.link}"
+          tc.a href:url, att.name
+  
+make_actions_section = tc.renderable (item) ->
+  if item.actions? and item.actions.length
+    marker = 'Action'
+    if item.actions.length > 1
+      marker = 'Actions'
+    tc.span '.btn.hubby-meeting-item-action-marker', marker
+    tc.div '.hubby-meeting-item-actions', ->
+      for action in item.actions
+        nl = /\r?\n/
+        lines = action.action_text.split nl
+        tc.div '.hubby-action-text', width:80, ->
+          #tc.br()
+          tc.br()
+          tc.hr()
+          for line in lines
+            tc.p line
+  
+make_meeting_item_list = tc.renderable (meeting) ->
   tc.div '.hubby-meeting-item-list', ->
     agenda_section = 'start'
     for mitem in meeting.meeting_items
@@ -66,30 +100,19 @@ show_meeting_template = tc.renderable (meeting) ->
           tc.div '.hubby-meeting-item-status', item.status
         tc.div '.hubby-meeting-item-content', ->
           tc.p '.hubby-meeting-item-text', item.title
-          if item.attachments != undefined and item.attachments.length
-            marker = "One Attachment"
-            if item.attachments.length > 1
-              marker = "#{item.attachments.length} Attachments"
-            tc.span '.hubby-meeting-item-attachment-marker', marker
-            tc.div '.hubby-meeting-item-attachments', ->
-              tc.div '.hubby-meeting-item-attachments-header', 'Attachments'
-              for att in item.attachments
-                tc.div ->
-                  url = "http://hattiesburg.legistar.com/#{att.link}"
-                  tc.a href:url, att.name
-          if item.actions? and item.actions.length
-            marker = 'Action'
-            if item.actions.length > 1
-              marker = 'Actions'
-            tc.span '.hubby-meeting-item-action-marker', marker
-            tc.div '.hubby-meeting-item-actions', ->
-              for action in item.actions
-                nl = /\r?\n/
-                lines = action.action_text.split nl
-                tc.div '.hubby-action-text', width:80, ->
-                  for line in lines
-                    tc.p line
+          tc.div '.btn-group', ->
+            make_attachments_section item
+            make_actions_section item
+
           
+show_meeting_template = tc.renderable (meeting) ->
+  meeting.meeting_items = make_meeting_items meeting
+  meeting.Items = make_item_object meeting
+  window.meeting = meeting
+  #tc.div '.hubby-meeting-header', ->
+  make_meeting_header meeting
+  make_meeting_item_list meeting
+  
 ##################################################################
 #################################
 
