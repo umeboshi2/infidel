@@ -105,7 +105,19 @@ Item.hasMany Attachment,
   as: 'attachments'
   foreignKey: 'item_id'
 
+Action = sql.models.lgr_actions
+Item.belongsToMany Action,
+  as: 'actions'
+  through:
+    model: sql.models.lgr_item_action
+  foreignKey: 'item_id'
 
+Action.belongsToMany Item,
+  as: 'items'
+  through:
+    model: sql.models.lgr_item_action
+  foreignKey: 'action_id'
+  
 Attachment.sync()
 Item.sync()
 #console.log "setup second association?"
