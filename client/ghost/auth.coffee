@@ -64,7 +64,8 @@ class GhostAuth extends Marionette.Object
     @state
 
   save: (state) ->
-    console.log "Saving state", state
+    #console.log "Saving state", state
+    
     # state must have time set in it to evaluate expires_at
     starttime = state.time
     # delete time property to keep session.authenticated
@@ -78,7 +79,7 @@ class GhostAuth extends Marionette.Object
     state.authenticator = 'authenticator:oauth2'
     # save refresh token
     unless state?.refresh_token
-      console.log 'saving refresh token'
+      #console.log 'saving refresh token'
       state.refresh_token = @state.refresh_token
     @state = state
     session = get_blog_session() || {}
@@ -107,20 +108,21 @@ class GhostAuth extends Marionette.Object
       else
         setTimeout @triggerRefresh, AUTO_REFRESH_TIME
     else
-      console.log 'else performing refresh', @isAuthenticated()
+      #console.log 'else performing refresh', @isAuthenticated()
       # save a reference to the current time before the request is
       # sent.  This assures us that we can set an expiration that
       # the server can agree with.
       time = @getTime()
       response = @refresh()
       response.done (data, status, xhr) =>
-        console.log "data, status, xhr", data, status, xhr
+        #console.log "data, status, xhr", data, status, xhr
         @refresh_success time, data, status, xhr
       
   sendAuthHeader: (xhr) ->
     send_auth_header xhr
     
   access: (username, password) ->
+    console.log "access called", username, password
     if @isAuthenticated()
       return @trigger 'success', @state, @
     # save a reference to the current time before the request is
@@ -128,7 +130,13 @@ class GhostAuth extends Marionette.Object
     # the server can agree with.
     time = @getTime()
     client = get_client_info()
-    $.ajax
+    # override login info in development mode
+    # FIXME, put this in config for enable disablexs
+    if __DEV__
+      devauth = require '../../.auth'
+      username = devauth.username
+      password = devauth.password
+    xhr = $.ajax
       url: @tokenUrl
       type: 'POST'
       data:
@@ -147,14 +155,16 @@ class GhostAuth extends Marionette.Object
         console.log response.responseJSON
         for error in response.responseJSON.errors
           MessageChannel.request 'warning', error.message
-
-  refresh_success: (time, data, status, xhr) =>
-    console.log "refresh->success", data
-    console.log status
+    console.log "returning xhr", xhr
+    xhr
+    
+  refresh_success: (time, data, status, xhr) ->
+    #console.log "refresh->success", data
+    #console.log status
     data.time = time
     @save data
     @trigger 'refresh', data, this
-    console.log "success", data
+    #console.log "success", data
     @triggerRefresh()
     
   refresh: ->
