@@ -35,6 +35,10 @@ module.exports =
       loader: 'amd-define-factory-patcher-loader'
     }
     {
+      test: /jquery-ui\/ui\/selector\.js$/
+      loader: 'amd-define-factory-patcher-loader'
+    }
+    {
       test: /pixi\.js/
       loader: 'expose?PIXI'
     }
