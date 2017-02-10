@@ -11,7 +11,7 @@ nav_pt_content = tc.renderable (appmodel) ->
   name = current_user.get 'name'
   if name?
     user_here = true
-  console.log "User is", current_user
+  #console.log "User is", current_user
   tc.div ".#{appmodel.container or 'container'}", ->
     tc.div '.navbar-header', ->
       navbar_collapse_button 'navbar-view-collapse'

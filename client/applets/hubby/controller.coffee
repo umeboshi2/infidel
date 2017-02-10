@@ -48,7 +48,6 @@ class Controller extends MainController
   layoutClass: AppletLayout
   setup_layout_if_needed: ->
     super()
-    #console.log 'layout', @layout
     @layout.showChildView 'toolbar', new ToolbarView
     
   mainview: ->
@@ -93,7 +92,7 @@ class Controller extends MainController
       response.done =>
         view = new ShowMeetingView
           model: meeting
-        @_show_content view
+        @layout.showChildView 'content', view
       response.fail =>
         MessageChannel.request 'display-message', 'Failed to load meeting', 'danger'
     # name the chunk
