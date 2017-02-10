@@ -13,13 +13,15 @@ HubChannel = Backbone.Radio.channel 'hubby'
 #################################
 { capitalize } = require 'agate/src/apputil'
 
+compare_property_function = (property) ->
+  (a,b) ->
+    if a[property] < b[property]
+      return -1
+    if a[property] > b[property]
+      return 1
+    return 0
 
-compare_meeting_item = (a,b) ->
-  if a.item_order < b.item_order
-    return -1
-  if a.item_order > b.item_order
-    return 1
-  return 0
+compare_meeting_item = compare_property_function 'item_order'
 
 make_meeting_items = (meeting) ->
   meeting_items = []
@@ -58,7 +60,7 @@ make_attachments_section = tc.renderable (item) ->
     marker = "One Attachment"
     if item.attachments.length > 1
       marker = "#{item.attachments.length} Attachments"
-    tc.span '.btn.hubby-meeting-item-attachment-marker', marker
+    tc.span '.btn.btn-sm.hubby-meeting-item-attachment-marker', marker
     tc.div '.hubby-meeting-item-attachments', ->
       tc.div '.hubby-meeting-item-attachments-header', 'Attachments'
       for att in item.attachments
@@ -71,14 +73,15 @@ make_actions_section = tc.renderable (item) ->
     marker = 'Action'
     if item.actions.length > 1
       marker = 'Actions'
-    tc.span '.btn.hubby-meeting-item-action-marker', marker
+    tc.span '.btn.btn-sm.hubby-meeting-item-action-marker', marker
     tc.div '.hubby-meeting-item-actions', ->
       for action in item.actions
         nl = /\r?\n/
         lines = action.action_text.split nl
         tc.div '.hubby-action-text', width:80, ->
           #tc.br()
-          tc.br()
+          #tc.br()
+          # FIXME, this is used for spacing
           tc.hr()
           for line in lines
             tc.p line
@@ -95,12 +98,15 @@ make_meeting_item_list = tc.renderable (meeting) ->
         tc.h3 '.hubby-meeting-agenda-header', section_header
       tc.div '.hubby-meeting-item', ->
         tc.div '.hubby-meeting-item-info', ->
-          tc.div '.hubby-meeting-item-agenda-num', mitem.agenda_num
+          agenda_num = mitem.agenda_num
+          if not agenda_num
+            agenda_num = "(--)"
+          tc.div '.hubby-meeting-item-agenda-num', agenda_num
           tc.div '.hubby-meeting-item-fileid', item.file_id
           tc.div '.hubby-meeting-item-status', item.status
         tc.div '.hubby-meeting-item-content', ->
           tc.p '.hubby-meeting-item-text', item.title
-          tc.div '.btn-group', ->
+          tc.div ->
             make_attachments_section item
             make_actions_section item
 
