@@ -7426,9 +7426,9 @@ button.close {
 .hubby-meeting-item-fileid {
   font-size: 0.8em;
   font-weight: bold;
-  position: absolute;
-  top: 0;
-  right: 0;
+  position: relative;
+  top: 0em;
+  right: 0em;
 }
 
 .hubby-meeting-item-status {
@@ -7486,12 +7486,47 @@ button.close {
 }
 
 .hubby-meeting-item-action-marker {
+  color: #5f3939;
+  background-color: #bcc2bc;
+  border-color: #8b4c39;
   font-size: 0.7em;
   font-weight: bold;
+  cursor: pointer;
+}
+.hubby-meeting-item-action-marker:focus, .hubby-meeting-item-action-marker.focus {
+  color: #5f3939;
+  background-color: #a1aaa1;
+  border-color: #311b14;
+}
+.hubby-meeting-item-action-marker:hover {
+  color: #5f3939;
+  background-color: #a1aaa1;
+  border-color: #603427;
+}
+.hubby-meeting-item-action-marker:active, .hubby-meeting-item-action-marker.active, .open > .hubby-meeting-item-action-marker.dropdown-toggle {
+  color: #5f3939;
+  background-color: #a1aaa1;
+  border-color: #603427;
+}
+.hubby-meeting-item-action-marker:active:hover, .hubby-meeting-item-action-marker:active:focus, .hubby-meeting-item-action-marker:active.focus, .hubby-meeting-item-action-marker.active:hover, .hubby-meeting-item-action-marker.active:focus, .hubby-meeting-item-action-marker.active.focus, .open > .hubby-meeting-item-action-marker.dropdown-toggle:hover, .open > .hubby-meeting-item-action-marker.dropdown-toggle:focus, .open > .hubby-meeting-item-action-marker.dropdown-toggle.focus {
+  color: #5f3939;
+  background-color: #8e998e;
+  border-color: #311b14;
+}
+.hubby-meeting-item-action-marker:active, .hubby-meeting-item-action-marker.active, .open > .hubby-meeting-item-action-marker.dropdown-toggle {
+  background-image: none;
+}
+.hubby-meeting-item-action-marker.disabled:hover, .hubby-meeting-item-action-marker.disabled:focus, .hubby-meeting-item-action-marker.disabled.focus, .hubby-meeting-item-action-marker[disabled]:hover, .hubby-meeting-item-action-marker[disabled]:focus, .hubby-meeting-item-action-marker[disabled].focus, fieldset[disabled] .hubby-meeting-item-action-marker:hover, fieldset[disabled] .hubby-meeting-item-action-marker:focus, fieldset[disabled] .hubby-meeting-item-action-marker.focus {
+  background-color: #bcc2bc;
+  border-color: #8b4c39;
+}
+.hubby-meeting-item-action-marker .badge {
+  color: #bcc2bc;
+  background-color: #5f3939;
 }
 
 .hubby-action-text {
-  font-size: 0.6em;
+  font-size: 0.7em;
   -moz-border-radius: 5px;
   -webkit-border-radius: 5px;
   border-radius: 5px;
