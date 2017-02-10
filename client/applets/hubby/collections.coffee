@@ -1,7 +1,5 @@
 Backbone = require 'backbone'
 
-{ BaseCollection } = require 'agate/src/collections'
-
 HubChannel = Backbone.Radio.channel 'hubby'
 
 apiroot = '/api/dev/lgr'
@@ -13,9 +11,6 @@ class SimpleMeetingModel extends Backbone.Model
 class MainMeetingModel extends Backbone.Model
   url: () ->
     "#{apiroot}/meetings/#{@id}"
-  #parse: (response) ->
-  #  response.data
-
     
 class MeetingCollection extends Backbone.Collection
   model: SimpleMeetingModel

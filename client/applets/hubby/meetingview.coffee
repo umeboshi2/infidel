@@ -4,7 +4,7 @@ Marionette = require 'backbone.marionette'
 Masonry = require 'masonry-layout'
 tc = require 'teacup'
 
-require 'jquery-ui'
+require 'jquery-ui/ui/widgets/draggable'
 
 HubChannel = Backbone.Radio.channel 'hubby'
 
@@ -35,7 +35,10 @@ make_item_object = (meeting) ->
   for item in meeting.items
     Items[item.id] = item
   Items
-  
+
+make_agenda_link = (meeting, dtype='A') ->
+  qry = "M=#{dtype}&ID=#{meeting.id}&GUID=#{meeting.guid}"
+  return "http://hattiesburg.legistar.com/View.ashx?#{qry}"
 
 show_meeting_template = tc.renderable (meeting) ->
   meeting.meeting_items = make_meeting_items meeting
@@ -44,9 +47,9 @@ show_meeting_template = tc.renderable (meeting) ->
   tc.div '.hubby-meeting-header', ->
     tc.text meeting.title
     tc.div '.hubby-meeting-header-agenda', ->
-      tc.text 'Agenda: ' + meeting.agenda_status
+      tc.a href:make_agenda_link(meeting), "Agenda: #{meeting.agenda_status}"
     tc.div '.hubby-meeting-header-minutes', ->
-      tc.text 'Minutes: ' + meeting.minutes_status
+      tc.a href:make_agenda_link(meeting, 'M'), "Minutes: #{meeting.minutes_status}"
   tc.div '.hubby-meeting-item-list', ->
     agenda_section = 'start'
     for mitem in meeting.meeting_items
@@ -69,11 +72,23 @@ show_meeting_template = tc.renderable (meeting) ->
               marker = "#{item.attachments.length} Attachments"
             tc.span '.hubby-meeting-item-attachment-marker', marker
             tc.div '.hubby-meeting-item-attachments', ->
+              tc.div '.hubby-meeting-item-attachments-header', 'Attachments'
               for att in item.attachments
                 tc.div ->
                   url = "http://hattiesburg.legistar.com/#{att.link}"
                   tc.a href:url, att.name
-                  
+          if item.actions? and item.actions.length
+            marker = 'Action'
+            if item.actions.length > 1
+              marker = 'Actions'
+            tc.span '.hubby-meeting-item-action-marker', marker
+            tc.div '.hubby-meeting-item-actions', ->
+              for action in item.actions
+                nl = /\r?\n/
+                lines = action.action_text.split nl
+                tc.div '.hubby-action-text', width:80, ->
+                  for line in lines
+                    tc.p line
           
 ##################################################################
 #################################
@@ -84,20 +99,15 @@ class ShowMeetingView extends Backbone.Marionette.View
   onDomRefresh: () ->
     attachments = $ '.hubby-meeting-item-attachments'
     attachments.hide()
-    #attachments.draggable()
+    actions = $ '.hubby-meeting-item-actions'
+    actions.hide()
+    attachments.draggable()
     $('.hubby-meeting-item-info').click ->
       $(this).next().toggle()
     $('.hubby-meeting-item-attachment-marker').click ->
       $(this).next().toggle()
     $('.hubby-meeting-item-action-marker').click ->
-      if $(this).hasClass('itemaction-loaded')
-        $(this).next().toggle()
-      else
-        itemid = $(this).attr('id')
-        url = '/hubby/frag/itemactions/' + itemid
-        $(this).next().load(url)
-        $(this).addClass('itemaction-loaded')
-      
-  
+      $(this).next().toggle()
+   
 module.exports = ShowMeetingView
   

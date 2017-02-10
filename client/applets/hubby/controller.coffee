@@ -14,9 +14,9 @@ HubChannel = Backbone.Radio.channel 'hubby'
 class AppletLayout extends Backbone.Marionette.View
   template: tc.renderable () ->
     tc.div '.row', ->
-      tc.div  '#main-toolbar.col-sm-12.btn-toolbar'
+      tc.div  '#main-toolbar.col-sm-6.col-sm-offset-3'
     tc.div '.row', ->
-      tc.div '#main-content.col-sm-12'
+      tc.div '#main-content.col-sm-10.col-sm-offset-1'
   regions: ->
     region = new SlideDownRegion
       el: '#main-content'
@@ -26,10 +26,10 @@ class AppletLayout extends Backbone.Marionette.View
     
 class ToolbarView extends Backbone.Marionette.View
   template: tc.renderable () ->
-    tc.div '.btn-group', ->
-      tc.button '#show-calendar-button.btn.btn-default', ->
+    tc.div '.btn-group.btn-group-justified', ->
+      tc.div '#show-calendar-button.btn.btn-default', ->
         tc.i '.fa.fa-calendar', ' Calendar'
-      tc.button '#list-meetings-button.btn.btn-default', ->
+      tc.div '#list-meetings-button.btn.btn-default', ->
         tc.i '.fa.fa-list', ' List Meetings'
   ui:
     show_cal_btn: '#show-calendar-button'
@@ -43,13 +43,12 @@ class ToolbarView extends Backbone.Marionette.View
 
   list_meetings: ->
     Util.navigate_to_url '#hubby/listmeetings'
-    
       
 class Controller extends MainController
   layoutClass: AppletLayout
   setup_layout_if_needed: ->
     super()
-    console.log 'layout', @layout
+    #console.log 'layout', @layout
     @layout.showChildView 'toolbar', new ToolbarView
     
   mainview: ->

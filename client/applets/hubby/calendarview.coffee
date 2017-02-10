@@ -53,7 +53,7 @@ class MeetingCalendarView extends Backbone.Marionette.View
     cal = @ui.calendar
     cal.fullCalendar
       header:
-        left: 'today'
+        left: 'prevYear, nextYear'
         center: 'title'
         right: 'prev, next'
       theme: false
