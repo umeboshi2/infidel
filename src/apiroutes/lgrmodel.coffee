@@ -13,7 +13,9 @@ Model = sql.models.yard
 
 ignored_fields = ['id', 'created_at', 'updated_at']
 
-
+default_attributes =
+  exclude: ['createdAt', 'updatedAt']
+  
 #router.use hasUserAuth
 
 router.param 'models', (req, res, next, value) ->
@@ -28,8 +30,7 @@ router.get '/:models', (req, res) ->
   
   
   req.ModelClass.findAll
-    attributes:
-      exclude: ['createdAt', 'updatedAt']
+    attributes: default_attributes
     where: req.query
   .then (result) ->
     res.json result
@@ -39,8 +40,7 @@ router.get '/:models/include', (req, res) ->
   for rel of req.ModelClass.associations
     includes.push req.ModelClass.associations[rel]
   req.ModelClass.findAll
-    attributes:
-      exclude: ['createdAt', 'updatedAt']
+    attributes: default_attributes
     where: req.query
     include: includes
   .then (result) ->
@@ -48,8 +48,7 @@ router.get '/:models/include', (req, res) ->
 
 router.get "/:models/hubcal", (req, res) ->
   req.ModelClass.findAll
-    attributes:
-      exclude: ['createdAt', 'updatedAt']
+    attributes: default_attributes
     where:
       date:
         $between: [req.query.start, req.query.end]
@@ -71,17 +70,22 @@ router.get "/:models/hubcal", (req, res) ->
 
 handle_get_meeting = (req, res, next, options) ->
   unless options?
+    attachments_include =
+      model: sql.models.lgr_attachments
+      attributes: default_attributes
+      as: 'attachments'
+    actions_include = 
+      model: sql.models.lgr_actions
+      attributes: default_attributes
+      as: 'actions'
     options =
       where:
         id: req.params.id
       include:
         model: sql.models.lgr_items
         as: 'items'
-        include:
-          model: sql.models.lgr_attachments
-          attributes:
-            exclude: ['createdAt', 'updatedAt']
-          as: 'attachments'
+        include: [attachments_include, actions_include]
+        
   req.ModelClass.find options
   .then (meeting) ->
     #console.log "MEETING ITEMS", meeting.items
