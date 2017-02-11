@@ -1,5 +1,6 @@
 Promise = require 'bluebird'
 express = require 'express'
+cors = require 'cors'
 
 db = require '../models'
 { hasUserAuth } = require './base'
@@ -17,6 +18,7 @@ default_attributes =
   exclude: ['createdAt', 'updatedAt']
   
 #router.use hasUserAuth
+router.use cors()
 
 router.param 'models', (req, res, next, value) ->
   console.log value, '-->', routemap[value]
