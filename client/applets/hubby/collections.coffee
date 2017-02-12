@@ -22,6 +22,7 @@ HubChannel.reply 'meetinglist', ->
   main_meeting_list
 
 module.exports =
+  apiroot: apiroot
   MeetingCollection: MeetingCollection
   MainMeetingModel: MainMeetingModel
   

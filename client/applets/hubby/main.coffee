@@ -11,7 +11,7 @@ class Router extends BootStrapAppRouter
   appRoutes:
     'hubby': 'mainview'
     'hubby/listmeetings': 'list_meetings'
-    'hubby/viewmeeting/:id': 'show_meeting'
+    'hubby/viewmeeting/:id': 'view_meeting'
     
 current_calendar_date = undefined
 current_calendar_date = new Date '2016-10-15'
@@ -24,8 +24,10 @@ HubChannel.reply 'maincalendar:get-date', () ->
   
 MainChannel.reply 'applet:hubby:route', () ->
   controller = new Controller MainChannel
-  HubChannel.reply 'view-calendar', () ->
-    controller.mainview()
+  HubChannel.reply 'view-calendar', (layout, region) ->
+    controller.show_calendar layout, region
+  HubChannel.reply 'view-meeting', (layout, region, id) ->
+    controller.show_meeting layout, region, id
   router = new Router
     controller: controller
 

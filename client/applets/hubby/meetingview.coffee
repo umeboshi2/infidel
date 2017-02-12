@@ -91,7 +91,6 @@ make_meeting_item_list = tc.renderable (meeting) ->
     agenda_section = 'start'
     for mitem in meeting.meeting_items
       item = meeting.Items[mitem.item_id]
-      #console.log "ITEM", item
       if mitem.type != agenda_section and mitem.type
         agenda_section = mitem.type
         section_header = capitalize agenda_section + ' Agenda'
