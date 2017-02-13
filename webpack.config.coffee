@@ -44,17 +44,13 @@ StatsPluginFilename =
   dev: 'stats-dev.json'
   production: 'stats.json'
 
-MultiFilename =
-  dev: '[name].js'
-  production: '[name]-[chunkhash].js'
-
 common_plugins = [
   new webpack.DefinePlugin DefinePluginOpts[BuildEnvironment]
   # FIXME common chunk names in reverse order
   # https://github.com/webpack/webpack/issues/1016#issuecomment-182093533
   new webpack.optimize.CommonsChunkPlugin
     names: ['agate', 'vendor']
-    filename: MultiFilename[BuildEnvironment]
+    filename: WebPackOutputFilename[BuildEnvironment]
   new webpack.optimize.OccurenceOrderPlugin true
   new webpack.optimize.AggressiveMergingPlugin()
   new StatsPlugin StatsPluginFilename[BuildEnvironment], chunkModules: true
