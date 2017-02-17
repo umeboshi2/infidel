@@ -1,5 +1,6 @@
 Backbone = require 'backbone'
 Marionette = require 'backbone.marionette'
+tc = require 'teacup'
 
 #FullCalendar = require 'fullcalendar'
 
@@ -13,32 +14,6 @@ HubChannel = Backbone.Radio.channel 'hubby'
 # templates
 #################################
 
-tc = require 'teacup'
-
-meeting_calendar = tc.renderable () ->
-  tc.div '.listview-header', 'Meetings'
-  tc.div '#loading', ->
-    tc.h2 'Loading Meetings'
-  tc.div '#maincalendar'
-#################################
-
-render_calendar_event = (calEvent, element) ->
-  calEvent.url = "#hubby/viewmeeting/#{calEvent.id}"
-  element.css
-    'font-size' : '0.9em'
-
-calendar_view_render = (view, element) ->
-  HubChannel.request 'maincalendar:set-date'
-  
-loading_calendar_events = (bool) ->
-  loading = $ '#loading'
-  header = $ '.fc-header'
-  if bool
-    loading.show()
-    header.hide()
-  else
-    loading.hide()
-    header.show()
 
 class SimpleMeetingView extends Backbone.Marionette.View
   template: tc.renderable (model) ->

@@ -20,6 +20,11 @@ post_list = tc.renderable ->
   tc.div '.listview-header', 'Articles'
   tc.div '#post-list.list-group'
 
+DefaultStaticDocumentTemplate = tc.renderable (doc) ->
+  #atts = doc.data.attributes
+  tc.article '.document-view.content', ->
+    tc.div '.body', ->
+      tc.raw marked doc.content
 
 class PostListItem extends Backbone.Marionette.View
   template: post_list_item

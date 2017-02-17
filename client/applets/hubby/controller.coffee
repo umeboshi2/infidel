@@ -23,6 +23,11 @@ class AppletLayout extends Backbone.Marionette.View
     region.slide_speed = ms '.01s'
     content: region
     toolbar: '#main-toolbar'
+
+#<div class="input-group">
+#  <input type="text" class="form-control" placeholder="Recipient's username" aria-describedby="basic-addon2">
+#  <span class="input-group-addon" id="basic-addon2">@example.com</span>
+#</div>
     
 class ToolbarView extends Backbone.Marionette.View
   template: tc.renderable () ->
@@ -31,19 +36,46 @@ class ToolbarView extends Backbone.Marionette.View
         tc.i '.fa.fa-calendar', ' Calendar'
       tc.div '#list-meetings-button.btn.btn-default', ->
         tc.i '.fa.fa-list', ' List Meetings'
+    tc.div '.input-group', ->
+      tc.input '.form-control', type:'text', placeholder:'search',
+      name:'search'
+      tc.span '.input-group-btn', ->
+        tc.button '#search-button.btn.btn-default', ->
+          tc.i '.fa.fa-search', 'Search'
+        
   ui:
+    search_bth: '#search-button'
     show_cal_btn: '#show-calendar-button'
     list_btn: '#list-meetings-button'
+    search_entry: '.form-control'
+    
   events:
     'click @ui.show_cal_btn': 'show_calendar'
     'click @ui.list_btn': 'list_meetings'
+    'click @ui.search_bth': 'search_hubby'
 
   show_calendar: ->
-    Util.navigate_to_url '#hubby'
+    l = window.location
+    hash = '#hubby'
+    if window.location.hash == hash
+      controller = HubChannel.request 'main-controller'
+      controller.mainview()
+    else
+      if __DEV__
+        console.log "current url", window.location
+      Util.navigate_to_url '#hubby'
 
   list_meetings: ->
     Util.navigate_to_url '#hubby/listmeetings'
-      
+
+  search_hubby: ->
+    controller = HubChannel.request 'main-controller'
+    options =
+      searchParams:
+        title: @ui.search_entry.val()
+    console.log "search for", options
+    controller.view_items options
+    
 class Controller extends MainController
   layoutClass: AppletLayout
   setup_layout_if_needed: ->
@@ -107,7 +139,24 @@ class Controller extends MainController
     @setup_layout_if_needed()
     @show_meeting @layout, 'content', meeting_id
     
+  view_items: (options) ->
+    @setup_layout_if_needed()
+    @list_items @layout, 'content', options
 
+  list_items: (layout, region, options) ->
+    require.ensure [], () =>
+      { ItemCollection } = require './collections'
+      ListItemsView  = require './search-items-view'
+      items = new ItemCollection []
+      items.searchParams = options.searchParams
+      console.log 'ItemCollection', items
+      response = items.fetch()
+      response.done =>
+        view = new ListItemsView
+          collection: items
+        layout.showChildView region, view
+    # name the chunk
+    , 'hubby-search-items-view'
     
 module.exports = Controller
 
