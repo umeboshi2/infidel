@@ -71,12 +71,9 @@ sql.models.yard.belongsTo sql.models.geoposition,
 
 sql.models.yard.hasMany sql.models.yardroutine
 
-
-#sql.models.yard.belongsTo sql.models.geoposition,
-#  foreignKey: 'location_id'
-#  targetKey: 'id'
-
 sql.models.maplocation.belongsTo sql.models.geoposition
+
+
 
 
 Meeting = sql.models.lgr_meetings
@@ -90,9 +87,6 @@ Meeting.belongsToMany Item,
   foreignKey: 'meeting_id'
 
 Meeting.sync()
-
-#console.log "setup first association?"
-#console.log Object.keys Meeting.associations
 
 Item.belongsToMany Meeting,
   as: 'meetings'
@@ -120,8 +114,6 @@ Action.belongsToMany Item,
   
 Attachment.sync()
 Item.sync()
-#console.log "setup second association?"
-#console.log Object.keys Item.associations
 
   
 #fs.readdirSync(__dirname).filter((file) ->
