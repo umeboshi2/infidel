@@ -16,5 +16,7 @@ module.exports =
     geopositions: 'geoposition'
   lgrmodel:
     meetings: 'lgr_meetings'
+    items: 'lgr_items'
+    actions: 'lgr_actions'
     
     
