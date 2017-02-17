@@ -5953,7 +5953,7 @@ button.list-group-item-danger.active:focus {
 
 .panel {
   margin-bottom: 20px;
-  background-color: #fff;
+  background-color: #c2b6a4;
   border: 1px solid transparent;
   border-radius: 4px;
   -webkit-box-shadow: 0 1px 1px rgba(0, 0, 0, 0.05);
@@ -7370,8 +7370,11 @@ button.close {
   border-radius: 0.5em;
   background: #b8aa95;
   color: #5f3939;
+  position: relative;
+}
+
+.hubby-meeting-header-text {
   text-align: center;
-  font-size: 1.5em;
   position: relative;
 }
 
@@ -7392,19 +7395,13 @@ button.close {
 }
 
 .hubby-meeting-header-agenda {
-  position: absolute;
-  top: 0;
-  left: 0;
-  font-size: 0.5em;
+  font-size: 0.8em;
   margin: 0.5em;
   font-family: "Play";
 }
 
 .hubby-meeting-header-minutes {
-  position: absolute;
-  top: 0;
-  right: 0;
-  font-size: 0.5em;
+  font-size: 0.8em;
   margin: 0.5em;
   font-family: "Play";
 }
@@ -7420,20 +7417,20 @@ button.close {
   font-weight: bold;
   position: relative;
   top: 0em;
-  left: 0em;
+  left: 0.5em;
 }
 
 .hubby-meeting-item-fileid {
   font-size: 0.8em;
   font-weight: bold;
-  position: relative;
+  position: absolute;
   top: 0em;
-  right: 0em;
+  right: 0.5em;
 }
 
 .hubby-meeting-item-status {
   font-family: "Play";
-  font-size: 0.7em;
+  font-size: 0.8em;
   font-weight: bold;
   position: absolute;
   top: 0em;
@@ -7442,14 +7439,14 @@ button.close {
 }
 
 .hubby-meeting-item-text {
-  font-size: 0.8em;
+  font-size: 1.0em;
 }
 
 .hubby-meeting-item-attachment-marker {
   color: #5f3939;
   background-color: #d7cfc2;
   border-color: #8b4c39;
-  font-size: 0.8em;
+  font-size: 0.9em;
   font-weight: bold;
   cursor: pointer;
 }
@@ -7489,7 +7486,7 @@ button.close {
   color: #5f3939;
   background-color: #d7cfc2;
   border-color: #8b4c39;
-  font-size: 0.7em;
+  font-size: 0.9em;
   font-weight: bold;
   cursor: pointer;
 }
@@ -7526,7 +7523,7 @@ button.close {
 }
 
 .hubby-action-text {
-  font-size: 0.7em;
+  font-size: 0.9em;
   -moz-border-radius: 5px;
   -webkit-border-radius: 5px;
   border-radius: 5px;
@@ -7563,7 +7560,6 @@ button.close {
 }
 
 .mini-calendar {
-  width: 20em;
   margin: 0 auto;
   font-family: "Droid Sans";
   font-size: 0.5em;
@@ -7573,8 +7569,18 @@ button.close {
   padding: 0.1em;
   vertical-align: bottom;
 }
+.mini-calendar #loading h2 {
+  font-size: 2.0em;
+  font-family: "Cabin";
+  white-space: normal !important;
+}
+.mini-calendar .fc-header-toolbar h2 {
+  font-size: 2.0em;
+  font-family: "Cabin";
+  white-space: normal !important;
+}
 .mini-calendar .fc-header-title h2 {
-  font-size: 1.1em;
+  font-size: 0.7em;
   font-family: "Cabin";
   white-space: normal !important;
 }
