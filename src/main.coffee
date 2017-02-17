@@ -74,6 +74,10 @@ setup_after_ghost = (ghost) ->
       publicPath: '/build/'
       stats:
         colors: true
+        modules: false
+        chunks: true
+        #reasons: true
+        maxModules: 9999
     console.log "Using webpack middleware"
   else
     app.use '/build', gzipStatic(path.join __dirname, '../build')
