@@ -3,11 +3,11 @@ module.exports =
   [
     {
       test: /\.coffee$/
-      loader: 'coffee'
+      loader: 'coffee-loader'
     }
     {
       test: /\.css$/
-      loader: 'style!css'
+      loader: 'style-loader!css-loader'
     }
     {
       test: /\.(gif|png|eot|ttf)?$/
@@ -52,6 +52,6 @@ module.exports =
     }
     {
       test: /masonry-layout/,
-      loader: 'imports?define=>false&this=>window'
+      loader: 'imports-loader?define=>false&this=>window'
     }
   ]

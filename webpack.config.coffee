@@ -51,7 +51,6 @@ common_plugins = [
   new webpack.optimize.CommonsChunkPlugin
     names: ['agate', 'vendor']
     filename: WebPackOutputFilename[BuildEnvironment]
-  new webpack.optimize.OccurenceOrderPlugin true
   new webpack.optimize.AggressiveMergingPlugin()
   new StatsPlugin StatsPluginFilename[BuildEnvironment], chunkModules: true
   new ManifestPlugin()
@@ -66,7 +65,6 @@ if BuildEnvironment is 'dev'
 else if BuildEnvironment is 'production'
   prod_only_plugins = [
     # production only plugins below
-    new webpack.optimize.DedupePlugin()
     new webpack.optimize.UglifyJsPlugin
       compress:
         warnings: true
