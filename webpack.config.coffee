@@ -65,6 +65,7 @@ if BuildEnvironment is 'dev'
 else if BuildEnvironment is 'production'
   prod_only_plugins = [
     # production only plugins below
+    new webpack.HashedModuleIdsPlugin()
     new webpack.optimize.UglifyJsPlugin
       compress:
         warnings: true
