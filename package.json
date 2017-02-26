@@ -48,6 +48,7 @@
     "backbone.radio": "^2.0.0",
     "backbone.validation": "^0.7.1",
     "bootstrap": "^3.3.7",
+    "bootstrap-fileinput": "^4.3.6",
     "bower": "^1.8.0",
     "brace": "^0.9.1",
     "browser-request": "^0.3.3",
